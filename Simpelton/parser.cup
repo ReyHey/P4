@@ -1,0 +1,84 @@
+import java_cup.runtime.*;
+
+init with {: Lexer.init();				:};
+scan with {: return Lexer.next_token();	:};
+
+terminal			BREAK, CONTINUE, RETURN, IN;
+terminal Interger	INTEGER;
+terminal Decimal	DECIMAL;
+terminal String		STRING;
+terminal Boolean	BOOLEAN;
+terminal List		LIST;
+terminal Enum		ENUM;
+terminal Struct		STRUCT;
+terminal			INTEGERLIT, DECIMALLIT, BOOLEANLIT, STRINGLIT;
+terminal			EQ, EQEQ, NOTEQ;
+terminal			PLUS, MINUS, TIMES, DIVISION;
+terminal			PLUSEQ, MINUSEQ, TIMESEQ, DIVISIONEQ;
+terminal			LPAREN, RPAREN, LCURLY, RCURLY, LSQURE, RSQURE, RANGLE, LANGLE;
+terminal			LEQ, GEQ;
+terminal			NOT;
+terminal			MOD, OR, AND;
+terminal			SQRT, CBRT, POW;
+terminal			WHILE, FOREACH, SWITCH, CASE;
+terminal			IF, ELSE;
+terminal			IDENTIFIER;
+terminal			DIVIDE;
+terminal			UMINUS;
+terminal			MAIN;
+terminal			NEWLINE;
+terminal			COMMA;
+terminal			CONSTANT;
+terminal			FUNCTION;
+terminal			VOID;
+
+/* Non terminals */
+non terminal program, declarations;
+non terminal primitiv_type;
+non terminal variable_decl;
+non terminal list_decl,type, element_list;
+non terminal struct_decl, struct_member;
+non terminal enum_decl, enum_member;
+non terminal const_decl;
+non terminal function_decl, return_type, parameter_list, parameter;
+non terminal declaration;
+non terminal list_init;
+non terminal stmt_list;
+
+non terminal expression;
+
+/* Precedences */
+precedence left PLUS, MINUS;
+precedence left TIMES, DIVIDE, MOD;
+precedence left UMINUS;
+
+/* Grammar */
+start with program;
+
+
+program ::= declarations MAIN declarations;
+
+declarations ::= declaration declarations;
+declaration ::= function_decl | struct_decl | enum_decl | const_decl;
+
+primitiv_type ::= INTEGER | DECIMAL | STRING | BOOLEAN;
+
+variable_decl ::= primitiv_type IDENTIFIER EQ expression NEWLINE;
+
+list_decl ::= LIST LANGLE primitiv_type RANGLE IDENTIFIER list_init NEWLINE;
+list_init ::= EQ LCURLY element_list RCURLY | EQ LCURLY RCURLY | ;
+
+element_list ::= expression | expression COMMA element_list;
+
+struct_decl ::= STRUCT IDENTIFIER LCURLY struct_member RCURLY NEWLINE;
+struct_member ::= primitiv_type IDENTIFIER NEWLINE struct_member | LIST LANGLE primitiv_type RANGLE IDENTIFIER NEWLINE struct_member | ;
+
+enum_decl ::= ENUM IDENTIFIER LCURLY enum_member RCURLY NEWLINE;
+enum_member ::= IDENTIFIER NEWLINE enum_member | IDENTIFIER EQ INTEGERLIT NEWLINE enum_member;
+
+const_decl ::= CONSTANT primitiv_type IDENTIFIER EQ expression;
+
+function_decl ::= FUNCTION return_type IDENTIFIER LPAREN parameter_list RPAREN LCURLY stmt_list RCURLY;
+return_type ::= primitiv_type | VOID;
+parameter_list ::= parameter | parameter COMMA parameter_list | ;
+parameter ::= primitiv_type IDENTIFIER;
