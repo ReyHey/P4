@@ -108,7 +108,7 @@ filename = (\\.|[^\"])+
 "."								{ return symbol( sym.DOT   	 ); }
 {LineTerminator}				{ return symbol( sym.NEWLINE ); }
 
-"include"						{ return symbol( sym.INCLUDE   ); }
+/*"include"						{ return symbol( sym.INCLUDE   ); }*/
 
 
 /* literals */
