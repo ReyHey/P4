@@ -38,12 +38,12 @@ non terminal         declarations, declaration;
 non terminal         primitiv_type;
 non terminal         type;
 non terminal         expression;
-non terminal         arithmetic_expression;
-non terminal         term, factor, base, value;
+non terminal   arithmetic_expression;
+non terminal   term, factor, base, value;
 non terminal         index;
-non terminal         deep, deeper, eval_symbol, logical_symbol;
+non terminal  deep, deeper, eval_symbol, logical_symbol;
 non terminal         variable_decl;
-non terminal         list_initialize, element_list, elements;
+non terminal         list_decl, list_initialize, element_list, elements;
 non terminal         struct_decl, struct_member, struct_members;
 non terminal         enum_decl, enum_members, enum_member;
 non terminal         const_variable_decl; 
@@ -60,9 +60,6 @@ non terminal         ternary_stmt;
 non terminal         func_call, func_call_type, actual_parameter_list, multiple_actual_parameters, actual_parameter;
 non terminal         compound_assign_stmt, compound_operation;
 non terminal         random_decl;
-non terminal         optional_newline;
-non terminal         initialization;
-
 
 /* Precedences */
 precedence left PLUS, MINUS;
@@ -71,10 +68,10 @@ precedence left POW;
 
 start with program;
 /* Grammar */
-program      ::= declarations;
-/*includes     ::= INCLUDE FILENAME optional_newline includes | ;*/
-declarations ::= declaration declarations | declaration;
-declaration  ::= function_decl
+program      ::= declarations {: System.out.println("program");:};
+/*includes     ::= INCLUDE FILENAME NEWLINE includes {: System.out.println("includes");:} | {: System.out.println("includes empty");:};*/
+declarations ::= declaration declarations {: System.out.println("declarations");:} | {: System.out.println("empty");:} ;
+declaration  ::= function_decl {: System.out.println("declaration-function_decl");:}
                | struct_decl
                | enum_decl
                | const_variable_decl;
@@ -82,14 +79,13 @@ declaration  ::= function_decl
 primitiv_type ::= NUMBER | STRING | BOOLEAN;
 type ::= primitiv_type | LIST LANGLE type RANGLE;
 
-optional_newline ::= optional_newline NEWLINE | NEWLINE;
 
-expression            ::= expression logical_symbol deep 
-                        | deep;
-deep                  ::= NOT deeper 
-                        | deeper;
-deeper                ::= arithmetic_expression eval_symbol arithmetic_expression
-                        | arithmetic_expression;
+expression ::= expression logical_symbol deep 
+             | deep;
+deep       ::= NOT deeper 
+             | deeper;
+deeper     ::= arithmetic_expression eval_symbol arithmetic_expression
+             | arithmetic_expression;
 arithmetic_expression ::= arithmetic_expression PLUS term 
                         | arithmetic_expression MINUS term 
                         | term;
@@ -102,48 +98,47 @@ factor                ::= factor POW arithmetic_expression
 base                  ::= UMINUS value
                         | value;
 value                 ::= LPAREN expression RPAREN 
-                        | NAN           
-                        | NUMBERLIT     
+                        | NAN           {: System.out.println("NAN");:}
+                        | NUMBERLIT     {: System.out.println("NUMBERLIT");:}
                         | STRINGLIT
                         | BOOLEANLIT
-                        | IDENTIFIER    
+                        | IDENTIFIER    {: System.out.println("IDENTIFIER");:}
                         | IDENTIFIER func_call_type 
-                        | func_call     
+                        | func_call     {: System.out.println("func_call");:}
                         | IDENTIFIER LSQUARE index RSQUARE;                        
 
 eval_symbol     ::= EQEQ | NOTEQ | LEQ | GEQ | LANGLE | RANGLE;
 logical_symbol  ::= AND | OR;
 
-variable_decl   ::= type IDENTIFIER initialization;
-initialization ::= EQ expression | EQ list_initialize | ;
-
+variable_decl   ::= type IDENTIFIER EQ expression NEWLINE;
+list_decl       ::= type IDENTIFIER EQ list_initialize NEWLINE;
 
 list_initialize ::= EQ LCURLY element_list RCURLY | ;
 element_list    ::= expression elements | ;
 elements        ::= COMMA expression elements | ;
 
-struct_decl     ::= STRUCT IDENTIFIER LCURLY struct_members RCURLY optional_newline;
+struct_decl     ::= STRUCT IDENTIFIER LCURLY struct_members RCURLY NEWLINE;
 struct_members  ::= struct_member 
                   | struct_member struct_members;
-struct_member   ::= type IDENTIFIER optional_newline;
+struct_member   ::= type IDENTIFIER NEWLINE;
 
 
-enum_decl    ::= ENUM IDENTIFIER LCURLY enum_members RCURLY optional_newline;
+enum_decl    ::= ENUM IDENTIFIER LCURLY enum_members RCURLY NEWLINE;
 enum_members ::= enum_member 
                | enum_member enum_members;
-enum_member  ::= IDENTIFIER optional_newline 
-               | IDENTIFIER EQ NUMBER optional_newline;
+enum_member  ::= IDENTIFIER NEWLINE 
+               | IDENTIFIER EQ NUMBER NEWLINE;
 
 const_variable_decl ::= CONSTANT variable_decl;
 
 
-function_decl               ::= FUNCTION return_type IDENTIFIER LPAREN formal_parameter_list RPAREN block optional_newline {: System.out.println("function_decl");:};
+function_decl               ::= FUNCTION return_type IDENTIFIER LPAREN formal_parameter_list RPAREN block {: System.out.println("function_decl");:};
 return_type                 ::= type | VOID;
 formal_parameter_list       ::= formal_parameter multiple_formal_parameters | ;
 multiple_formal_parameters  ::= COMMA formal_parameter multiple_formal_parameters | ;
 formal_parameter            ::= type IDENTIFIER;
 
-stmt_list ::= stmt_list stmt optional_newline | stmt optional_newline;
+stmt_list ::= stmt_list stmt NEWLINE | stmt NEWLINE;
 stmt    ::= if_stmt
           | switch_stmt  
           | while_stmt 
@@ -151,6 +146,7 @@ stmt    ::= if_stmt
           | assign_stmt 
           | ternary_stmt 
           | variable_decl 
+          | list_decl 
           | const_variable_decl
           | random_decl  
           | jump_stmt 
@@ -166,14 +162,14 @@ switch_stmt     ::= SWITCH expression LPAREN case_stmts DEFAULT COLON stmt_list 
 case_stmts      ::= case_stmt case_stmts | ;
 case_stmt       ::= CASE IDENTIFIER COLON stmt_list;
 
-if_stmt         ::= IF expression:exp block else_stmt;
+if_stmt         ::= IF expression:exp block:b1 else_stmt:b2 NEWLINE;
 else_stmt       ::= ELSE block |  ;
 
-while_stmt      ::= WHILE expression block ;
+while_stmt      ::= WHILE expression block NEWLINE;
 
 foreach_stmt    ::= FOREACH type IDENTIFIER IN IDENTIFIER block;
 
-block           ::= NEWLINE stmt | LCURLY optional_newline stmt_list RCURLY;
+block           ::= NEWLINE stmt | LCURLY NEWLINE stmt_list RCURLY;
 
 
 assign_stmt          ::= IDENTIFIER EQ expression;

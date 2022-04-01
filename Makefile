@@ -9,7 +9,7 @@ CUP        = $(JAVA) -jar $(CUPJAR) -expect 1 -parser Parser
 # --------------------------------------------------
 
 Simpleton: compile
-	$(JAVA) -cp $(CP) Simpleton
+	$(JAVA) -cp $(CP) Simpleton > test.txt
 
 testtest: compile
 	jdb -cp $(CP) Simpleton
