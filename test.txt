@@ -1,3 +1,3 @@
 Parsing input.txt
 function_decl
-instead expected token classes are [CONTINUE, RETURN, NUMBERLIT, BOOLEANLIT, STRINGLIT, IDENTIFIER, LPAREN, RCURLY, NOT, WHILE, FOREACH, SWITCH, IF, UMINUS, RANDOM, CONSTANT, NUMBER, STRING, BOOLEAN, LIST]
+instead expected token classes are [LPAREN, LSQUARE, DOT]

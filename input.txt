@@ -19,8 +19,8 @@ function number gcd(number a, number b) {
 		smallest = b
 	}
 
-	i = smallest;
-	while (a % i != 0 or b % i != 0) and i > 0 {
+	i = smallest
+	while (a mod i != 0 or b mod i != 0) and i > 0 {
 		i = i - 1
 	}
 	GCD = i

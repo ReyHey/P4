@@ -1,0 +1,48 @@
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.exe
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.deps.json
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.runtimeconfig.json
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.runtimeconfig.dev.json
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.dll
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/bin/Debug/net5.0/ref/InterpreterForParser.dll
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.pdb
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.csproj.AssemblyReference.cache
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.GeneratedMSBuildEditorConfig.editorconfig
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.AssemblyInfoInputs.cache
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.AssemblyInfo.cs
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.csproj.CoreCompileInputs.cache
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.dll
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/obj/Debug/net5.0/ref/InterpreterForParser.dll
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.pdb
+C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.genruntimeconfig.cache
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/bin/Debug/net5.0/InterpreterForParser
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.deps.json
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.runtimeconfig.json
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.runtimeconfig.dev.json
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.dll
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/bin/Debug/net5.0/ref/InterpreterForParser.dll
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.pdb
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.csproj.AssemblyReference.cache
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.GeneratedMSBuildEditorConfig.editorconfig
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.AssemblyInfoInputs.cache
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.AssemblyInfo.cs
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.csproj.CoreCompileInputs.cache
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.dll
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/obj/Debug/net5.0/ref/InterpreterForParser.dll
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.pdb
+/Users/puvikaransanthirasegaram/Downloads/InterpreterForParser - Copy/InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.genruntimeconfig.cache
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/bin/Debug/net5.0/InterpreterForParser
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.deps.json
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.runtimeconfig.json
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.runtimeconfig.dev.json
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.dll
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/bin/Debug/net5.0/ref/InterpreterForParser.dll
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.pdb
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.csproj.AssemblyReference.cache
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.GeneratedMSBuildEditorConfig.editorconfig
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.AssemblyInfoInputs.cache
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.AssemblyInfo.cs
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.csproj.CoreCompileInputs.cache
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.dll
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/ref/InterpreterForParser.dll
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.pdb
+/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.genruntimeconfig.cache

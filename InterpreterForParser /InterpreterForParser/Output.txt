@@ -1,0 +1,231 @@
+  0 non-terminals declared but not used.
+  0 productions never reduced.
+  0 conflicts detected (0 expected).
+  Code written to "Parser.java", and "sym.java".
+---------------------------------------------------- (CUP v0.11b 20160615 (GIT 4ac7450))
+javac -cp .:Dependencies/java-cup-11b.jar Simpleton.java sym.java Lexer.java Parser.java
+Note: Simpleton.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+java -cp .:Dependencies/java-cup-11b.jar Simpleton
+Parsing input.txt
+# Initializing parser
+Token Read: #51 = FUNCTION
+Shift #51
+Token Read: #52 = VOID
+Shift #52
+Token Read: #10 = IDENTIFIER
+Reduce prod #70 =  return_type ::= VOID 
+Shift #10
+Token Read: #24 = LPAREN
+Shift #24
+Token Read: #25 = RPAREN
+Reduce prod #72 =  formal_parameter_list ::= 
+Shift #25
+Token Read: #26 = LCURLY
+Shift #26
+Token Read: #49 = NEWLINE
+Shift #49
+Token Read: #53 = NUMBER
+Reduce prod #14 =  optional_newline ::= NEWLINE 
+Shift #53
+Token Read: #10 = IDENTIFIER
+Reduce prod #8 =  primitiv_type ::= NUMBER 
+Reduce prod #11 =  type ::= primitiv_type 
+Shift #10
+Token Read: #11 = EQ
+Shift #11
+Token Read: #10 = IDENTIFIER
+Shift #10
+Token Read: #24 = LPAREN
+Shift #24
+Token Read: #7 = NUMBERLIT
+Shift #7
+Token Read: #47 = COMMA
+Reduce prod #34 =  value ::= NUMBERLIT 
+Reduce prod #31 =  base ::= value 
+Reduce prod #29 =  factor ::= base 
+Reduce prod #27 =  term ::= factor 
+Reduce prod #23 =  arithmetic_expression ::= term 
+Reduce prod #20 =  deeper ::= arithmetic_expression 
+Reduce prod #18 =  deep ::= deeper 
+Reduce prod #16 =  expression ::= deep 
+Reduce prod #118 =  actual_parameter ::= expression 
+Shift #47
+Token Read: #7 = NUMBERLIT
+Shift #7
+Token Read: #25 = RPAREN
+Reduce prod #34 =  value ::= NUMBERLIT 
+Reduce prod #31 =  base ::= value 
+Reduce prod #29 =  factor ::= base 
+Reduce prod #27 =  term ::= factor 
+Reduce prod #23 =  arithmetic_expression ::= term 
+Reduce prod #20 =  deeper ::= arithmetic_expression 
+Reduce prod #18 =  deep ::= deeper 
+Reduce prod #16 =  expression ::= deep 
+Reduce prod #118 =  actual_parameter ::= expression 
+Reduce prod #117 =  multiple_actual_parameters ::= 
+Reduce prod #116 =  multiple_actual_parameters ::= COMMA actual_parameter multiple_actual_parameters 
+Reduce prod #114 =  actual_parameter_list ::= actual_parameter multiple_actual_parameters 
+Shift #25
+Token Read: #49 = NEWLINE
+Reduce prod #112 =  func_call ::= LPAREN actual_parameter_list RPAREN 
+Reduce prod #37 =  value ::= IDENTIFIER func_call 
+Reduce prod #31 =  base ::= value 
+Reduce prod #29 =  factor ::= base 
+Reduce prod #27 =  term ::= factor 
+Reduce prod #23 =  arithmetic_expression ::= term 
+Reduce prod #20 =  deeper ::= arithmetic_expression 
+Reduce prod #18 =  deep ::= deeper 
+Reduce prod #16 =  expression ::= deep 
+Reduce prod #49 =  initialization ::= EQ expression 
+Reduce prod #48 =  variable_decl ::= type IDENTIFIER initialization 
+Reduce prod #84 =  stmt ::= variable_decl 
+Shift #49
+Token Read: #49 = NEWLINE
+Reduce prod #14 =  optional_newline ::= NEWLINE 
+Shift #49
+Token Read: #10 = IDENTIFIER
+Reduce prod #13 =  optional_newline ::= optional_newline NEWLINE 
+Reduce prod #77 =  stmt_list ::= stmt optional_newline 
+Shift #10
+Token Read: #24 = LPAREN
+Shift #24
+Token Read: #10 = IDENTIFIER
+Shift #10
+Token Read: #48 = DOT
+Shift #48
+Token Read: #10 = IDENTIFIER
+Shift #10
+Token Read: #24 = LPAREN
+Shift #24
+Token Read: #25 = RPAREN
+Reduce prod #115 =  actual_parameter_list ::= 
+Shift #25
+Token Read: #16 = PLUS
+Reduce prod #112 =  func_call ::= LPAREN actual_parameter_list RPAREN 
+Reduce prod #113 =  func_call_type ::= DOT IDENTIFIER func_call 
+Reduce prod #38 =  value ::= IDENTIFIER func_call_type 
+Reduce prod #31 =  base ::= value 
+Reduce prod #29 =  factor ::= base 
+Reduce prod #27 =  term ::= factor 
+Reduce prod #23 =  arithmetic_expression ::= term 
+Shift #16
+Token Read: #9 = STRINGLIT
+Shift #9
+Token Read: #25 = RPAREN
+Reduce prod #35 =  value ::= STRINGLIT 
+Reduce prod #31 =  base ::= value 
+Reduce prod #29 =  factor ::= base 
+Reduce prod #27 =  term ::= factor 
+Reduce prod #21 =  arithmetic_expression ::= arithmetic_expression PLUS term 
+Reduce prod #20 =  deeper ::= arithmetic_expression 
+Reduce prod #18 =  deep ::= deeper 
+Reduce prod #16 =  expression ::= deep 
+Reduce prod #118 =  actual_parameter ::= expression 
+Reduce prod #117 =  multiple_actual_parameters ::= 
+Reduce prod #114 =  actual_parameter_list ::= actual_parameter multiple_actual_parameters 
+Shift #25
+Token Read: #49 = NEWLINE
+Reduce prod #112 =  func_call ::= LPAREN actual_parameter_list RPAREN 
+Reduce prod #37 =  value ::= IDENTIFIER func_call 
+Reduce prod #31 =  base ::= value 
+Reduce prod #29 =  factor ::= base 
+Reduce prod #27 =  term ::= factor 
+Reduce prod #23 =  arithmetic_expression ::= term 
+Reduce prod #20 =  deeper ::= arithmetic_expression 
+Reduce prod #18 =  deep ::= deeper 
+Reduce prod #16 =  expression ::= deep 
+Reduce prod #88 =  stmt ::= expression 
+Shift #49
+Token Read: #27 = RCURLY
+Reduce prod #14 =  optional_newline ::= NEWLINE 
+Reduce prod #76 =  stmt_list ::= stmt_list stmt optional_newline 
+Shift #27
+Token Read: #49 = NEWLINE
+Reduce prod #104 =  block ::= LCURLY optional_newline stmt_list RCURLY 
+Shift #49
+Token Read: #51 = FUNCTION
+Reduce prod #14 =  optional_newline ::= NEWLINE 
+function_decl
+Reduce prod #68 =  function_decl ::= FUNCTION return_type IDENTIFIER LPAREN formal_parameter_list RPAREN block optional_newline 
+Reduce prod #4 =  declaration ::= function_decl 
+Shift #51
+Token Read: #53 = NUMBER
+Shift #53
+Token Read: #10 = IDENTIFIER
+Reduce prod #8 =  primitiv_type ::= NUMBER 
+Reduce prod #11 =  type ::= primitiv_type 
+Reduce prod #69 =  return_type ::= type 
+Shift #10
+Token Read: #24 = LPAREN
+Shift #24
+Token Read: #53 = NUMBER
+Shift #53
+Token Read: #10 = IDENTIFIER
+Reduce prod #8 =  primitiv_type ::= NUMBER 
+Reduce prod #11 =  type ::= primitiv_type 
+Shift #10
+Token Read: #47 = COMMA
+Reduce prod #75 =  formal_parameter ::= type IDENTIFIER 
+Shift #47
+Token Read: #53 = NUMBER
+Shift #53
+Token Read: #10 = IDENTIFIER
+Reduce prod #8 =  primitiv_type ::= NUMBER 
+Reduce prod #11 =  type ::= primitiv_type 
+Shift #10
+Token Read: #25 = RPAREN
+Reduce prod #75 =  formal_parameter ::= type IDENTIFIER 
+Reduce prod #74 =  multiple_formal_parameters ::= 
+Reduce prod #73 =  multiple_formal_parameters ::= COMMA formal_parameter multiple_formal_parameters 
+Reduce prod #71 =  formal_parameter_list ::= formal_parameter multiple_formal_parameters 
+Shift #25
+Token Read: #26 = LCURLY
+Shift #26
+Token Read: #49 = NEWLINE
+Shift #49
+Token Read: #53 = NUMBER
+Reduce prod #14 =  optional_newline ::= NEWLINE 
+Shift #53
+Token Read: #10 = IDENTIFIER
+Reduce prod #8 =  primitiv_type ::= NUMBER 
+Reduce prod #11 =  type ::= primitiv_type 
+Shift #10
+Token Read: #49 = NEWLINE
+Reduce prod #51 =  initialization ::= 
+Reduce prod #48 =  variable_decl ::= type IDENTIFIER initialization 
+Reduce prod #84 =  stmt ::= variable_decl 
+Shift #49
+Token Read: #53 = NUMBER
+Reduce prod #14 =  optional_newline ::= NEWLINE 
+Reduce prod #77 =  stmt_list ::= stmt optional_newline 
+Shift #53
+Token Read: #10 = IDENTIFIER
+Reduce prod #8 =  primitiv_type ::= NUMBER 
+Reduce prod #11 =  type ::= primitiv_type 
+Shift #10
+Token Read: #49 = NEWLINE
+Reduce prod #51 =  initialization ::= 
+Reduce prod #48 =  variable_decl ::= type IDENTIFIER initialization 
+Reduce prod #84 =  stmt ::= variable_decl 
+Shift #49
+Token Read: #53 = NUMBER
+Reduce prod #14 =  optional_newline ::= NEWLINE 
+Reduce prod #76 =  stmt_list ::= stmt_list stmt optional_newline 
+Shift #53
+Token Read: #10 = IDENTIFIER
+Reduce prod #8 =  primitiv_type ::= NUMBER 
+Reduce prod #11 =  type ::= primitiv_type 
+Shift #10
+Token Read: #49 = NEWLINE
+Reduce prod #51 =  initialization ::= 
+Reduce prod #48 =  variable_decl ::= type IDENTIFIER initialization 
+Reduce prod #84 =  stmt ::= variable_decl 
+Shift #49
+Token Read: #42 = IF
+Reduce prod #14 =  optional_newline ::= NEWLINE 
+Reduce prod #76 =  stmt_list ::= stmt_list stmt optional_newline 
+Shift #42
+Token Read: #10 = IDENTIFIER
+Shift #10
+Token Read: #12 = EQEQ

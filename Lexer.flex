@@ -22,7 +22,7 @@ import java_cup.runtime.*;
 	}
 %}
 
-LineTerminator = \r|\n|\r\n
+LineTerminator = (\r|\n|\r\n)(\r|\n|\r\n)*
 InputCharacter = [^\r\n]
 WhiteSpace     = {LineTerminator} | [ \t\f]
 
@@ -41,7 +41,6 @@ IntegerValue = 0 | [1-9][0-9]*
 Number = {IntegerValue}(\.[0-9]+)?
 BooleanValue = true | false
 StringValue  = \"(\\.|[^\"])*\"
-filename = (\\.|[^\"])+
 %%
 
 /* keywords */

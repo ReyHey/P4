@@ -106,9 +106,8 @@ value                 ::= LPAREN expression RPAREN
                         | NUMBERLIT     
                         | STRINGLIT
                         | BOOLEANLIT
-                        | IDENTIFIER    
-                        | IDENTIFIER func_call_type 
-                        | func_call     
+                        | IDENTIFIER func_call   
+                        | IDENTIFIER func_call_type    
                         | IDENTIFIER LSQUARE index RSQUARE;                        
 
 eval_symbol     ::= EQEQ | NOTEQ | LEQ | GEQ | LANGLE | RANGLE;
@@ -166,14 +165,14 @@ switch_stmt     ::= SWITCH expression LPAREN case_stmts DEFAULT COLON stmt_list 
 case_stmts      ::= case_stmt case_stmts | ;
 case_stmt       ::= CASE IDENTIFIER COLON stmt_list;
 
-if_stmt         ::= IF expression:exp block else_stmt;
+if_stmt         ::= IF expression block else_stmt;
 else_stmt       ::= ELSE block |  ;
 
 while_stmt      ::= WHILE expression block ;
 
 foreach_stmt    ::= FOREACH type IDENTIFIER IN IDENTIFIER block;
 
-block           ::= NEWLINE stmt | LCURLY optional_newline stmt_list RCURLY;
+block           ::= LCURLY optional_newline stmt_list RCURLY;
 
 
 assign_stmt          ::= IDENTIFIER EQ expression;
@@ -182,14 +181,13 @@ compound_assign_stmt ::= IDENTIFIER compound_operation expression;
 compound_operation   ::= PLUSEQ | MINUSEQ | TIMESEQ | DIVISIONEQ;
 
 
-func_call                   ::= IDENTIFIER LPAREN actual_parameter_list RPAREN; 
-func_call_type              ::= DOT func_call;
+func_call                   ::= LPAREN actual_parameter_list RPAREN | ; 
+func_call_type              ::= DOT IDENTIFIER func_call;
 actual_parameter_list       ::= actual_parameter multiple_actual_parameters | ;
 multiple_actual_parameters  ::= COMMA actual_parameter multiple_actual_parameters | ; 
 actual_parameter            ::= expression; //ÆNDRING
 
 random_decl ::= RANDOM IDENTIFIER EQ RANDOM func_call_type; 
-
 
 
 

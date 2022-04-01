@@ -4,12 +4,12 @@ JAVAC      = javac
 CUPJAR     = Dependencies/java-cup-11b.jar
 CP         = .:$(CUPJAR)
 JAVACFLAGS = -cp $(CP)
-CUP        = $(JAVA) -jar $(CUPJAR) -expect 1 -parser Parser
+CUP        = $(JAVA) -jar $(CUPJAR) -expect 0 -parser Parser
 
 # --------------------------------------------------
 
 Simpleton: compile
-	$(JAVA) -cp $(CP) Simpleton > test.txt
+	$(JAVA) -cp $(CP) Simpleton
 
 testtest: compile
 	jdb -cp $(CP) Simpleton

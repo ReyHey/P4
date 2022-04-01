@@ -11,5 +11,4 @@ public class Simpleton {
         catch ( Exception e ) { System.err.println( "Exception at " ); e.printStackTrace();
         }
     }
-
 }
