@@ -63,7 +63,7 @@ non terminal         compound_assign_stmt, compound_operation;
 non terminal         random_decl;
 non terminal         initialization;
 non terminal         optional_newline;
-
+non terminal         case_content;
 
 
 /* Precedences */
@@ -166,9 +166,10 @@ return_stmt ::= RETURN | RETURN expression;
 
 optional_newline ::= NEWLINE | ;
 
-switch_stmt     ::= SWITCH expression optional_newline LCURLY optional_newline case_stmts DEFAULT COLON stmt_list LCURLY; 
+switch_stmt     ::= SWITCH expression optional_newline LCURLY optional_newline case_stmts DEFAULT COLON stmt_list LCURLY;
 case_stmts      ::= case_stmts case_stmt | case_stmt;
-case_stmt       ::= CASE constant COLON optional_newline stmt_list NEWLINE | CASE constant COLON optional_newline;
+case_stmt       ::= CASE constant COLON optional_newline case_content;
+case_content    ::= stmt_list NEWLINE | ;
 
 if_stmt         ::= IF expression LCURLY NEWLINE stmt_list RCURLY NEWLINE;
 if_else_stmt    ::= if_stmt ELSE block NEWLINE;

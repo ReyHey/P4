@@ -6,7 +6,7 @@ namespace InterpreterForParser
 {
     class InterpreterSYMjava
     {
-        bool DEBUG = true;
+        bool DEBUG = false;
 
         public Dictionary<int, string> ReturnSymjava()
         {
@@ -100,9 +100,9 @@ namespace InterpreterForParser
             }
             string path;
             if (DEBUG)
-                path = @"../../../Terminal.txt";
+                path = @"../../../Output.txt";
             else
-                path = @"Terminal.txt";
+                path = @"Output.txt";
             using (StreamWriter outputFile = new StreamWriter(path))
             {
                 foreach (string str in strings)

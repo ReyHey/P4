@@ -1,26 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/InterpreterForParser.csproj": {}
+    "/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/InterpreterForParser.csproj": {}
   },
   "projects": {
-    "/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/InterpreterForParser.csproj": {
+    "/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/InterpreterForParser.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/InterpreterForParser.csproj",
+        "projectUniqueName": "/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/InterpreterForParser.csproj",
         "projectName": "InterpreterForParser",
-        "projectPath": "/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/InterpreterForParser.csproj",
-        "packagesPath": "/Users/puvikaransanthirasegaram/.nuget/packages/",
-        "outputPath": "/Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/obj/",
+        "projectPath": "/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/InterpreterForParser.csproj",
+        "packagesPath": "/home/darkros/.nuget/packages/",
+        "outputPath": "/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/puvikaransanthirasegaram/.config/NuGet/NuGet.Config"
+          "/home/darkros/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -53,7 +52,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.101/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.201/RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -46,3 +46,19 @@ C:/Users/Breyh/source/repos/InterpreterForParser/InterpreterForParser/obj/Debug/
 /Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/ref/InterpreterForParser.dll
 /Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.pdb
 /Users/puvikaransanthirasegaram/Documents/GitHub/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.genruntimeconfig.cache
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/bin/Debug/net5.0/InterpreterForParser
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.deps.json
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.runtimeconfig.json
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.runtimeconfig.dev.json
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.dll
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/bin/Debug/net5.0/InterpreterForParser.pdb
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.csproj.AssemblyReference.cache
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.GeneratedMSBuildEditorConfig.editorconfig
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.AssemblyInfoInputs.cache
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.AssemblyInfo.cs
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.csproj.CoreCompileInputs.cache
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.dll
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/refint/InterpreterForParser.dll
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.pdb
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/InterpreterForParser.genruntimeconfig.cache
+/home/darkros/Documents/School/4 semester/Project/Simpelton/P4/InterpreterForParser /InterpreterForParser/obj/Debug/net5.0/ref/InterpreterForParser.dll
