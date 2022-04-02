@@ -40,6 +40,7 @@ non terminal         type;
 non terminal         expression;
 non terminal         arithmetic_expression;
 non terminal         term, factor, base, value;
+non terminal         constant;
 non terminal         index;
 non terminal         deep, deeper, eval_symbol, logical_symbol;
 non terminal         variable_decl;
@@ -50,7 +51,7 @@ non terminal         const_variable_decl;
 non terminal         function_decl, return_type, formal_parameter_list, multiple_formal_parameters, formal_parameter;
 non terminal         jump_stmt, return_stmt;
 non terminal         stmt_list, stmt;
-non terminal         if_stmt, else_stmt;
+non terminal         if_stmt, if_else_stmt;
 non terminal         switch_stmt, case_stmts, case_stmt;
 non terminal         while_stmt;
 non terminal         foreach_stmt;
@@ -60,8 +61,9 @@ non terminal         ternary_stmt;
 non terminal         func_call, func_call_type, actual_parameter_list, multiple_actual_parameters, actual_parameter;
 non terminal         compound_assign_stmt, compound_operation;
 non terminal         random_decl;
-non terminal         optional_newline;
 non terminal         initialization;
+non terminal         optional_newline;
+
 
 
 /* Precedences */
@@ -72,8 +74,8 @@ precedence left POW;
 start with program;
 /* Grammar */
 program      ::= declarations;
-/*includes     ::= INCLUDE FILENAME optional_newline includes | ;*/
-declarations ::= declaration declarations | declaration;
+/*includes     ::= INCLUDE FILENAME NEWLINE includes | ;*/
+declarations ::= declaration NEWLINE declarations | declaration | declaration NEWLINE;
 declaration  ::= function_decl
                | struct_decl
                | enum_decl
@@ -82,7 +84,6 @@ declaration  ::= function_decl
 primitiv_type ::= NUMBER | STRING | BOOLEAN;
 type ::= primitiv_type | LIST LANGLE type RANGLE;
 
-optional_newline ::= optional_newline NEWLINE | NEWLINE;
 
 expression            ::= expression logical_symbol deep 
                         | deep;
@@ -103,12 +104,14 @@ base                  ::= UMINUS value
                         | value;
 value                 ::= LPAREN expression RPAREN 
                         | NAN           
-                        | NUMBERLIT     
-                        | STRINGLIT
-                        | BOOLEANLIT
-                        | IDENTIFIER func_call   
-                        | IDENTIFIER func_call_type    
+                        | constant
+                        | IDENTIFIER
+                        | IDENTIFIER func_call      
                         | IDENTIFIER LSQUARE index RSQUARE;                        
+
+constant ::= NUMBERLIT     
+           | STRINGLIT
+           | BOOLEANLIT;
 
 eval_symbol     ::= EQEQ | NOTEQ | LEQ | GEQ | LANGLE | RANGLE;
 logical_symbol  ::= AND | OR;
@@ -121,58 +124,60 @@ list_initialize ::= EQ LCURLY element_list RCURLY | ;
 element_list    ::= expression elements | ;
 elements        ::= COMMA expression elements | ;
 
-struct_decl     ::= STRUCT IDENTIFIER LCURLY struct_members RCURLY optional_newline;
+struct_decl     ::= STRUCT IDENTIFIER LCURLY struct_members RCURLY;
 struct_members  ::= struct_member 
                   | struct_member struct_members;
-struct_member   ::= type IDENTIFIER optional_newline;
+struct_member   ::= type IDENTIFIER NEWLINE;
 
 
-enum_decl    ::= ENUM IDENTIFIER LCURLY enum_members RCURLY optional_newline;
+enum_decl    ::= ENUM IDENTIFIER LCURLY enum_members RCURLY;
 enum_members ::= enum_member 
                | enum_member enum_members;
-enum_member  ::= IDENTIFIER optional_newline 
-               | IDENTIFIER EQ NUMBER optional_newline;
+enum_member  ::= IDENTIFIER NEWLINE 
+               | IDENTIFIER EQ NUMBER NEWLINE;
 
 const_variable_decl ::= CONSTANT variable_decl;
 
 
-function_decl               ::= FUNCTION return_type IDENTIFIER LPAREN formal_parameter_list RPAREN block optional_newline {: System.out.println("function_decl");:};
+function_decl               ::= FUNCTION return_type IDENTIFIER LPAREN formal_parameter_list RPAREN block {: System.out.println("function_decl");:};
 return_type                 ::= type | VOID;
 formal_parameter_list       ::= formal_parameter multiple_formal_parameters | ;
 multiple_formal_parameters  ::= COMMA formal_parameter multiple_formal_parameters | ;
 formal_parameter            ::= type IDENTIFIER;
 
-stmt_list ::= stmt_list stmt optional_newline | stmt optional_newline;
+stmt_list ::= stmt_list stmt | stmt;
 stmt    ::= if_stmt
-          | switch_stmt  
-          | while_stmt 
-          | foreach_stmt 
-          | assign_stmt 
-          | ternary_stmt 
-          | variable_decl 
-          | const_variable_decl
-          | random_decl  
-          | jump_stmt 
-          | expression
-          | compound_assign_stmt;
+          | if_else_stmt
+          | switch_stmt NEWLINE 
+          | while_stmt NEWLINE
+          | foreach_stmt NEWLINE
+          | assign_stmt NEWLINE
+          | ternary_stmt NEWLINE
+          | variable_decl NEWLINE
+          | const_variable_decl NEWLINE
+          | random_decl NEWLINE
+          | jump_stmt NEWLINE
+          | expression NEWLINE
+          | IDENTIFIER func_call NEWLINE
+          | compound_assign_stmt NEWLINE;
 
 jump_stmt   ::= return_stmt | BREAK | CONTINUE;
 return_stmt ::= RETURN | RETURN expression;
 
+optional_newline ::= NEWLINE | ;
 
+switch_stmt     ::= SWITCH expression optional_newline LCURLY optional_newline case_stmts DEFAULT COLON stmt_list LCURLY; 
+case_stmts      ::= case_stmts case_stmt | case_stmt;
+case_stmt       ::= CASE constant COLON optional_newline stmt_list NEWLINE | CASE constant COLON optional_newline;
 
-switch_stmt     ::= SWITCH expression LPAREN case_stmts DEFAULT COLON stmt_list RPAREN; 
-case_stmts      ::= case_stmt case_stmts | ;
-case_stmt       ::= CASE IDENTIFIER COLON stmt_list;
+if_stmt         ::= IF expression LCURLY NEWLINE stmt_list RCURLY NEWLINE;
+if_else_stmt    ::= if_stmt ELSE block NEWLINE;
 
-if_stmt         ::= IF expression block else_stmt;
-else_stmt       ::= ELSE block |  ;
-
-while_stmt      ::= WHILE expression block ;
+while_stmt      ::= WHILE expression block;
 
 foreach_stmt    ::= FOREACH type IDENTIFIER IN IDENTIFIER block;
 
-block           ::= LCURLY optional_newline stmt_list RCURLY;
+block           ::= LCURLY NEWLINE stmt_list RCURLY;
 
 
 assign_stmt          ::= IDENTIFIER EQ expression;
@@ -181,8 +186,7 @@ compound_assign_stmt ::= IDENTIFIER compound_operation expression;
 compound_operation   ::= PLUSEQ | MINUSEQ | TIMESEQ | DIVISIONEQ;
 
 
-func_call                   ::= LPAREN actual_parameter_list RPAREN | ; 
-func_call_type              ::= DOT IDENTIFIER func_call;
+func_call                   ::= LPAREN actual_parameter_list RPAREN | DOT IDENTIFIER LPAREN actual_parameter_list RPAREN; 
 actual_parameter_list       ::= actual_parameter multiple_actual_parameters | ;
 multiple_actual_parameters  ::= COMMA actual_parameter multiple_actual_parameters | ; 
 actual_parameter            ::= expression; //ÆNDRING

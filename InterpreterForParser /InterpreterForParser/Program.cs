@@ -100,9 +100,9 @@ namespace InterpreterForParser
             }
             string path;
             if (DEBUG)
-                path = @"../../../Output.txt";
+                path = @"../../../Terminal.txt";
             else
-                path = @"Output.txt";
+                path = @"Terminal.txt";
             using (StreamWriter outputFile = new StreamWriter(path))
             {
                 foreach (string str in strings)
