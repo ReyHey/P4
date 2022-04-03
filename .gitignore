@@ -52,3 +52,6 @@ bld/
 *.pidb
 *.svclog
 *.scc
+
+# JetBrains Rider
+*.sln.iml
