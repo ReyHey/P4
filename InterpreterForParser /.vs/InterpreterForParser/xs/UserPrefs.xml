@@ -1,15 +1,10 @@
 ﻿<Properties StartupConfiguration="{C9608F71-2279-4A02-8D74-12C911E62E86}|Default">
   <MonoDevelop.Ide.ItemProperties.InterpreterForParser PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="InterpreterForParser/Terminal.txt">
-    <Files>
-      <File FileName="InterpreterForParser/Output.txt" Line="134" Column="26" />
-      <File FileName="InterpreterForParser/Terminal.txt" Line="147" Column="23" />
-      <File FileName="InterpreterForParser/Program.cs" Line="99" Column="67" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="InterpreterForParser" expanded="True" selected="True">
+          <Node name="InterpreterForParser" expanded="True">
             <Node name="InterpreterForParser" expanded="True" />
           </Node>
         </State>

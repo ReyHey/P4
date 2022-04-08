@@ -9,14 +9,16 @@ function number gcd(number a, number b) {
 	number smallest
 
 	if a == 0 or b == 0 {
+		number s = 3
 		return 0
 	}
 
 	if a <= b {
 		smallest = a
+		
 	}
 	else {
-		smallest = b
+		smallest = b 
 	}
 
 	i = smallest
@@ -24,6 +26,19 @@ function number gcd(number a, number b) {
 		i = i - 1
 	}
 	GCD = i
+
+	foreach number i in a {
+		number f = 4
+		string hello34 = "jfw"
+	}
+
+	switch a {
+		case 5: case 7:
+			number g = 10
+			number a = 5 + g
+		case 9:
+			string h = "java"
+	}
 
 	return GCD
 }

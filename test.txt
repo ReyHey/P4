@@ -1,3 +1,0 @@
-Parsing input.txt
-function_decl
-instead expected token classes are [LPAREN, LSQUARE, DOT]

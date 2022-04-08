@@ -23,8 +23,11 @@ import java_cup.runtime.*;
 %}
 
 LineTerminator = (\r|\n|\r\n)(\r|\n|\r\n)*
+
+newlinerule = {LineTerminator} ({WhiteSpace}* {LineTerminator})*
+
 InputCharacter = [^\r\n]
-WhiteSpace     = {LineTerminator} | [ \t\f]
+WhiteSpace     = (\s | \t)
 
 /* comments */
 Comment = {TraditionalComment} | {EndOfLineComment} | {DocumentationComment}
@@ -105,7 +108,7 @@ StringValue  = \"(\\.|[^\"])*\"
 ":"								{ return symbol( sym.COLON   ); }
 ","								{ return symbol( sym.COMMA   ); }
 "."								{ return symbol( sym.DOT   	 ); }
-{LineTerminator}				{ return symbol( sym.NEWLINE ); }
+{newlinerule}				{ return symbol( sym.NEWLINE ); }
 
 /*"include"						{ return symbol( sym.INCLUDE   ); }*/
 

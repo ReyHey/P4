@@ -6,7 +6,7 @@ namespace InterpreterForParser
 {
     class InterpreterSYMjava
     {
-        bool DEBUG = true;
+        bool DEBUG = false;
 
         public Dictionary<int, string> ReturnSymjava()
         {
