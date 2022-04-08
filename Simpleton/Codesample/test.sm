@@ -1,0 +1,157 @@
+struct input{
+text operator
+number operand
+}
+
+void Main()
+{
+    number accumulator  = 0.0
+    input userInput 
+    userInput.operator=""
+    userInput.operand=0.0
+    while userInput.operator != "q" 
+    {
+        Write()
+        input userInput  = GetInput()
+        if userInput.operator != "q"
+        {
+            accumulator=DoOperation(userInput.operator, userInput.operand, )
+            Write()
+        }
+
+    }
+
+    Write()
+}
+
+input GetInput()
+{
+    input userInput 
+    userInput.operator=""
+    userInput.operand=-5
+    while userInput.operator == "" 
+    {
+        text read  = Read()
+        List<list<text>> spilted []
+        if spilted.Length() == 2
+        {
+            if IsValidBinaryOperator()
+            {
+            userInput.operator=spilted[0]
+            userInput.operand=spilted[1].ToDecimal().ToString()
+            if userInput.operand == NaN
+            {
+            userInput.operator=""
+            userInput.operand=0.0
+            Write()
+            }
+
+            }
+            else 
+            {
+            Write()
+            }
+
+        }
+        else 
+        {
+            if spilted.Length() == 1
+            {
+                if IsValidUnaryOperator()
+                {
+                    userInput.operator=spilted[0]
+                }
+                else 
+                {
+                    Write()
+                }
+
+            }
+            else 
+            {
+                Write()
+            }
+
+        }
+
+    }
+
+    Return userInput
+
+}
+
+boolean IsValidBinaryOperator(text operation)
+{
+    boolean result 
+    if operation == "+" or operation == "-" or operation == "*" or operation == "/" or operation == "mod" or operation == "^"
+    {
+        result=true
+    }
+    else 
+    {
+        result=false
+    }
+
+    Return result
+
+}
+
+boolean IsValidUnaryOperator(text operation)
+{
+    boolean result 
+    if operation == "sqrt" or operation == "cbrt" or operation == "q"
+    {
+        result=true
+    }
+    else 
+    {
+        result=false
+    }
+
+    Return result
+
+}
+
+number DoOperation(text operation, number operand, number previousAccumulator)
+{
+number newAccumulator  = previousAccumulator
+switch operation {
+case "+":
+newAccumulator += operand
+break
+case "-":
+newAccumulator -= operand
+break
+case "*":
+newAccumulator *= operand
+break
+case "/":
+if operand != 0
+{
+newAccumulator /= operand
+}
+else 
+{
+Write()
+}
+
+break
+case "^":
+newAccumulator=newAccumulator ^ operand
+break
+case "sqrt":
+newAccumulator=sqrt()
+break
+case "cbrt":
+newAccumulator=cbrt()
+break
+case "mod":
+newAccumulator=newAccumulator mod operand
+break
+default: Write()
+break
+}
+Return newAccumulator
+
+}
+

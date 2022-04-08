@@ -4,7 +4,6 @@ struct input{
 }
 
 function void Main(){ 
-
     number accumulator = 0.0
     input userInput
     userInput.operator = ""
@@ -25,7 +24,7 @@ function void Main(){
 function input GetInput() {
     input userInput
     userInput.operator = ""
-    userInput.operand = 0.0
+    userInput.operand = (-5)
 
     while userInput.operator == "" {
         text read = Read()

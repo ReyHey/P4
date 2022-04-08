@@ -509,14 +509,12 @@ namespace Simpleton.AST
                 }
                 else
                 {
-                    Block block = new Block();
+                    if (context.stmt() != null)
+                        foreach (StmtContext stmt in context.stmt())
+                        {
+                            caseSwitch.block.Add((StmtNode)Visit(stmt));
+                        }
 
-                    foreach (StmtContext stmt in context.stmt())
-                    {
-                        block.statements.Add((StmtNode)Visit(stmt));
-                    }
-
-                    caseSwitch.block = block;
                 }
                 cases.Add(caseSwitch);
             }
@@ -530,14 +528,13 @@ namespace Simpleton.AST
 
         public Object VisitSwitch_case_default([NotNull] SimpletonParser.Switch_case_defaultContext context)
         {
-            Block block = new Block();
-            block.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
+            List<StmtNode> block = new List<StmtNode>();
             foreach (StmtContext stmt in context.stmt())
             {
-                block.statements.Add((StmtNode)Visit(stmt));
+                block.Add((StmtNode)Visit(stmt));
             }
 
-            return (Block)block;
+            return block;
         }
 
         public Object VisitSwitch_stmt([NotNull] SimpletonParser.Switch_stmtContext context)
@@ -552,7 +549,11 @@ namespace Simpleton.AST
             }
 
             var defaultCase = context.switch_case_default();
-            node.defaultCase = defaultCase != null ? (Block)Visit(defaultCase) : null;
+
+            if (defaultCase != null)
+            {
+                node.defaultCase = (List<StmtNode>)Visit(defaultCase);
+            }
             node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
             return node;
         }

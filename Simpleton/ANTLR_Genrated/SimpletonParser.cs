@@ -2951,8 +2951,8 @@ public partial class SimpletonParser : Parser {
 	}
 
 	public partial class Ternary_stmtContext : ParserRuleContext {
-		public ExprContext cond;
 		public ExprContext ifExpr;
+		public ExprContext cond;
 		public ExprContext elseExpr;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] IDENTIFIER() { return GetTokens(SimpletonParser.IDENTIFIER); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IDENTIFIER(int i) {
@@ -3017,11 +3017,11 @@ public partial class SimpletonParser : Parser {
 			State = 406;
 			Match(T__23);
 			State = 407;
-			_localctx.cond = expr(0);
+			_localctx.ifExpr = expr(0);
 			State = 408;
 			Match(T__38);
 			State = 409;
-			_localctx.ifExpr = expr(0);
+			_localctx.cond = expr(0);
 			State = 410;
 			Match(T__40);
 			State = 411;

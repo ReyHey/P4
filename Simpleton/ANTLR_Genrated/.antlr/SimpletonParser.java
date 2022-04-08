@@ -1,4 +1,4 @@
-// Generated from /Users/puvikaransanthirasegaram/Projects/Simpleton/ANTLR_Genrated/Simpleton.g4 by ANTLR 4.8
+// Generated from /Users/puvikaransanthirasegaram/Documents/GitHub/P4/Simpleton/ANTLR_Genrated/Simpleton.g4 by ANTLR 4.8
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -2310,8 +2310,8 @@ public class SimpletonParser extends Parser {
 	}
 
 	public static class Ternary_stmtContext extends ParserRuleContext {
-		public ExprContext cond;
 		public ExprContext ifExpr;
+		public ExprContext cond;
 		public ExprContext elseExpr;
 		public List<TerminalNode> IDENTIFIER() { return getTokens(SimpletonParser.IDENTIFIER); }
 		public TerminalNode IDENTIFIER(int i) {
@@ -2358,11 +2358,11 @@ public class SimpletonParser extends Parser {
 			setState(406);
 			match(T__23);
 			setState(407);
-			((Ternary_stmtContext)_localctx).cond = expr(0);
+			((Ternary_stmtContext)_localctx).ifExpr = expr(0);
 			setState(408);
 			match(T__38);
 			setState(409);
-			((Ternary_stmtContext)_localctx).ifExpr = expr(0);
+			((Ternary_stmtContext)_localctx).cond = expr(0);
 			setState(410);
 			match(T__40);
 			setState(411);

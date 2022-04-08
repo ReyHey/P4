@@ -11,7 +11,6 @@
         T VisitEnumNode(EnumNode node);
         T VisitEnumMemberNode(EnumMemberNode node);
         T VisitConstantDeclNode(ConstantDeclNode node);
-
         T VisitAdditionNode(AdditionNode node);
         T VisitSubtractionNode(SubtractionNode node);
         T VisitMultiplicationNode(MultiplicationNode node);
@@ -21,6 +20,7 @@
         T VisitEQEQNode(EQEQNode node);
         T VisitNOTEQNode(NOTEQNode node);
         T VisitLessEQNode(LessEQNode node);
+
         T VisitGreaterEQNode(GreaterEQNode node);
         T VisitGreaterNode(GreaterNode node);
         T VisitLessNode(LessNode node);
@@ -32,11 +32,11 @@
         T VisitFunctionCallNode(FunctionCallNode node);
         T VisitMember(Member node);
         T VisitIdentifierCall(IdentifierCall node);
-
         T VisitAssignStmtNode(AssignStmtNode node);
         T VisitIfNode(IfNode node);
         T VisitConditionBlock(ConditionBlock node);
         T VisitBlock(Block node);
+
         T VisitSwitchNode(SwitchNode node);
         T VisitCase(Case node);
         T VisitForeachNode(ForeachNode node);
@@ -52,7 +52,6 @@
         T VisitMULTIEQNode(MULTIEQNode node);
         T VisitDIVISIONEQNode(DIVISIONEQNode node);
         T VisitTernaryNode(TernaryNode node);
-
         T VisitNumberLiteral(NumberLiteral node);
         T VisitTextLiteral(TextLiteral node);
         T VisitBooleanLiteral(BooleanLiteral node);

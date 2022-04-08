@@ -100,7 +100,7 @@ block: NEWLINE? '{' NEWLINE (stmt)+ '}' NEWLINE?;
 
 assign_stmt : IDENTIFIER('.'IDENTIFIER)* '=' expr NEWLINE;
 
-ternary_stmt: IDENTIFIER('.'IDENTIFIER)* '=' cond=expr 'if' ifExpr=expr 'else' elseExpr=expr NEWLINE;
+ternary_stmt: IDENTIFIER('.'IDENTIFIER)* '='  ifExpr=expr 'if' cond=expr 'else' elseExpr=expr NEWLINE;
 compound_assign_stmt : IDENTIFIER('.'IDENTIFIER)* compoundOP=('+='|'-='|'*='|'/=') expr NEWLINE;
 
 func_call: IDENTIFIER '(' actual_parameter_list? ')';

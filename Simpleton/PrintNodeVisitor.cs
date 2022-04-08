@@ -58,7 +58,11 @@ namespace Simpleton.AST
         {
             PrintNode p = new PrintNode("Case", node.Line);
             p.AddChild(Visit(node.CaseExpr));
-            p.AddChild(Visit(node.block));
+            foreach (var stmt in node.block)
+            {
+                p.AddChild(Visit(stmt));
+            }
+
             return p;
         }
 
@@ -395,7 +399,10 @@ namespace Simpleton.AST
                 p.AddChild(Visit(c));
             }
             if (node.defaultCase != null)
-                p.AddChild(Visit(node.defaultCase));
+                foreach (var stmt in node.defaultCase)
+                {
+                    p.AddChild(Visit(stmt));
+                }
 
             return p;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Simpleton.AST
@@ -66,7 +67,7 @@ namespace Simpleton.AST
     {
         public ExpressionNode condition { get; set; }
         public List<Case> cases { get; set; } = new List<Case>();
-        public Block defaultCase { get; set; }
+        public List<StmtNode> defaultCase { get; set; } = new List<StmtNode>();
         public T Accept<T>(ASTVisitor<T> v)
         {
             return v.VisitSwitchNode(this);
@@ -78,7 +79,7 @@ namespace Simpleton.AST
     public class Case : ASTNode
     {
         public ExpressionNode CaseExpr { get; set; }
-        public Block block { get; set; }
+        public List<StmtNode> block { get; set; } = new List<StmtNode>();
         public T Accept<T>(ASTVisitor<T> v)
         {
             return v.VisitCase(this);
@@ -89,6 +90,7 @@ namespace Simpleton.AST
 
     public class ForeachNode : StmtNode
     {
+        public Type type { get; set; }
         public string element { get; set; }
         public IdentifierCall list { get; set; }
         public Block block { get; set; }
