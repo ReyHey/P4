@@ -1,0 +1,10 @@
+function void Main(){
+    list<number> integerList = {0,5,2,6,3,19,473,38}
+    number sum = 0
+    foreach number element in integerList {
+        sum += element
+    }
+
+    number average = sum/integerList.Length()
+    Write("The Average value of the list is " + average.ToString())
+}

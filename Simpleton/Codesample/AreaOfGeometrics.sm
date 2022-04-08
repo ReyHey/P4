@@ -1,0 +1,73 @@
+function void Main(){
+    text geometry = Read()
+    switch geometry {
+        case "circle":
+            Circle()
+            break
+        case "rectangle":
+            Rectangle()
+            break
+        case "triangle":
+            Triangle()
+            break
+        default:
+            Write("invalid geometry")
+            break
+    }
+}
+
+function void Circle(){
+    Write("The radius of the circle: ") 
+    text read_terminal = Read()
+    number r = read_terminal.ToDecimal()
+    if r != NaN {
+        number area = 3.14*r^2
+        Write("The area of the circle with radius " + r.ToString() + " is " + area.ToString())
+    }
+    else{
+        Write("The area of the circle could not be calculate since a invalid radius")
+    }
+}
+
+function void Rectangle(){
+    Write("The length of the one side of the rectangle: ") 
+    text read_terminal = Read()
+    number l = read_terminal.ToDecimal()
+    if l == NaN {
+        Write("The length is invalid and therefore the area can not be computed")
+    }
+    else{
+        Write("The length of the other side of the rectangle: ") 
+        text read_terminal1 = Read()
+        number b = read_terminal1.ToDecimal()
+        if l == NaN {
+    
+            Write("The length is invalid and therefore the area can not be computed")
+        }
+        else{
+            number area = l*b
+            Write("The area of the rectangle with sides length " + l.ToString() + " and " + b.ToString() + " is " + area.ToString())
+        }
+    }
+}
+
+function void Triangle(){
+    Write("The length of the heigth of the triangle: ")
+    text read_terminal = Read()
+    number h = read_terminal.ToDecimal()
+    if h == NaN {
+        Write("The heigth is invalid and therefore the area can not be computed")
+    }
+    else{
+        Write("The base of the triangle: ") 
+        text read_terminal1 = Read()
+        number b = read_terminal1.ToDecimal()
+        if l == NaN {
+            Write("The base is invalid and therefore the area can not be computed")
+        }
+        else{
+            number area = (1/2)*h*b
+            Write("The area of the triangle with the heigth " + h.ToString() + " and the base" + b.ToString() + " is " + area.ToString())
+        }
+    }
+}

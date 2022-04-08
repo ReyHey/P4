@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.9.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Antlr4 Update="Parser.g4">
+      <Generator></Generator>
+      <Encoding></Encoding>
+      <TargetLanguage></TargetLanguage>
+      <Listener></Listener>
+      <Visitor></Visitor>
+      <Abstract></Abstract>
+      <ForceAtn></ForceAtn>
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Antlr4>
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="ANTLR\" />
+    <None Remove="AST\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ANTLR_Genrated\" />
+    <Folder Include="AST\" />
+  </ItemGroup>
+</Project>

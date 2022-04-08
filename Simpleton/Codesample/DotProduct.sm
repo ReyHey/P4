@@ -1,0 +1,49 @@
+function void Main(){
+    list<number> vector1
+    list<number> vector2
+
+    vector1 = GetVector("first")
+    vector2 = GetVector("second")
+
+    if vector1.Length() == vector2.Length() {
+        number result = 0
+        number i = 0
+        while i < vector1.Length() {
+            result = vector1[i]*vector2[i]
+        }
+
+        Write("The dot product of the vectors is " + result.ToString())
+    }
+    else{
+        Write("The two wrote vectors are not equal size, and therefor the dot product could not be calculate.")
+    }
+
+    
+}
+
+function list<number> GetVector(text str){
+    boolean isValidInput = true
+
+    while isValidInput {
+        Write("Write the " + str + " vector: ")
+        text vectorString = Read()
+        vectorString.DeleteSubStrings("[")
+        vectorString.DeleteSubStrings("]")
+
+        list<text> spilted = vectorString.Spilt(",")
+        list<number> vector
+        number value = 0
+        foreach text e in spilted {
+            value = e.ToDecimal()
+            if value != NaN {
+                vector.Add(value)
+                isValidInput = true
+            }
+            else{
+                isValidInput = false
+                Write("Wrong input. Write a valid vector\n")
+            }
+        }
+    }
+    return vector
+}
