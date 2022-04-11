@@ -632,7 +632,6 @@ namespace Simpleton.AST
             }
             node.name = context.vName.Text;
             node.initialization = context.expr() != null ? (ExpressionNode)Visit(context.expr()) : null;
-            Console.WriteLine("context.Start.Line= " + context.Start.Line);
             node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
             return node;
         }

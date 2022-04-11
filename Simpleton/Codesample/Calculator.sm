@@ -30,33 +30,28 @@ function input GetInput() {
         text read = Read()
         list<text> spilted = read.Split(" ")
 
-        if spilted.Length() == 2 {
-            if IsValidBinaryOperator(spilted[0]) {
+        if spilted.Length() == 2 and IsValidBinaryOperator(spilted[0])   {
+
+            userInput.operator = spilted[0]
+            userInput.operand = spilted[1].ToDecimal().ToString()
+            if userInput.operand == NaN{
+                userInput.operator = ""
+                userInput.operand = 0.0
+                Write("Wrong input. Write a new input\n")
+            }
+        }
+        else if spilted.Length() == 1 {
+            if IsValidUnaryOperator(spilted[0]){
                 userInput.operator = spilted[0]
-                userInput.operand = spilted[1].ToDecimal().ToString()
-                if userInput.operand == NaN{
-                    userInput.operator = ""
-                    userInput.operand = 0.0
-                    Write("Wrong input. Write a new input\n")
-                }
             }
             else{
                 Write("Wrong input. Write a new input\n")
             }
         }
         else{
-            if spilted.Length() == 1 {
-                if IsValidUnaryOperator(spilted[0]){
-                    userInput.operator = spilted[0]
-                }
-                else{
-                    Write("Wrong input. Write a new input\n")
-                }
-            }
-            else{
-                Write("Wrong input. Write a new input\n")
-            }
+            Write("Wrong input. Write a new input\n")
         }
+        
     }
     return userInput
 }

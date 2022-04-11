@@ -54,7 +54,7 @@ struct_decl: 'struct' IDENTIFIER NEWLINE?'{'NEWLINE struct_member+ '}' NEWLINE;
 struct_member: type IDENTIFIER NEWLINE;
 
 
-enum_decl: 'enum' IDENTIFIER NEWLINE?'{' enum_member+ '}' NEWLINE;
+enum_decl: 'enum' IDENTIFIER NEWLINE?'{'NEWLINE enum_member+ '}' NEWLINE;
 enum_member: IDENTIFIER ('=' NUMBER)? NEWLINE;
 
 
