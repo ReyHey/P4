@@ -1,7 +1,7 @@
 ﻿using System;
 using Antlr4.Runtime;
 using System.IO;
-
+//Alt det her kode er fundet ppå nettet :)
 namespace Simpleton
 {
     public class DescriptiveErrorListener : BaseErrorListener, IAntlrErrorListener<int>
