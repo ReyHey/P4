@@ -106,7 +106,7 @@ namespace Simpleton.SymTable
         }
 
 
-        public void PutSymbol(string type, string name, ASTNode node, string value = "")
+        public void PutSymbol(Type type, string name, ASTNode node, string value = "")
         {
             try
             {
@@ -115,7 +115,7 @@ namespace Simpleton.SymTable
                     throw new PutException(name);
                 }
 
-                symbolTables.Peek().Add(name, new Symbol(type, name, value, node));
+                symbolTables.Peek().Add(name, new Symbol(type, name, node));
             }
             catch (PutException put)
             {

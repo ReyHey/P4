@@ -11,7 +11,7 @@ function void Main(){
 
     while userInput.operator != "q" {
         Write("Enter operator, and an optional operand:\n")
-        input userInput = GetInput()
+        userInput = GetInput()
 
         if userInput.operator != "q"{
             accumulator = DoOperation(userInput.operator, userInput.operand, accumulator)

@@ -49,6 +49,7 @@ namespace Simpleton.AST
     {
         public Type type { get; set; }
         public string name { get; set; }
+        public StructNode club { get; set; }
         public T Accept<T>(ASTVisitor<T> v)
         {
             return v.VisitStructMemberNode(this);

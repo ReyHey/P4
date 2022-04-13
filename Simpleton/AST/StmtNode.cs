@@ -52,7 +52,7 @@ namespace Simpleton.AST
 
     }
 
-    public class Block : ASTNode
+    public class Block : ASTNode, StmtNode
     {
         public List<StmtNode> statements { get; set; } = new List<StmtNode>();
         public T Accept<T>(ASTVisitor<T> v)

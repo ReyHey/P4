@@ -77,6 +77,7 @@ stmt: if_else_stmt
     | assign_stmt
     | compound_assign_stmt 
     | ternary_stmt
+    | block
     ;
 
 jump_stmt   : (return_stmt | jump=('break' | 'continue')) NEWLINE;
@@ -95,7 +96,7 @@ while_stmt: 'while' expr block;
 
 foreach_stmt: 'foreach' type element=IDENTIFIER 'in' IDENTIFIER('.'IDENTIFIER)* block;
 
-block: NEWLINE? '{' NEWLINE (stmt)+ '}' NEWLINE?;
+block: NEWLINE? '{' NEWLINE (stmt)* '}' NEWLINE?;
 
 
 assign_stmt : IDENTIFIER('.'IDENTIFIER)* '=' expr NEWLINE;

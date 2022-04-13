@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Simpleton.AST;
 
 namespace Simpleton.SymTable
@@ -5,22 +6,32 @@ namespace Simpleton.SymTable
 
     public class Symbol
     {
-        public Symbol(string type, string name, string value, ASTNode node)
+        public Symbol(Type type, string name, ASTNode node)
         {
             this.type = type;
             this.name = name;
             this.node = node;
-            this.value = value;
         }
 
-        public string type { get; }
+        public Type type { get; }
         public string name { get; }
-        public string value { get; set; }
         public ASTNode node { get; }
 
         public override string ToString()
         {
-            return $"{type} {name} {value}";
+            return $"{type} {name}";
         }
+    }
+
+    public class StructSymbol : Symbol
+    {
+        public StructSymbol(Type type, string name, List<Symbol> members, ASTNode node) : base(type, name, node)
+        {
+            foreach (Symbol member in members)
+            {
+                this.members.Add(member.name, member);
+            }
+        }
+        Dictionary<string, Symbol> members = new Dictionary<string, Symbol>();
     }
 }

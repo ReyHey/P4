@@ -9,7 +9,7 @@ namespace Simpleton
 {
     class Program
     {
-        static bool terminal = true;
+        static bool terminal = false;
         static bool enablePrettyPrint = true;
         static bool enableASTPrinter = false;
 

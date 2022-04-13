@@ -464,6 +464,12 @@ namespace Simpleton.AST
                 return (StmtNode)Visit(ternary_stmt);
             }
 
+            var block = context.block();
+            if (block != null)
+            {
+                return (StmtNode)Visit(block);
+            }
+
             return null;
 
         }
@@ -480,6 +486,12 @@ namespace Simpleton.AST
             {
                 node.structMembers.Add((StructMemberNode)Visit(member));
             }
+
+            foreach (var structMember in node.structMembers)
+            {
+                structMember.club = node;
+            }
+
             node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
             return node;
         }
