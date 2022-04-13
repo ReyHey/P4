@@ -65,12 +65,12 @@
     {
         public Type(string type, bool listType, bool userDefinedType)
         {
-            this.type = type;
+            this.typeName = type;
             this.listType = listType;
             this.userDefinedType = userDefinedType;
         }
 
-        public string type { get; set; }
+        public string typeName { get; set; }
         public bool listType { get; set; }
         public bool userDefinedType { get; set; }
 
@@ -78,10 +78,10 @@
         {
             if (listType)
             {
-                return "list<" + type + ">";
+                return "list<" + typeName + ">";
             }
             else
-                return type;
+                return typeName;
         }
     }
 

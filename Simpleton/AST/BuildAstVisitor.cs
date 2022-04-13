@@ -38,8 +38,10 @@ namespace Simpleton.AST
             {
                 if (i == 0)
                     node.identifier.identifier = (string)Visit(identifiers[i]);
+                else if (i == 1)
+                    node.identifier.members.Add(new Member((string)Visit(identifiers[i]), node.identifier));
                 else
-                    node.identifier.members.Add(new Member((string)Visit(identifiers[i])));
+                    node.identifier.members.Add(new Member((string)Visit(identifiers[i]), node.identifier.members[i - 1]));
             }
 
             node.expression = (ExpressionNode)Visit(context.expr());
@@ -106,8 +108,10 @@ namespace Simpleton.AST
             {
                 if (i == 0)
                     node.identifier.identifier = (string)Visit(identifiers[i]);
+                else if (i == 1)
+                    node.identifier.members.Add(new Member((string)Visit(identifiers[i]), node.identifier));
                 else
-                    node.identifier.members.Add(new Member((string)Visit(identifiers[i])));
+                    node.identifier.members.Add(new Member((string)Visit(identifiers[i]), node.identifier.members[i - 1]));
             }
 
             node.expression = (ExpressionNode)Visit(context.expr());
@@ -223,8 +227,10 @@ namespace Simpleton.AST
             {
                 if (i == 0)
                     node.list.identifier = (string)Visit(identifiers[i]);
+                else if (i == 1)
+                    node.list.members.Add(new Member((string)Visit(identifiers[i]), node.list));
                 else
-                    node.list.members.Add(new Member((string)Visit(identifiers[i])));
+                    node.list.members.Add(new Member((string)Visit(identifiers[i]), node.list.members[i - 1]));
             }
 
             node.block = (Block)Visit(context.block());
@@ -778,25 +784,28 @@ namespace Simpleton.AST
             node.index = expr != null ? (ExpressionNode)Visit(expr) : null;
 
             MemberContext[] memberContexts = context.member();
+            club = node;
             foreach (MemberContext member in memberContexts)
             {
                 node.members.Add((Member)Visit(member));
+                club = node.members[node.members.Count - 1];
             }
             node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
             return node;
         }
 
+        ASTNode club;
+
         public object VisitMember([NotNull] MemberContext context)
         {
-
             var identifier = context.IDENTIFIER();
             if (identifier != null)
             {
-                return new Member((string)Visit(identifier));
+                return new Member((string)Visit(identifier), club);
             }
 
             var func_call = context.func_call();
-            return new Member((FunctionCallNode)Visit(func_call));
+            return new Member((FunctionCallNode)Visit(func_call), club);
 
         }
     }

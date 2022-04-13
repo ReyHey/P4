@@ -89,24 +89,35 @@ namespace Simpleton.SymTable
 
         public Symbol getSymbol(string name)
         {
-            try
+            foreach (Dictionary<string, Symbol> table in symbolTables)
             {
-                foreach (Dictionary<string, Symbol> table in symbolTables)
-                {
-                    if (table.ContainsKey(name))
-                        return table[name];
-                }
-                throw new GetException(name);
-
+                if (table.ContainsKey(name))
+                    return table[name];
             }
-            catch (GetException get)
-            {
-                throw get;
-            }
+            throw new GetException(name);
         }
 
 
-        public void PutSymbol(Type type, string name, ASTNode node, string value = "")
+        //public Symbol getSymbol(string name)
+        //{
+        //    try
+        //    {
+        //        foreach (Dictionary<string, Symbol> table in symbolTables)
+        //        {
+        //            if (table.ContainsKey(name))
+        //                return table[name];
+        //        }
+        //        throw new GetException(name);
+
+        //    }
+        //    catch (GetException get)
+        //    {
+        //        throw get;
+        //    }
+
+        //}
+
+        public void PutSymbol(string name, Symbol symbol)
         {
             try
             {
@@ -115,13 +126,30 @@ namespace Simpleton.SymTable
                     throw new PutException(name);
                 }
 
-                symbolTables.Peek().Add(name, new Symbol(type, name, node));
+                symbolTables.Peek().Add(name, symbol);
             }
             catch (PutException put)
             {
                 throw put;
             }
         }
+
+        //public void PutSymbol(Type type, string name, ASTNode node, string value = "")
+        //{
+        //    try
+        //    {
+        //        if (symbolTables.Peek().ContainsKey(name))
+        //        {
+        //            throw new PutException(name);
+        //        }
+
+        //        symbolTables.Peek().Add(name, new Symbol(type, name, node));
+        //    }
+        //    catch (PutException put)
+        //    {
+        //        throw put;
+        //    }
+        //}
 
         public void Print()
         {

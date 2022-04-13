@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using Simpleton.AST;
 using Simpleton.SymTable;
+using Type = Simpleton.AST.Type;
 
 namespace Simpleton
 {
     class ScopeCheckerVisitor : ASTVisitor<object>
     {
         SymbolTable symbolTable = new SymbolTable();
+
+        List<Symbol> TempSymbols = new List<Symbol>();
 
         public object Visit(ASTNode node)
         {
@@ -36,10 +40,19 @@ namespace Simpleton
 
         public object VisitBlock(Block node)
         {
+            symbolTable.OpenNewScope();
+
+            foreach (Symbol symbol in TempSymbols)
+            {
+                symbolTable.PutSymbol(symbol.name, symbol);
+            }
+            TempSymbols.Clear();
+
             foreach (var stmt in node.statements)
             {
                 Visit(stmt);
             }
+            symbolTable.CloseNewlyCreatedScope();
             return new object();
         }
 
@@ -55,7 +68,16 @@ namespace Simpleton
 
         public object VisitCase(Case node)
         {
-            throw new System.NotImplementedException();
+            symbolTable.OpenNewScope();
+
+            Visit(node.CaseExpr);
+            foreach (var stmt in node.block)
+            {
+                Visit(stmt);
+            }
+
+            symbolTable.CloseNewlyCreatedScope();
+            return new object();
         }
 
         public object VisitConditionBlock(ConditionBlock node)
@@ -69,7 +91,7 @@ namespace Simpleton
 
         public object VisitConstantDeclNode(ConstantDeclNode node)
         {
-            symbolTable.PutSymbol(node.type, node.name, node);
+            symbolTable.PutSymbol(node.name, new VariableSymbol(node.name, node.type, node));
             Visit(node.initialization);
             return new object();
         }
@@ -95,12 +117,19 @@ namespace Simpleton
 
         public object VisitEnumMemberNode(EnumMemberNode node)
         {
-            throw new System.NotImplementedException();
+            return new VariableSymbol(node.name, new Simpleton.AST.Type("int", false, false), node);
         }
 
         public object VisitEnumNode(EnumNode node)
         {
-            throw new System.NotImplementedException();
+            List<VariableSymbol> symbols = new List<VariableSymbol>();
+            foreach (var member in node.EnumMembers)
+            {
+                symbols.Add((VariableSymbol)Visit(member));
+            }
+            symbolTable.PutSymbol(node.name, new EnumDeclarationSymbol(node.name, symbols, node));
+            return new object();
+
         }
 
         public object VisitEQEQNode(EQEQNode node)
@@ -110,24 +139,48 @@ namespace Simpleton
             return new object();
         }
 
+
+
         public object VisitForeachNode(ForeachNode node)
         {
-            throw new System.NotImplementedException();
+            Visit(node.list);
+            Visit(node.block);
+            TempSymbols.Add(new VariableSymbol(node.element, node.type, node));
+
+
+            return new object();
         }
 
         public object VisitFormalParameter(FormalParameter node)
         {
-            throw new System.NotImplementedException();
+            return new Symbol(node.name, node);
         }
 
         public object VisitFunctionCallNode(FunctionCallNode node)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                symbolTable.getSymbol(node.identifier);
+            }
+            catch (GetException e)
+            {
+                Console.WriteLine(e.Message);
+                System.Environment.Exit(-1);
+            }
+
+            return new object();
         }
 
         public object VisitFunctionDeclNode(FunctionDeclNode node)
         {
-            throw new System.NotImplementedException();
+            symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
+            foreach (FormalParameter parameter in node.formalParameters)
+            {
+                TempSymbols.Add((Symbol)Visit(parameter));
+            }
+            Visit(node.block);
+
+            return new object();
         }
 
         public object VisitGreaterEQNode(GreaterEQNode node)
@@ -144,19 +197,106 @@ namespace Simpleton
             return new object();
         }
 
+
+        public object VisitDotReferencingNode(DotReferencingNode node)
+        {
+
+            Visit(node.parent);
+
+
+
+            return new object();
+        }
+
+
+
+
+
+        public object VisitMember(Member node)
+        {
+            if (node.club as IdentifierCall != null)
+            {
+                IdentifierCall club = node.club as IdentifierCall;
+                StructSymbol symbolClub = (StructSymbol)symbolTable.getSymbol(club.identifier);
+                if (!symbolClub.members.ContainsKey(node.identifier))
+                    throw new GetException(node.identifier);
+
+
+
+            }
+
+
+
+            return new object();
+        }
+
+
         public object VisitIdentifierCall(IdentifierCall node)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                Type LType = node.Lidentifier.type;
+
+
+            }
+            catch (GetException e)
+            {
+                Console.WriteLine(e.Message);
+                System.Environment.Exit(-1);
+            }
+
+            return new object();
         }
+
+
+        //public object VisitIdentifierCall(IdentifierCall node)
+        //{
+        //    try
+        //    {
+        //        symbolTable.getSymbol(node.identifier);
+        //        if (node.index != null)
+        //            Visit(node.index);
+
+        //        foreach (Member member in node.members)
+        //        {
+        //            Visit(member);
+        //        }
+
+        //    }
+        //    catch (GetException e)
+        //    {
+        //        Console.WriteLine(e.Message);
+        //        System.Environment.Exit(-1);
+        //    }
+
+        //    return new object();
+        //}
 
         public object VisitIfNode(IfNode node)
         {
-            throw new System.NotImplementedException();
+            foreach (ConditionBlock conditionBlock in node.conditionBlocks)
+            {
+                Visit(conditionBlock);
+            }
+            if (node.elseBlock != null)
+                Visit(node.elseBlock);
+
+            return new object();
         }
 
         public object VisitInitialization(Initialization node)
         {
-            throw new System.NotImplementedException();
+            if (node.initialization != null)
+            {
+                Visit(node.initialization);
+            }
+            else
+                foreach (ExpressionNode element in node.elements)
+                {
+                    Visit(element);
+                }
+
+            return new object();
         }
 
         public object VisitLessEQNode(LessEQNode node)
@@ -175,15 +315,12 @@ namespace Simpleton
 
         public object VisitListDeclNode(ListDeclNode node)
         {
-            symbolTable.PutSymbol(node.type, node.name, node);
+            symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
             Visit(node.initialization);
             return new object();
         }
 
-        public object VisitMember(Member node)
-        {
-            throw new System.NotImplementedException();
-        }
+
 
         public object VisitMINUSEQNode(MINUSEQNode node)
         {
@@ -279,12 +416,18 @@ namespace Simpleton
 
         public object VisitStructMemberNode(StructMemberNode node)
         {
-            throw new System.NotImplementedException();
+            return new VariableSymbol(node.name, node.type, node);
         }
 
         public object VisitStructNode(StructNode node)
         {
-            throw new System.NotImplementedException();
+            List<VariableSymbol> symbols = new List<VariableSymbol>();
+            foreach (var member in node.structMembers)
+            {
+                symbols.Add((VariableSymbol)Visit(member));
+            }
+            symbolTable.PutSymbol(node.name, new StructDeclarationSymbol(node.name, symbols, node));
+            return new object();
         }
 
         public object VisitSubtractionNode(SubtractionNode node)
@@ -296,7 +439,23 @@ namespace Simpleton
 
         public object VisitSwitchNode(SwitchNode node)
         {
-            throw new System.NotImplementedException();
+            symbolTable.OpenNewScope();
+            Visit(node.condition);
+            foreach (var switchCase in node.cases)
+            {
+                Visit(switchCase);
+            }
+
+            symbolTable.OpenNewScope();
+            foreach (StmtNode stmt in node.defaultCase)
+            {
+                Visit(stmt);
+            }
+            symbolTable.CloseNewlyCreatedScope();
+
+
+
+            return new object();
         }
 
         public object VisitTernaryNode(TernaryNode node)
@@ -315,7 +474,14 @@ namespace Simpleton
 
         public object VisitVariableDeclNode(VariableDeclNode node)
         {
-            symbolTable.PutSymbol(node.type, node.name, node);
+            if (node.type.userDefinedType)
+            {
+                StructDeclarationSymbol structDecl = (StructDeclarationSymbol)symbolTable.getSymbol(node.type.typeName);
+                symbolTable.PutSymbol(node.name, new StructSymbol(node.type.typeName, node.name, structDecl.members, node));
+            }
+            else
+                symbolTable.PutSymbol(node.name, new VariableSymbol(node.name, node.type, node));
+
             Visit(node.initialization);
             return new object();
         }

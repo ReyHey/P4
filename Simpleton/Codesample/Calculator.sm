@@ -1,5 +1,10 @@
 struct input{
-    text operator
+    text operator 
+    number operand
+}
+
+struct hej{
+    text operator 
     number operand
 }
 
@@ -14,9 +19,17 @@ function void Main(){
         userInput = GetInput()
 
         if userInput.operator != "q"{
-            accumulator = DoOperation(userInput.operator, userInput.operand, accumulator)
+            accumulator = DoOperation(userInput.operator.ToString(), userInput.operand, accumulator)
             Write("Result so far is " + accumulator.ToString + "\n")
         }
+
+        int sum = 0;
+        foreach int a in listA
+        {
+            sum += a;
+        }
+
+        
     }
     Write("Final result is: {accumulator} \n")
 }
@@ -25,7 +38,7 @@ function input GetInput() {
     input userInput
     userInput.operator = ""
     userInput.operand = (-5)
-
+    
     while userInput.operator == "" {
         text read = Read()
         list<text> spilted = read.Split(" ")
@@ -75,6 +88,10 @@ function boolean IsValidUnaryOperator(text operation){
     else{
         result = false
     }
+
+    {
+        int a =5
+    }
     return result
 }
 
@@ -117,4 +134,36 @@ function number DoOperation(text operation, number operand, number previousAccum
     }
 
     return newAccumulator
+}
+
+
+
+
+
+
+
+switch (a){
+    int c = 7
+    case 5: case 7:{
+        int b =5
+        break;
+    }
+    case 8:{
+        b = 7
+    }
+    
+}
+
+{
+    int c = 7
+    switch (a){
+        case 5: case 7:{
+            int b =5
+            break;
+        }
+        case 8:{
+            b = 7
+        }
+        
+    }
 }

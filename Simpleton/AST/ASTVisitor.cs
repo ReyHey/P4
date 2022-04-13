@@ -30,7 +30,7 @@
         T VisitNegativeExpressionNode(NegativeExpressionNode node);
         T VisitNaNExpressionNode(NaNExpressionNode node);
         T VisitFunctionCallNode(FunctionCallNode node);
-        T VisitMember(Member node);
+        T VisitListIndexerNode(ListIndexerNode node);
         T VisitIdentifierCall(IdentifierCall node);
         T VisitAssignStmtNode(AssignStmtNode node);
         T VisitIfNode(IfNode node);
@@ -56,5 +56,7 @@
         T VisitTextLiteral(TextLiteral node);
         T VisitBooleanLiteral(BooleanLiteral node);
 
+
+        T VisitDotReferencingNode(DotReferencingNode node);
     }
 }
