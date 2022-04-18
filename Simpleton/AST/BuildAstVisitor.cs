@@ -32,16 +32,23 @@ namespace Simpleton.AST
             AssignStmtNode node = new AssignStmtNode();
             var identifiers = context.IDENTIFIER();
             node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
-            node.identifier = new IdentifierCall();
+            node.variable = new IdentifierCall();
 
-            for (int i = 0; i < identifiers.Length; i++)
+            if (identifiers.Length == 0)
             {
-                if (i == 0)
-                    node.identifier.identifier = (string)Visit(identifiers[i]);
-                else if (i == 1)
-                    node.identifier.members.Add(new Member((string)Visit(identifiers[i]), node.identifier));
-                else
-                    node.identifier.members.Add(new Member((string)Visit(identifiers[i]), node.identifier.members[i - 1]));
+                node.variable = new VariableCallNode((string)Visit(identifiers[0]));
+            }
+            else
+            {
+                for (int i = 0; i < identifiers.Length; i++)
+                {
+                    if (i == 0)
+                        node.variable.identifier = (string)Visit(identifiers[i]);
+                    else if (i == 1)
+                        node.variable.members.Add(new Member((string)Visit(identifiers[i]), node.variable));
+                    else
+                        node.variable.members.Add(new Member((string)Visit(identifiers[i]), node.variable.members[i - 1]));
+                }
             }
 
             node.expression = (ExpressionNode)Visit(context.expr());

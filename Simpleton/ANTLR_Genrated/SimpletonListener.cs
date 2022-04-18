@@ -165,6 +165,16 @@ public interface ISimpletonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitMember([NotNull] SimpletonParser.MemberContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SimpletonParser.subscript"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSubscript([NotNull] SimpletonParser.SubscriptContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SimpletonParser.subscript"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSubscript([NotNull] SimpletonParser.SubscriptContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SimpletonParser.constant"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

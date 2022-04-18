@@ -10,6 +10,13 @@ namespace Simpleton.AST
 
     public class FunctionDeclNode : Declaration
     {
+        public FunctionDeclNode(Type returnType, string name, List<FormalParameter> formalParameters)
+        {
+            this.returnType = returnType;
+            this.name = name;
+            this.formalParameters = formalParameters;
+        }
+
         public Type returnType { get; set; }
         public string name { get; set; }
         public List<FormalParameter> formalParameters { get; set; } = new List<FormalParameter>();

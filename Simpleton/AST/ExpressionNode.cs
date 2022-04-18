@@ -4,7 +4,7 @@ namespace Simpleton.AST
 {
     public abstract class ExpressionNode : StmtNode
     {
-        public Type type;
+        public virtual Type type { get; set; }
 
         public abstract T Accept<T>(ASTVisitor<T> v);
         public LineInfo Line { get; set; }
@@ -159,57 +159,35 @@ namespace Simpleton.AST
 
 
 
-
-
-    //public class Member : ASTNode
-    //{
-    //    public Member(string identifier, ASTNode club)
-    //    {
-    //        this.identifier = identifier;
-    //        this.club = club;
-    //    }
-
-    //    public string identifier { get; set; }
-
-    //    public List<ExpressionNode> actualParameters { get; set; } = new List<ExpressionNode>();
-
-    //    public ASTNode club { get; set; }
-
-    //    public T Accept<T>(ASTVisitor<T> v)
-    //    {
-    //        return v.VisitMember(this);
-    //    }
-    //    public LineInfo Line { get; set; }
-    //}
-
-
-
-
-    public abstract class IdentifierCallNode : ExpressionNode, ASTNode
+    public abstract class CallNode : ExpressionNode, ASTNode
     {
     }
 
-    public class SingleIdentifierCallNode : IdentifierCallNode
+    public class VariableCallNode : CallNode
     {
-        string identifier { get; set; }
+        public VariableCallNode(string identifier)
+        {
+            this.identifier = identifier;
+        }
+
+        public string identifier { get; set; }
 
         public override T Accept<T>(ASTVisitor<T> v)
         {
-            return v.VisitSingleIdentifierCallNode(this);
+            return v.VariableCallNode(this);
         }
     }
 
-
-    public class ListIndexerNode : SingleIdentifierCallNode
+    public class SubscriptCallNode : VariableCallNode
     {
         public ExpressionNode index { get; set; }
         public override T Accept<T>(ASTVisitor<T> v)
         {
-            return v.VisitListIndexerNode(this);
+            return v.VisitSubscriptCallNode(this);
         }
     }
 
-    public class FunctionCallNode : SingleIdentifierCallNode
+    public class FunctionCallNode : VariableCallNode
     {
         public List<ExpressionNode> actualParameters { get; set; } = new List<ExpressionNode>();
         public override T Accept<T>(ASTVisitor<T> v)
@@ -218,15 +196,60 @@ namespace Simpleton.AST
         }
     }
 
-    public class DotReferencingNode : IdentifierCallNode
+    public class DotReferencingNode : CallNode
     {
-        public IdentifierCallNode parent { get; set; }
-        public SingleIdentifierCallNode member { get; set; }
+        public override Type type
+        {
+            get => member.type;
+            set => member.type = value;
+        }
+        public CallNode parent { get; set; }
+        public CallNode member { get; set; }
         public override T Accept<T>(ASTVisitor<T> v)
         {
             return v.VisitDotReferencingNode(this);
         }
     }
+
+
+    public abstract class Member : ASTNode
+    {
+        public Member(string identifer)
+        {
+            this.identifier = identifier;
+        }
+        public CallNode parent { get; set; }
+        public Type type { get; set; }
+        public LineInfo Line { get; set; }
+        public string identifier { get; set; }
+        public abstract T Accept<T>(ASTVisitor<T> v);
+    }
+
+    public class Field : Member
+    {
+        public Field(string identifer) : base(identifer)
+        {
+
+        }
+        public override T Accept<T>(ASTVisitor<T> v)
+        {
+            return v.VisitFieldNode(this);
+        }
+    }
+
+    public class Method : Member
+    {
+        public Method(string identifer) : base(identifer)
+        {
+
+        }
+        public List<ExpressionNode> actualParameters { get; set; } = new List<ExpressionNode>();
+        public override T Accept<T>(ASTVisitor<T> v)
+        {
+            return v.VisitMethodNode(this);
+        }
+    }
+
 }
 
 

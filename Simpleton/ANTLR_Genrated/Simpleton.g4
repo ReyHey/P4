@@ -37,7 +37,8 @@ expr: IDENTIFIER ('[' expr ']')? member*                                        
     | left=expr op=('and'| 'or') right=expr                                             #InfixExpr         
     ;
 
-member: ('.' (IDENTIFIER | func_call));
+member: ('.' (IDENTIFIER | func_call | subscript));
+subscript: IDENTIFIER '[' expr ']';
 
 constant: NUMBER     
         | TEXT
@@ -99,7 +100,7 @@ foreach_stmt: 'foreach' type element=IDENTIFIER 'in' IDENTIFIER('.'IDENTIFIER)* 
 block: NEWLINE? '{' NEWLINE (stmt)* '}' NEWLINE?;
 
 
-assign_stmt : IDENTIFIER('.'IDENTIFIER)* '=' expr NEWLINE;
+assign_stmt : IDENTIFIER('.' (IDENTIFIER | subscript))* '=' expr NEWLINE;
 
 ternary_stmt: IDENTIFIER('.'IDENTIFIER)* '='  ifExpr=expr 'if' cond=expr 'else' elseExpr=expr NEWLINE;
 compound_assign_stmt : IDENTIFIER('.'IDENTIFIER)* compoundOP=('+='|'-='|'*='|'/=') expr NEWLINE;

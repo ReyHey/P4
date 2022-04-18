@@ -111,6 +111,12 @@ public interface ISimpletonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitMember([NotNull] SimpletonParser.MemberContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="SimpletonParser.subscript"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSubscript([NotNull] SimpletonParser.SubscriptContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="SimpletonParser.constant"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

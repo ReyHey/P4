@@ -198,7 +198,7 @@ namespace Simpleton
         }
         public string VisitAssignStmtNode(AssignStmtNode node)
         {
-            return Visit(node.identifier) + " = " + Visit(node.expression);
+            return Visit(node.variable) + " = " + Visit(node.expression);
         }
         public string VisitIfNode(IfNode node)
         {

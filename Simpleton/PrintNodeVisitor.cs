@@ -28,7 +28,7 @@ namespace Simpleton.AST
         public PrintNode VisitAssignStmtNode(AssignStmtNode node)
         {
             PrintNode p = new PrintNode("AssignNode", node.Line);
-            p.AddChild(Visit(node.identifier));
+            p.AddChild(Visit(node.variable));
             p.AddChild(Visit(node.expression));
             return p;
         }

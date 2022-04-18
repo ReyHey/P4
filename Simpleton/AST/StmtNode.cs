@@ -11,7 +11,7 @@ namespace Simpleton.AST
 
     public class AssignStmtNode : StmtNode
     {
-        public IdentifierCall identifier { get; set; }
+        public CallNode variable { get; set; }
         public ExpressionNode expression { get; set; }
 
         public T Accept<T>(ASTVisitor<T> v)

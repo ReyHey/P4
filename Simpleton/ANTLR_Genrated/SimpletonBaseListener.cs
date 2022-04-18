@@ -194,6 +194,18 @@ public partial class SimpletonBaseListener : ISimpletonListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitMember([NotNull] SimpletonParser.MemberContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SimpletonParser.subscript"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSubscript([NotNull] SimpletonParser.SubscriptContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SimpletonParser.subscript"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSubscript([NotNull] SimpletonParser.SubscriptContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SimpletonParser.constant"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

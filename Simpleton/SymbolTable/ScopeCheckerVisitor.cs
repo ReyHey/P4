@@ -33,7 +33,7 @@ namespace Simpleton
 
         public object VisitAssignStmtNode(AssignStmtNode node)
         {
-            Visit(node.identifier);
+            Visit(node.variable);
             Visit(node.expression);
             return new object();
         }
@@ -91,7 +91,7 @@ namespace Simpleton
 
         public object VisitConstantDeclNode(ConstantDeclNode node)
         {
-            symbolTable.PutSymbol(node.name, new VariableSymbol(node.name, node.type, node));
+            symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
             Visit(node.initialization);
             return new object();
         }
@@ -117,17 +117,17 @@ namespace Simpleton
 
         public object VisitEnumMemberNode(EnumMemberNode node)
         {
-            return new VariableSymbol(node.name, new Simpleton.AST.Type("int", false, false), node);
+            return new Symbol(node.name, node);
         }
 
         public object VisitEnumNode(EnumNode node)
         {
-            List<VariableSymbol> symbols = new List<VariableSymbol>();
+            List<TypeSymbol> symbols = new List<TypeSymbol>();
             foreach (var member in node.EnumMembers)
             {
-                symbols.Add((VariableSymbol)Visit(member));
+                symbols.Add((TypeSymbol)Visit(member));
             }
-            symbolTable.PutSymbol(node.name, new EnumDeclarationSymbol(node.name, symbols, node));
+            symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
             return new object();
 
         }
@@ -145,8 +145,7 @@ namespace Simpleton
         {
             Visit(node.list);
             Visit(node.block);
-            TempSymbols.Add(new VariableSymbol(node.element, node.type, node));
-
+            TempSymbols.Add(new Symbol(node.element, node));
 
             return new object();
         }
@@ -200,77 +199,69 @@ namespace Simpleton
 
         public object VisitDotReferencingNode(DotReferencingNode node)
         {
-
             Visit(node.parent);
-
-
-
+            Visit(node.member);
             return new object();
         }
 
 
-
-
-
-        public object VisitMember(Member node)
+        public object VisitFieldNode(Field node)
         {
-            if (node.club as IdentifierCall != null)
+            string structName = node.parent.type.typeName;
+
+            Symbol typeSymbol = symbolTable.getSymbol(structName);
+
+            StructNode structNode = (StructNode)typeSymbol.node;
+
+            string expectedFieldName = node.identifier;
+            string actualFieldName;
+            foreach (StructMemberNode member in structNode.structMembers)
             {
-                IdentifierCall club = node.club as IdentifierCall;
-                StructSymbol symbolClub = (StructSymbol)symbolTable.getSymbol(club.identifier);
-                if (!symbolClub.members.ContainsKey(node.identifier))
-                    throw new GetException(node.identifier);
-
-
-
+                actualFieldName = member.name;
+                if (actualFieldName == expectedFieldName)
+                {
+                    node.type = member.type;
+                    return new object();
+                }
             }
 
-
-
+            Console.WriteLine("Field \"" + expectedFieldName + "\" is not a member of the struct " + structName);
+            System.Environment.Exit(-1);
             return new object();
         }
 
-
-        public object VisitIdentifierCall(IdentifierCall node)
+        public object VisitMethodNode(Method node)
         {
-            try
-            {
-                Type LType = node.Lidentifier.type;
+            string typeName = node.parent.type.typeName;
+            TypeSymbol typeSymbol = (TypeSymbol)symbolTable.getSymbol(typeName);
 
-
-            }
-            catch (GetException e)
+            if (typeSymbol.methods.ContainsKey(node.identifier))
+                foreach (ExpressionNode parameter in node.actualParameters)
+                    Visit(parameter);
+            else
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("Method \"" + node.identifier + "\" is not a method of the type " + typeName);
                 System.Environment.Exit(-1);
             }
-
             return new object();
+
         }
 
 
-        //public object VisitIdentifierCall(IdentifierCall node)
-        //{
-        //    try
-        //    {
-        //        symbolTable.getSymbol(node.identifier);
-        //        if (node.index != null)
-        //            Visit(node.index);
 
-        //        foreach (Member member in node.members)
-        //        {
-        //            Visit(member);
-        //        }
 
-        //    }
-        //    catch (GetException e)
-        //    {
-        //        Console.WriteLine(e.Message);
-        //        System.Environment.Exit(-1);
-        //    }
 
-        //    return new object();
-        //}
+
+
+
+
+
+
+
+
+
+
+
 
         public object VisitIfNode(IfNode node)
         {
@@ -402,11 +393,19 @@ namespace Simpleton
 
         public object VisitProgramNode(ProgramNode node)
         {
+            PredefinedTable();
             foreach (var declaration in node.declarations)
             {
                 Visit(declaration);
             }
             return new object();
+        }
+
+        void PredefinedTable()
+        {
+            TypeSymbol intSymbol = new TypeSymbol("int", new Dictionary<string, FunctionDeclNode>());
+            symbolTable.PutSymbol("int", intSymbol);
+            intSymbol.methods.Add("ToString", new FunctionDeclNode(new Type("string", false, false), "ToString", new List<FormalParameter>()));
         }
 
         public object VisitReturn(Return node)
@@ -416,17 +415,17 @@ namespace Simpleton
 
         public object VisitStructMemberNode(StructMemberNode node)
         {
-            return new VariableSymbol(node.name, node.type, node);
+            return new Symbol(node.name, node);
         }
 
         public object VisitStructNode(StructNode node)
         {
-            List<VariableSymbol> symbols = new List<VariableSymbol>();
+            List<TypeSymbol> symbols = new List<TypeSymbol>();
             foreach (var member in node.structMembers)
             {
-                symbols.Add((VariableSymbol)Visit(member));
+                symbols.Add((TypeSymbol)Visit(member));
             }
-            symbolTable.PutSymbol(node.name, new StructDeclarationSymbol(node.name, symbols, node));
+            symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
             return new object();
         }
 
@@ -474,21 +473,30 @@ namespace Simpleton
 
         public object VisitVariableDeclNode(VariableDeclNode node)
         {
-            if (node.type.userDefinedType)
-            {
-                StructDeclarationSymbol structDecl = (StructDeclarationSymbol)symbolTable.getSymbol(node.type.typeName);
-                symbolTable.PutSymbol(node.name, new StructSymbol(node.type.typeName, node.name, structDecl.members, node));
-            }
-            else
-                symbolTable.PutSymbol(node.name, new VariableSymbol(node.name, node.type, node));
-
+            symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
             Visit(node.initialization);
             return new object();
         }
 
         public object VisitWhileNode(WhileNode node)
         {
-            throw new Exception();
+            Visit(node.condition);
+            Visit(node.block);
+            return new object();
+        }
+
+
+        public object VariableCallNode(VariableCallNode node)
+        {
+            symbolTable.getSymbol(node.identifier);
+            return new object();
+        }
+
+        public object VisitSubscriptCallNode(SubscriptCallNode node)
+        {
+            symbolTable.getSymbol(node.identifier);
+            Visit(node.index);
+            return new object();
         }
     }
 
