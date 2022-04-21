@@ -23,18 +23,19 @@ function void Main(){
 
 function list<number> GetVector(text str){
     boolean isValidInput = true
-
+    list<number> vector
+    
     while isValidInput {
         Write("Write the " + str + " vector: ")
         text vectorString = Read()
-        vectorString.DeleteSubStrings("[")
-        vectorString.DeleteSubStrings("]")
+        vectorString.DeleteSubTexts("[")
+        vectorString.DeleteSubTexts("]")
 
-        list<text> spilted = vectorString.Spilt(",")
-        list<number> vector
+        list<text> spilted = vectorString.Split(",")
+       
         number value = 0
         foreach text e in spilted {
-            value = e.ToDecimal()
+            value = e.ToNumber()
             if value != NaN {
                 vector.Add(value)
                 isValidInput = true

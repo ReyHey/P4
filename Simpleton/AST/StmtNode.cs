@@ -181,6 +181,7 @@ namespace Simpleton.AST
 
     public class Return : JumpStmtNode
     {
+        public FunctionDeclNode functionDecl { get; set; }
         public ExpressionNode returnValue { get; set; }
         public override T Accept<T>(ASTVisitor<T> v)
         {

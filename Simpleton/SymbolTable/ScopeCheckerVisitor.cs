@@ -84,7 +84,7 @@ namespace Simpleton
         {
             if (type.StartsWith("list"))
             {
-                string innerType = type.Substring(type.IndexOf("<"), type.IndexOf(">") - type.IndexOf("<"));
+                string innerType = type.Substring(type.IndexOf("<") + 1, type.IndexOf(">") - type.IndexOf("<") - 1);
                 return new Type(innerType, true, false);
             }
             else
@@ -347,7 +347,8 @@ namespace Simpleton
         public object VisitListDeclNode(ListDeclNode node)
         {
             symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
-            Visit(node.initialization);
+            if (node.initialization != null)
+                Visit(node.initialization);
             return null;
         }
 
@@ -417,6 +418,9 @@ namespace Simpleton
 
         public object VisitReturn(Return node)
         {
+            if (node.returnValue != null)
+                Visit(node.returnValue);
+
             return null;
         }
 
@@ -538,7 +542,11 @@ namespace Simpleton
             {
                 Symbol symbol = symbolTable.getSymbol(node.identifier);
                 Variable variable = (Variable)symbol.node;
-                node.type = variable.type;
+
+                if (variable.type.userDefinedType)
+                    node.type = new Type(variable.type.typeName, false, true);
+                else
+                    node.type = new Type(variable.type.typeName, false, false);
 
                 Visit(node.index);
             }

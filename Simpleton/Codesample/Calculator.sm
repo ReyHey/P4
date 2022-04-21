@@ -86,10 +86,6 @@ function boolean IsValidUnaryOperator(text operation){
     else{
         result = false
     }
-
-    {
-        int a =5
-    }
     return result
 }
 

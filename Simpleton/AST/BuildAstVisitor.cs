@@ -216,9 +216,13 @@ namespace Simpleton.AST
             return parameter;
         }
 
+        FunctionDeclNode refNode;
+
         public Object VisitFunction_decl([NotNull] SimpletonParser.Function_declContext context)
         {
             FunctionDeclNode node = new FunctionDeclNode();
+
+            refNode = node;
 
             node.returnType = (Type)Visit(context.returnType);
             node.name = context.name.Text;
@@ -231,6 +235,8 @@ namespace Simpleton.AST
             node.block = (Block)Visit(context.block());
 
             node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
+
+            refNode = null;
             return node;
         }
 
@@ -298,7 +304,7 @@ namespace Simpleton.AST
                 node.initialization = new Initialization();
                 node.initialization.initialization = (ExpressionNode)Visit(expr);
             }
-            else
+            else if (context.list_initialize() != null)
                 node.initialization = (Initialization)Visit(context.list_initialize());
 
             return node;
@@ -339,6 +345,7 @@ namespace Simpleton.AST
             Return node = new Return();
             var expr = context.expr();
             node.returnValue = expr != null ? (ExpressionNode)Visit(expr) : null;
+            node.functionDecl = refNode;
             node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
             return node;
         }
