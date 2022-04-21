@@ -11,7 +11,7 @@ namespace Simpleton.AST
 
     public class AssignStmtNode : StmtNode
     {
-        public IdentifierCall identifier { get; set; }
+        public CallNode variable { get; set; }
         public ExpressionNode expression { get; set; }
 
         public T Accept<T>(ASTVisitor<T> v)
@@ -90,9 +90,10 @@ namespace Simpleton.AST
 
     public class ForeachNode : StmtNode
     {
-        public Type type { get; set; }
-        public string element { get; set; }
-        public IdentifierCall list { get; set; }
+        public VariableDeclNode element { get; set; }
+        //public Type type { get; set; }
+        //public string element { get; set; }
+        public CallNode list { get; set; }
         public Block block { get; set; }
         public T Accept<T>(ASTVisitor<T> v)
         {
@@ -114,31 +115,33 @@ namespace Simpleton.AST
 
     }
 
-    public class VariableDeclNode : StmtNode
+    public abstract class Variable : StmtNode
     {
         public Type type { get; set; }
         public string name { get; set; }
-        public ExpressionNode initialization { get; set; }
-        public virtual T Accept<T>(ASTVisitor<T> v)
-        {
-            return v.VisitVariableDeclNode(this);
-        }
         public LineInfo Line { get; set; }
+
+        public abstract T Accept<T>(ASTVisitor<T> v);
 
     }
 
-    public class ListDeclNode : StmtNode
+
+    public class VariableDeclNode : Variable
     {
-        public Type type { get; set; }
-        public string name { get; set; }
-        /*?*/
+        public ExpressionNode initialization { get; set; }
+        public override T Accept<T>(ASTVisitor<T> v)
+        {
+            return v.VisitVariableDeclNode(this);
+        }
+    }
+
+    public class ListDeclNode : Variable
+    {
         public Initialization initialization { get; set; }
-        public T Accept<T>(ASTVisitor<T> v)
+        public override T Accept<T>(ASTVisitor<T> v)
         {
             return v.VisitListDeclNode(this);
         }
-        public LineInfo Line { get; set; }
-
     }
 
     public class Initialization : ASTNode
@@ -187,7 +190,7 @@ namespace Simpleton.AST
 
     public abstract class CompoundAssignNode : StmtNode
     {
-        public IdentifierCall identifier { get; set; }
+        public CallNode variable { get; set; }
         public ExpressionNode expression { get; set; }
 
         public abstract T Accept<T>(ASTVisitor<T> v);
@@ -229,7 +232,7 @@ namespace Simpleton.AST
 
     public class TernaryNode : StmtNode
     {
-        public IdentifierCall identifier { get; set; }
+        public CallNode variable { get; set; }
         public ExpressionNode condition { get; set; }
         public ExpressionNode ifClause { get; set; }
         public ExpressionNode elseClause { get; set; }
@@ -241,4 +244,3 @@ namespace Simpleton.AST
 
     }
 }
-

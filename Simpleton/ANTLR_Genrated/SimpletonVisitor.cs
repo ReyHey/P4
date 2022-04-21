@@ -56,19 +56,19 @@ public interface ISimpletonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitType([NotNull] SimpletonParser.TypeContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>IdentifierCall</c>
+	/// labeled alternative in <see cref="SimpletonParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIdentifierCall([NotNull] SimpletonParser.IdentifierCallContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>FuncCall</c>
 	/// labeled alternative in <see cref="SimpletonParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitFuncCall([NotNull] SimpletonParser.FuncCallContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>Identifier</c>
-	/// labeled alternative in <see cref="SimpletonParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitIdentifier([NotNull] SimpletonParser.IdentifierContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ConstantLiteral</c>
 	/// labeled alternative in <see cref="SimpletonParser.expr"/>.
@@ -105,11 +105,35 @@ public interface ISimpletonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitUnaryExpr([NotNull] SimpletonParser.UnaryExprContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SimpletonParser.member"/>.
+	/// Visit a parse tree produced by <see cref="SimpletonParser.subscript"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitMember([NotNull] SimpletonParser.MemberContext context);
+	Result VisitSubscript([NotNull] SimpletonParser.SubscriptContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SimpletonParser.func_call"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunc_call([NotNull] SimpletonParser.Func_callContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SimpletonParser.actual_parameter_list"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitActual_parameter_list([NotNull] SimpletonParser.Actual_parameter_listContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SimpletonParser.id"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitId([NotNull] SimpletonParser.IdContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SimpletonParser.ids"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIds([NotNull] SimpletonParser.IdsContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SimpletonParser.constant"/>.
 	/// </summary>
@@ -272,16 +296,4 @@ public interface ISimpletonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitCompound_assign_stmt([NotNull] SimpletonParser.Compound_assign_stmtContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="SimpletonParser.func_call"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitFunc_call([NotNull] SimpletonParser.Func_callContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="SimpletonParser.actual_parameter_list"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitActual_parameter_list([NotNull] SimpletonParser.Actual_parameter_listContext context);
 }

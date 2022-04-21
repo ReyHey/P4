@@ -10,6 +10,17 @@ namespace Simpleton.AST
 
     public class FunctionDeclNode : Declaration
     {
+        public FunctionDeclNode()
+        {
+
+        }
+        public FunctionDeclNode(Type returnType, string name, List<FormalParameter> formalParameters)
+        {
+            this.returnType = returnType;
+            this.name = name;
+            this.formalParameters = formalParameters;
+        }
+
         public Type returnType { get; set; }
         public string name { get; set; }
         public List<FormalParameter> formalParameters { get; set; } = new List<FormalParameter>();
@@ -23,6 +34,17 @@ namespace Simpleton.AST
 
     public class FormalParameter : ASTNode
     {
+        public FormalParameter()
+        {
+
+        }
+
+        public FormalParameter(Type type, string name)
+        {
+            this.type = type;
+            this.name = name;
+        }
+
         public Type type { get; set; }
         public string name { get; set; }
         public T Accept<T>(ASTVisitor<T> v)
@@ -90,7 +112,6 @@ namespace Simpleton.AST
         {
             return v.VisitConstantDeclNode(this);
         }
-        public LineInfo Line { get; set; }
 
     }
 }

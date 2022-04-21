@@ -23,7 +23,6 @@
             this.value = value;
         }
         public string value { get; set; }
-        public LineInfo Line { get; set; }
     }
 
 

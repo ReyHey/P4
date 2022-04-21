@@ -19,7 +19,7 @@ function void Main(){
 function void Circle(){
     Write("The radius of the circle: ") 
     text read_terminal = Read()
-    number r = read_terminal.ToDecimal()
+    number r = read_terminal.ToNumber()
     if r != NaN {
         number area = 3.14*r^2
         Write("The area of the circle with radius " + r.ToString() + " is " + area.ToString())
@@ -32,14 +32,14 @@ function void Circle(){
 function void Rectangle(){
     Write("The length of the one side of the rectangle: ") 
     text read_terminal = Read()
-    number l = read_terminal.ToDecimal()
+    number l = read_terminal.ToNumber()
     if l == NaN {
         Write("The length is invalid and therefore the area can not be computed")
     }
     else{
         Write("The length of the other side of the rectangle: ") 
         text read_terminal1 = Read()
-        number b = read_terminal1.ToDecimal()
+        number b = read_terminal1.ToNumber()
         if l == NaN {
     
             Write("The length is invalid and therefore the area can not be computed")
@@ -54,15 +54,15 @@ function void Rectangle(){
 function void Triangle(){
     Write("The length of the heigth of the triangle: ")
     text read_terminal = Read()
-    number h = read_terminal.ToDecimal()
+    number h = read_terminal.ToNumber()
     if h == NaN {
         Write("The heigth is invalid and therefore the area can not be computed")
     }
     else{
         Write("The base of the triangle: ") 
         text read_terminal1 = Read()
-        number b = read_terminal1.ToDecimal()
-        if l == NaN {
+        number b = read_terminal1.ToNumber()
+        if b == NaN {
             Write("The base is invalid and therefore the area can not be computed")
         }
         else{

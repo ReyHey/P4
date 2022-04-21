@@ -30,20 +30,9 @@ namespace Simpleton.AST
         public Object VisitAssign_stmt([NotNull] SimpletonParser.Assign_stmtContext context)
         {
             AssignStmtNode node = new AssignStmtNode();
-            var identifiers = context.IDENTIFIER();
+
             node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
-            node.identifier = new IdentifierCall();
-
-            for (int i = 0; i < identifiers.Length; i++)
-            {
-                if (i == 0)
-                    node.identifier.identifier = (string)Visit(identifiers[i]);
-                else if (i == 1)
-                    node.identifier.members.Add(new Member((string)Visit(identifiers[i]), node.identifier));
-                else
-                    node.identifier.members.Add(new Member((string)Visit(identifiers[i]), node.identifier.members[i - 1]));
-            }
-
+            node.variable = (CallNode)(Visit(context.id()));
             node.expression = (ExpressionNode)Visit(context.expr());
             return (AssignStmtNode)node;
         }
@@ -101,19 +90,7 @@ namespace Simpleton.AST
                 default:
                     throw new NotSupportedException();
             }
-            var identifiers = context.IDENTIFIER();
-            node.identifier = new IdentifierCall();
-
-            for (int i = 0; i < identifiers.Length; i++)
-            {
-                if (i == 0)
-                    node.identifier.identifier = (string)Visit(identifiers[i]);
-                else if (i == 1)
-                    node.identifier.members.Add(new Member((string)Visit(identifiers[i]), node.identifier));
-                else
-                    node.identifier.members.Add(new Member((string)Visit(identifiers[i]), node.identifier.members[i - 1]));
-            }
-
+            node.variable = (CallNode)Visit(context.id());
             node.expression = (ExpressionNode)Visit(context.expr());
             node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
             return node;
@@ -218,20 +195,11 @@ namespace Simpleton.AST
         {
             ForeachNode node = new ForeachNode();
 
-            node.element = context.element.Text;
-            var identifiers = context.IDENTIFIER();
+            node.element = new VariableDeclNode();
+            node.element.name = context.element.Text;
+            node.element.type = (Type)Visit(context.type());
 
-            node.list = new IdentifierCall();
-
-            for (int i = 0; i < identifiers.Length; i++)
-            {
-                if (i == 0)
-                    node.list.identifier = (string)Visit(identifiers[i]);
-                else if (i == 1)
-                    node.list.members.Add(new Member((string)Visit(identifiers[i]), node.list));
-                else
-                    node.list.members.Add(new Member((string)Visit(identifiers[i]), node.list.members[i - 1]));
-            }
+            node.list = (CallNode)Visit(context.id());
 
             node.block = (Block)Visit(context.block());
             node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
@@ -253,10 +221,7 @@ namespace Simpleton.AST
             FunctionDeclNode node = new FunctionDeclNode();
 
             node.returnType = (Type)Visit(context.returnType);
-
             node.name = context.name.Text;
-
-            node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
 
             foreach (Formal_parameterContext parameter in context.formal_parameter())
             {
@@ -265,7 +230,7 @@ namespace Simpleton.AST
 
             node.block = (Block)Visit(context.block());
 
-
+            node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
             return node;
         }
 
@@ -585,17 +550,7 @@ namespace Simpleton.AST
         {
             TernaryNode node = new TernaryNode();
 
-            var identifiers = context.IDENTIFIER();
-
-            node.identifier = new IdentifierCall();
-
-            for (int i = 0; i < identifiers.Length; i++)
-            {
-                if (i == 0)
-                    node.identifier.identifier = (string)Visit(identifiers[i]);
-                else
-                    node.identifier.members.Add(new Member((string)Visit(identifiers[i])));
-            }
+            node.variable = (CallNode)Visit(context.id());
 
             node.condition = (ExpressionNode)Visit(context.cond);
             node.ifClause = (ExpressionNode)Visit(context.ifExpr);
@@ -766,47 +721,64 @@ namespace Simpleton.AST
 
         public object VisitFunc_call([NotNull] Func_callContext context)
         {
-            FunctionCallNode node = new FunctionCallNode();
-            node.identifier = (string)Visit(context.IDENTIFIER());
-            var actual_parameter_list = context.actual_parameter_list();
-            node.actualParameters = actual_parameter_list != null ? (List<ExpressionNode>)Visit(actual_parameter_list) : null;
+            string funcName = (string)Visit(context.IDENTIFIER());
+            Actual_parameter_listContext actual_Parameter_List = context.actual_parameter_list();
+            List<ExpressionNode> actualParameterList = actual_Parameter_List != null ? (List<ExpressionNode>)Visit(actual_Parameter_List) : new List<ExpressionNode>();
+            FunctionCallNode node = new FunctionCallNode(funcName, actualParameterList);
+
             node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
             return node;
         }
 
-        public object VisitIdentifier([NotNull] IdentifierContext context)
+
+        public object VisitIdentifierCall([NotNull] IdentifierCallContext context)
         {
-            IdentifierCall node = new IdentifierCall();
-
-            node.identifier = (string)Visit(context.IDENTIFIER());
-
-            var expr = context.expr();
-            node.index = expr != null ? (ExpressionNode)Visit(expr) : null;
-
-            MemberContext[] memberContexts = context.member();
-            club = node;
-            foreach (MemberContext member in memberContexts)
-            {
-                node.members.Add((Member)Visit(member));
-                club = node.members[node.members.Count - 1];
-            }
-            node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
-            return node;
+            return Visit(context.id());
         }
 
-        ASTNode club;
-
-        public object VisitMember([NotNull] MemberContext context)
+        public object VisitSubscript([NotNull] SubscriptContext context)
         {
-            var identifier = context.IDENTIFIER();
-            if (identifier != null)
+            return new SubscriptCallNode((string)Visit(context.IDENTIFIER()), (ExpressionNode)(Visit(context.expr())));
+        }
+
+        public object VisitId([NotNull] IdContext context)
+        {
+            if (context.id() != null)
             {
-                return new Member((string)Visit(identifier), club);
+                DotReferencingNode referencingNode = new DotReferencingNode();
+                referencingNode.parent = (CallNode)Visit(context.id());
+                CallNode member = (CallNode)Visit(context.ids());
+                if (member is FunctionCallNode)
+                {
+                    FunctionCallNode method = (FunctionCallNode)member;
+                    referencingNode.member = new Method(method.identifier, method.actualParameters, referencingNode.parent);
+                }
+                else if (member is SubscriptCallNode)
+                {
+                    SubscriptCallNode subscript = (SubscriptCallNode)member;
+                    referencingNode.member = new SubscriptMember(subscript.identifier, subscript.index, referencingNode.parent);
+                }
+                else
+                {
+                    VariableCallNode field = (VariableCallNode)member;
+                    referencingNode.member = new Field(field.identifier, referencingNode.parent);
+                }
+                return referencingNode;
             }
+            else
+            {
+                return Visit(context.ids());
+            }
+        }
 
-            var func_call = context.func_call();
-            return new Member((FunctionCallNode)Visit(func_call), club);
-
+        public object VisitIds([NotNull] IdsContext context)
+        {
+            if (context.IDENTIFIER() != null)
+                return new VariableCallNode((string)Visit(context.IDENTIFIER()));
+            else if (context.func_call() != null)
+                return Visit(context.func_call());
+            else
+                return Visit(context.subscript());
         }
     }
 }

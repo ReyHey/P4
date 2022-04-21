@@ -30,8 +30,6 @@
         T VisitNegativeExpressionNode(NegativeExpressionNode node);
         T VisitNaNExpressionNode(NaNExpressionNode node);
         T VisitFunctionCallNode(FunctionCallNode node);
-        T VisitListIndexerNode(ListIndexerNode node);
-        T VisitIdentifierCall(IdentifierCall node);
         T VisitAssignStmtNode(AssignStmtNode node);
         T VisitIfNode(IfNode node);
         T VisitConditionBlock(ConditionBlock node);
@@ -56,7 +54,11 @@
         T VisitTextLiteral(TextLiteral node);
         T VisitBooleanLiteral(BooleanLiteral node);
 
-
+        T VariableCallNode(VariableCallNode node);
+        T VisitSubscriptCallNode(SubscriptCallNode node);
         T VisitDotReferencingNode(DotReferencingNode node);
+        T VisitFieldNode(Field node);
+        T VisitMethodNode(Method node);
+        T VisitSubscriptMemberNode(SubscriptMember node);
     }
 }

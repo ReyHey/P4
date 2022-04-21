@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using Simpleton.AST;
 using Simpleton.SymTable;
 using Type = Simpleton.AST.Type;
@@ -12,6 +14,87 @@ namespace Simpleton
 
         List<Symbol> TempSymbols = new List<Symbol>();
 
+        public ScopeCheckerVisitor(ASTNode AST)
+        {
+            PredefinedSymbolTable();
+            new TopLevelDeclaration(symbolTable).Visit(AST);
+        }
+
+
+        void PredefinedSymbolTable()
+        {
+
+            string[] lines = File.ReadAllLines((Program.terminal ? "" : "../../../") + "SymbolTable/PredefinedSymbol.txt");
+
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (lines[i].Contains(":"))
+                {
+                    string name = lines[i].TrimEnd(':');
+                    Dictionary<string, FunctionDeclNode> methods = new Dictionary<string, FunctionDeclNode>();
+
+                    i++;
+                    while (lines[i] != "")
+                    {
+                        FunctionDeclNode functionDeclNode = CreateFunctionDecl(lines[i].Trim(' '));
+                        methods.Add(functionDeclNode.name, functionDeclNode);
+                        i++;
+                    }
+                    symbolTable.PutSymbol(name, new TypeSymbol(name, methods));
+                }
+                else if (lines[i] != (""))
+                {
+                    FunctionDeclNode functionDeclNode = CreateFunctionDecl(lines[i]);
+                    symbolTable.PutSymbol(functionDeclNode.name, new Symbol(functionDeclNode.name, functionDeclNode));
+                }
+
+            }
+        }
+
+
+
+        FunctionDeclNode CreateFunctionDecl(string line)
+        {
+            string type = line.Substring(0, line.IndexOf(" "));
+            string funcName = line.Substring(line.IndexOf(" ") + 1, line.IndexOf("(") - line.IndexOf(" ") - 1);
+            string parameters = line.Remove(0, line.IndexOf("("));
+
+            return new FunctionDeclNode(CreateType(type), funcName, CreateFormalParameters(parameters));
+        }
+
+        List<FormalParameter> CreateFormalParameters(string parametersString)
+        {
+            List<FormalParameter> list = new List<FormalParameter>();
+            if (parametersString != "()")
+            {
+                string[] parameters = parametersString.TrimStart('(').TrimEnd(')').Split(",");
+
+                foreach (string parameter in parameters)
+                {
+                    string[] s = parameter.Split(" ");
+                    list.Add(new FormalParameter(CreateType(s[0]), s[1]));
+                }
+            }
+
+            return list;
+        }
+
+        Type CreateType(string type)
+        {
+            if (type.StartsWith("list"))
+            {
+                string innerType = type.Substring(type.IndexOf("<"), type.IndexOf(">") - type.IndexOf("<"));
+                return new Type(innerType, true, false);
+            }
+            else
+            {
+                return new Type(type, false, false);
+            }
+
+
+        }
+
         public object Visit(ASTNode node)
         {
             return node.Accept(this);
@@ -21,21 +104,89 @@ namespace Simpleton
         {
             Visit(node.Left);
             Visit(node.Right);
-            return new object();
+            return null;
         }
 
         public object VisitANDNode(ANDNode node)
         {
             Visit(node.Left);
             Visit(node.Right);
-            return new object();
+            return null;
+        }
+        public object VisitDivisionNode(DivisionNode node)
+        {
+            Visit(node.Left);
+            Visit(node.Right);
+            return null;
+        }
+        public object VisitEQEQNode(EQEQNode node)
+        {
+            Visit(node.Left);
+            Visit(node.Right);
+            return null;
+        }
+        public object VisitGreaterEQNode(GreaterEQNode node)
+        {
+            Visit(node.Left);
+            Visit(node.Right);
+            return null;
+        }
+
+        public object VisitGreaterNode(GreaterNode node)
+        {
+            Visit(node.Left);
+            Visit(node.Right);
+            return null;
+        }
+        public object VisitLessEQNode(LessEQNode node)
+        {
+            Visit(node.Left);
+            Visit(node.Right);
+            return null;
+        }
+
+        public object VisitLessNode(LessNode node)
+        {
+            Visit(node.Left);
+            Visit(node.Right);
+            return null;
+        }
+        public object VisitModNode(ModNode node)
+        {
+            Visit(node.Left);
+            Visit(node.Right);
+            return null;
+        }
+        public object VisitMultiplicationNode(MultiplicationNode node)
+        {
+            Visit(node.Left);
+            Visit(node.Right);
+            return null;
+        }
+        public object VisitNOTEQNode(NOTEQNode node)
+        {
+            Visit(node.Left);
+            Visit(node.Right);
+            return null;
+        }
+        public object VisitORNode(ORNode node)
+        {
+            Visit(node.Left);
+            Visit(node.Right);
+            return null;
+        }
+        public object VisitPowNode(PowNode node)
+        {
+            Visit(node.Left);
+            Visit(node.Right);
+            return null;
         }
 
         public object VisitAssignStmtNode(AssignStmtNode node)
         {
-            Visit(node.identifier);
+            Visit(node.variable);
             Visit(node.expression);
-            return new object();
+            return null;
         }
 
         public object VisitBlock(Block node)
@@ -53,17 +204,17 @@ namespace Simpleton
                 Visit(stmt);
             }
             symbolTable.CloseNewlyCreatedScope();
-            return new object();
+            return null;
         }
 
         public object VisitBooleanLiteral(BooleanLiteral node)
         {
-            return new object();
+            return null;
         }
 
         public object VisitBreak(Break node)
         {
-            return new object();
+            return null;
         }
 
         public object VisitCase(Case node)
@@ -77,7 +228,7 @@ namespace Simpleton
             }
 
             symbolTable.CloseNewlyCreatedScope();
-            return new object();
+            return null;
         }
 
         public object VisitConditionBlock(ConditionBlock node)
@@ -86,69 +237,48 @@ namespace Simpleton
             symbolTable.OpenNewScope();
             Visit(node.block);
             symbolTable.CloseNewlyCreatedScope();
-            return new object();
+            return null;
         }
 
         public object VisitConstantDeclNode(ConstantDeclNode node)
         {
-            symbolTable.PutSymbol(node.name, new VariableSymbol(node.name, node.type, node));
+
             Visit(node.initialization);
-            return new object();
+            return null;
         }
 
         public object VisitContinue(Continue node)
         {
-            return new object();
+            return null;
         }
 
         public object VisitDIVISIONEQNode(DIVISIONEQNode node)
         {
-            Visit(node.identifier);
+            Visit(node.variable);
             Visit(node.expression);
-            return new object();
+            return null;
         }
 
-        public object VisitDivisionNode(DivisionNode node)
-        {
-            Visit(node.Left);
-            Visit(node.Right);
-            return new object();
-        }
 
         public object VisitEnumMemberNode(EnumMemberNode node)
         {
-            return new VariableSymbol(node.name, new Simpleton.AST.Type("int", false, false), node);
+            return new Symbol(node.name, node);
         }
 
         public object VisitEnumNode(EnumNode node)
         {
-            List<VariableSymbol> symbols = new List<VariableSymbol>();
-            foreach (var member in node.EnumMembers)
-            {
-                symbols.Add((VariableSymbol)Visit(member));
-            }
-            symbolTable.PutSymbol(node.name, new EnumDeclarationSymbol(node.name, symbols, node));
-            return new object();
-
+            return null;
         }
 
-        public object VisitEQEQNode(EQEQNode node)
-        {
-            Visit(node.Left);
-            Visit(node.Right);
-            return new object();
-        }
 
 
 
         public object VisitForeachNode(ForeachNode node)
         {
+            TempSymbols.Add(new Symbol(node.element.name, node.element));
             Visit(node.list);
             Visit(node.block);
-            TempSymbols.Add(new VariableSymbol(node.element, node.type, node));
-
-
-            return new object();
+            return null;
         }
 
         public object VisitFormalParameter(FormalParameter node)
@@ -160,7 +290,9 @@ namespace Simpleton
         {
             try
             {
-                symbolTable.getSymbol(node.identifier);
+                Symbol symbol = symbolTable.getSymbol(node.identifier);
+                FunctionDeclNode functionDecl = (FunctionDeclNode)symbol.node;
+                node.type = functionDecl.returnType;
             }
             catch (GetException e)
             {
@@ -168,109 +300,21 @@ namespace Simpleton
                 System.Environment.Exit(-1);
             }
 
-            return new object();
+            return null;
         }
 
         public object VisitFunctionDeclNode(FunctionDeclNode node)
         {
-            symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
             foreach (FormalParameter parameter in node.formalParameters)
             {
                 TempSymbols.Add((Symbol)Visit(parameter));
             }
             Visit(node.block);
 
-            return new object();
-        }
-
-        public object VisitGreaterEQNode(GreaterEQNode node)
-        {
-            Visit(node.Left);
-            Visit(node.Right);
-            return new object();
-        }
-
-        public object VisitGreaterNode(GreaterNode node)
-        {
-            Visit(node.Left);
-            Visit(node.Right);
-            return new object();
+            return null;
         }
 
 
-        public object VisitDotReferencingNode(DotReferencingNode node)
-        {
-
-            Visit(node.parent);
-
-
-
-            return new object();
-        }
-
-
-
-
-
-        public object VisitMember(Member node)
-        {
-            if (node.club as IdentifierCall != null)
-            {
-                IdentifierCall club = node.club as IdentifierCall;
-                StructSymbol symbolClub = (StructSymbol)symbolTable.getSymbol(club.identifier);
-                if (!symbolClub.members.ContainsKey(node.identifier))
-                    throw new GetException(node.identifier);
-
-
-
-            }
-
-
-
-            return new object();
-        }
-
-
-        public object VisitIdentifierCall(IdentifierCall node)
-        {
-            try
-            {
-                Type LType = node.Lidentifier.type;
-
-
-            }
-            catch (GetException e)
-            {
-                Console.WriteLine(e.Message);
-                System.Environment.Exit(-1);
-            }
-
-            return new object();
-        }
-
-
-        //public object VisitIdentifierCall(IdentifierCall node)
-        //{
-        //    try
-        //    {
-        //        symbolTable.getSymbol(node.identifier);
-        //        if (node.index != null)
-        //            Visit(node.index);
-
-        //        foreach (Member member in node.members)
-        //        {
-        //            Visit(member);
-        //        }
-
-        //    }
-        //    catch (GetException e)
-        //    {
-        //        Console.WriteLine(e.Message);
-        //        System.Environment.Exit(-1);
-        //    }
-
-        //    return new object();
-        //}
 
         public object VisitIfNode(IfNode node)
         {
@@ -281,7 +325,7 @@ namespace Simpleton
             if (node.elseBlock != null)
                 Visit(node.elseBlock);
 
-            return new object();
+            return null;
         }
 
         public object VisitInitialization(Initialization node)
@@ -296,109 +340,69 @@ namespace Simpleton
                     Visit(element);
                 }
 
-            return new object();
+            return null;
         }
 
-        public object VisitLessEQNode(LessEQNode node)
-        {
-            Visit(node.Left);
-            Visit(node.Right);
-            return new object();
-        }
-
-        public object VisitLessNode(LessNode node)
-        {
-            Visit(node.Left);
-            Visit(node.Right);
-            return new object();
-        }
 
         public object VisitListDeclNode(ListDeclNode node)
         {
             symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
             Visit(node.initialization);
-            return new object();
+            return null;
         }
 
 
 
         public object VisitMINUSEQNode(MINUSEQNode node)
         {
-            Visit(node.identifier);
+            Visit(node.variable);
             Visit(node.expression);
-            return new object();
-        }
-
-        public object VisitModNode(ModNode node)
-        {
-            Visit(node.Left);
-            Visit(node.Right);
-            return new object();
+            return null;
         }
 
         public object VisitMULTIEQNode(MULTIEQNode node)
         {
-            Visit(node.identifier);
+            Visit(node.variable);
             Visit(node.expression);
-            return new object();
+            return null;
         }
 
-        public object VisitMultiplicationNode(MultiplicationNode node)
-        {
-            Visit(node.Left);
-            Visit(node.Right);
-            return new object();
-        }
+
 
         public object VisitNaNExpressionNode(NaNExpressionNode node)
         {
-            return new object();
+            return null;
         }
 
         public object VisitNegativeExpressionNode(NegativeExpressionNode node)
         {
             Visit(node.expr);
-            return new object();
+            return null;
         }
 
-        public object VisitNOTEQNode(NOTEQNode node)
-        {
-            Visit(node.Left);
-            Visit(node.Right);
-            return new object();
-        }
+
 
         public object VisitNotExpressionNode(NotExpressionNode node)
         {
             Visit(node.expr);
-            return new object();
+            return null;
         }
 
         public object VisitNumberLiteral(NumberLiteral node)
         {
-            return new object();
+            return null;
         }
 
-        public object VisitORNode(ORNode node)
-        {
-            Visit(node.Left);
-            Visit(node.Right);
-            return new object();
-        }
+
 
         public object VisitPLUSEQNode(PLUSEQNode node)
         {
-            Visit(node.identifier);
+            Visit(node.variable);
             Visit(node.expression);
-            return new object();
+            return null;
         }
 
-        public object VisitPowNode(PowNode node)
-        {
-            Visit(node.Left);
-            Visit(node.Right);
-            return new object();
-        }
+
 
         public object VisitProgramNode(ProgramNode node)
         {
@@ -406,35 +410,32 @@ namespace Simpleton
             {
                 Visit(declaration);
             }
-            return new object();
+            return null;
         }
+
+
 
         public object VisitReturn(Return node)
         {
-            return new object();
+            return null;
         }
 
         public object VisitStructMemberNode(StructMemberNode node)
         {
-            return new VariableSymbol(node.name, node.type, node);
+            throw new Exception();
         }
 
         public object VisitStructNode(StructNode node)
         {
-            List<VariableSymbol> symbols = new List<VariableSymbol>();
-            foreach (var member in node.structMembers)
-            {
-                symbols.Add((VariableSymbol)Visit(member));
-            }
-            symbolTable.PutSymbol(node.name, new StructDeclarationSymbol(node.name, symbols, node));
-            return new object();
+
+            return null;
         }
 
         public object VisitSubtractionNode(SubtractionNode node)
         {
             Visit(node.Left);
             Visit(node.Right);
-            return new object();
+            return null;
         }
 
         public object VisitSwitchNode(SwitchNode node)
@@ -455,42 +456,213 @@ namespace Simpleton
 
 
 
-            return new object();
+            return null;
         }
 
         public object VisitTernaryNode(TernaryNode node)
         {
-            Visit(node.identifier);
+            Visit(node.variable);
             Visit(node.condition);
             Visit(node.ifClause);
             Visit(node.elseClause);
-            return new object();
+            return null;
         }
 
         public object VisitTextLiteral(TextLiteral node)
         {
-            return new object();
+            return null;
         }
 
         public object VisitVariableDeclNode(VariableDeclNode node)
         {
-            if (node.type.userDefinedType)
-            {
-                StructDeclarationSymbol structDecl = (StructDeclarationSymbol)symbolTable.getSymbol(node.type.typeName);
-                symbolTable.PutSymbol(node.name, new StructSymbol(node.type.typeName, node.name, structDecl.members, node));
-            }
-            else
-                symbolTable.PutSymbol(node.name, new VariableSymbol(node.name, node.type, node));
-
-            Visit(node.initialization);
-            return new object();
+            symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
+            if (node.initialization != null)
+                Visit(node.initialization);
+            return null;
         }
 
         public object VisitWhileNode(WhileNode node)
         {
-            throw new Exception();
+            Visit(node.condition);
+            Visit(node.block);
+            return null;
         }
+
+
+        public object VariableCallNode(VariableCallNode node)
+        {
+            try
+            {
+                Symbol symbol = symbolTable.getSymbol(node.identifier);
+
+                if (symbol.node is ConstantDeclNode)
+                {
+                    ConstantDeclNode bindingOccurrence = (ConstantDeclNode)symbol.node;
+                    node.type = bindingOccurrence.type;
+                }
+
+                else if (symbol.node is VariableDeclNode)
+                {
+                    VariableDeclNode bindingOccurrence = (VariableDeclNode)symbol.node;
+                    node.type = bindingOccurrence.type;
+                }
+                else if (symbol.node is FormalParameter)
+                {
+                    FormalParameter bindingOccurrence = (FormalParameter)symbol.node;
+                    node.type = bindingOccurrence.type;
+                }
+                else if (symbol.node is EnumNode)
+                {
+                    EnumNode bindingOccurrence = (EnumNode)symbol.node;
+                    node.type = new Type(bindingOccurrence.name, false, true);
+                }
+                else
+                {
+                    ListDeclNode bindingOccurrence = (ListDeclNode)symbol.node;
+                    node.type = bindingOccurrence.type;
+                }
+            }
+            catch (GetException e)
+            {
+                Console.WriteLine(e.Message + " " + node.Line.column);
+                System.Environment.Exit(-1);
+            }
+
+
+            return null;
+        }
+
+        public object VisitSubscriptCallNode(SubscriptCallNode node)
+        {
+            try
+            {
+                Symbol symbol = symbolTable.getSymbol(node.identifier);
+                Variable variable = (Variable)symbol.node;
+                node.type = variable.type;
+
+                Visit(node.index);
+            }
+            catch (GetException e)
+            {
+                Console.WriteLine(e.Message);
+                System.Environment.Exit(-1);
+            }
+
+            return null;
+        }
+
+        public object VisitSubscriptMemberNode(SubscriptMember node)
+        {
+            string structName = node.parent.type.typeName;
+            string expectedFieldName = node.identifier;
+            try
+            {
+                Symbol typeSymbol = symbolTable.getSymbol(structName);
+
+                StructNode structNode = (StructNode)typeSymbol.node;
+
+                string actualFieldName;
+                foreach (StructMemberNode member in structNode.structMembers)
+                {
+                    actualFieldName = member.name;
+                    if (actualFieldName == expectedFieldName)
+                    {
+                        node.type = member.type;
+                        Visit(node.index);
+                        return null;
+                    }
+                }
+            }
+            catch (GetException e)
+            {
+                Console.WriteLine("Field \"" + expectedFieldName + "\" is not a member of the struct " + structName);
+                System.Environment.Exit(-1);
+            }
+
+            return null;
+        }
+
+
+
+
+
+        public object VisitDotReferencingNode(DotReferencingNode node)
+        {
+            Visit(node.parent);
+            Visit(node.member);
+            return null;
+        }
+
+
+        public object VisitFieldNode(Field node)
+        {
+            string structName = node.parent.type.typeName;
+            string expectedFieldName = node.identifier;
+            try
+            {
+                Symbol typeSymbol = symbolTable.getSymbol(structName);
+                if (typeSymbol.node is EnumNode)
+                {
+                    EnumNode enumNode = (EnumNode)typeSymbol.node;
+
+
+                    string actualFieldName;
+                    foreach (EnumMemberNode member in enumNode.EnumMembers)
+                    {
+                        actualFieldName = member.name;
+                        if (actualFieldName == expectedFieldName)
+                        {
+                            node.type = new Type("number", false, false);
+                            return null;
+                        }
+                    }
+                }
+                else
+                {
+                    StructNode structNode = (StructNode)typeSymbol.node;
+
+
+                    string actualFieldName;
+                    foreach (StructMemberNode member in structNode.structMembers)
+                    {
+                        actualFieldName = member.name;
+                        if (actualFieldName == expectedFieldName)
+                        {
+                            node.type = member.type;
+                            return null;
+                        }
+                    }
+                }
+            }
+            catch (GetException e)
+            {
+                Console.WriteLine("Field \"" + expectedFieldName + "\" is not a member of the struct " + structName);
+                System.Environment.Exit(-1);
+            }
+
+            return null;
+        }
+
+        public object VisitMethodNode(Method node)
+        {
+            Type type = node.parent.type;
+            string typeName = type.listType ? "list" : type.typeName;
+            TypeSymbol typeSymbol = (TypeSymbol)symbolTable.getSymbol(typeName);
+
+            if (typeSymbol.methods.ContainsKey(node.identifier))
+            {
+                node.type = typeSymbol.methods[node.identifier].returnType;
+                foreach (ExpressionNode parameter in node.actualParameters)
+                    Visit(parameter);
+            }
+            else
+            {
+                Console.WriteLine("Method \"" + node.identifier + "\" is not a method of the type " + typeName);
+                System.Environment.Exit(-1);
+            }
+            return null;
+        }
+
+
     }
-
-
 }

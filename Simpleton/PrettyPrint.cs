@@ -171,34 +171,11 @@ namespace Simpleton
             s += ")";
             return s;
         }
-        public string VisitMember(Member node)
-        {
-            if (node.identifier != null)
-            {
-                return "." + node.identifier;
-            }
-            return "." + Visit(node.functionCall);
-
-        }
-        public string VisitIdentifierCall(IdentifierCall node)
-        {
-            string s = "";
-            foreach (var item in node.members)
-            {
-                s += Visit(item);
-            }
 
 
-            if (node.index != null)
-                return node.identifier + "[" + Visit(node.index) + "]" + s;
-            else
-                return node.identifier + s;
-
-
-        }
         public string VisitAssignStmtNode(AssignStmtNode node)
         {
-            return Visit(node.identifier) + " = " + Visit(node.expression);
+            return Visit(node.variable) + " = " + Visit(node.expression);
         }
         public string VisitIfNode(IfNode node)
         {
@@ -271,7 +248,7 @@ namespace Simpleton
         }
         public string VisitForeachNode(ForeachNode node)
         {
-            return PrintIndent + $"foreach {node.type} {node.element} in {VisitIdentifierCall(node.list)} {Visit(node.block)}";
+            return PrintIndent + $"foreach {Visit(node.element)} in {Visit(node.list)} {Visit(node.block)}";
         }
         public string VisitWhileNode(WhileNode node)
         {
@@ -312,23 +289,23 @@ namespace Simpleton
         }
         public string VisitPLUSEQNode(PLUSEQNode node)
         {
-            return $"{Visit(node.identifier)} += {Visit(node.expression)}";
+            return $"{Visit(node.variable)} += {Visit(node.expression)}";
         }
         public string VisitMINUSEQNode(MINUSEQNode node)
         {
-            return $"{Visit(node.identifier)} -= {Visit(node.expression)}";
+            return $"{Visit(node.variable)} -= {Visit(node.expression)}";
         }
         public string VisitMULTIEQNode(MULTIEQNode node)
         {
-            return $"{Visit(node.identifier)} *= {Visit(node.expression)}";
+            return $"{Visit(node.variable)} *= {Visit(node.expression)}";
         }
         public string VisitDIVISIONEQNode(DIVISIONEQNode node)
         {
-            return $"{Visit(node.identifier)} /= {Visit(node.expression)}";
+            return $"{Visit(node.variable)} /= {Visit(node.expression)}";
         }
         public string VisitTernaryNode(TernaryNode node)
         {
-            return Visit(node.identifier) + " = " + Visit(node.ifClause) + " if " + Visit(node.condition) + " else " + Visit(node.elseClause);
+            return Visit(node.variable) + " = " + Visit(node.ifClause) + " if " + Visit(node.condition) + " else " + Visit(node.elseClause);
         }
         public string VisitNumberLiteral(NumberLiteral node)
         {
@@ -343,7 +320,49 @@ namespace Simpleton
             return node.value;
         }
 
+        public string VariableCallNode(VariableCallNode node)
+        {
+            return node.identifier;
+        }
 
+        public string VisitSubscriptCallNode(SubscriptCallNode node)
+        {
+            return node.identifier + "[" + Visit(node.index) + "]";
+        }
+
+        public string VisitDotReferencingNode(DotReferencingNode node)
+        {
+            return Visit(node.parent) + "." + Visit(node.member);
+        }
+
+        public string VisitFieldNode(Field node)
+        {
+            return node.identifier;
+        }
+
+        public string VisitMethodNode(Method node)
+        {
+            string s = $"{node.identifier}(";
+            if (node.actualParameters != null)
+                for (int i = 0; i < node.actualParameters.Count; i++)
+                {
+                    if (i < node.actualParameters.Count - 1)
+                    {
+                        s += Visit(node.actualParameters[i]) + ", ";
+                    }
+                    else
+                    {
+                        s += Visit(node.actualParameters[i]);
+                    }
+                }
+            s += ")";
+            return s;
+        }
+
+        public string VisitSubscriptMemberNode(SubscriptMember node)
+        {
+            return node.identifier + "[" + Visit(node.index) + "]";
+        }
     }
 
 

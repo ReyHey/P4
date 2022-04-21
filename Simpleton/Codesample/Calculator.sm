@@ -8,12 +8,18 @@ struct hej{
     number operand
 }
 
+enum biomes {
+    desert
+    ocean
+    forest
+}
+
 function void Main(){ 
     number accumulator = 0.0
     input userInput
     userInput.operator = ""
     userInput.operand = 0.0
-
+    biomes.desert
     while userInput.operator != "q" {
         Write("Enter operator, and an optional operand:\n")
         userInput = GetInput()
@@ -22,14 +28,6 @@ function void Main(){
             accumulator = DoOperation(userInput.operator.ToString(), userInput.operand, accumulator)
             Write("Result so far is " + accumulator.ToString + "\n")
         }
-
-        int sum = 0;
-        foreach int a in listA
-        {
-            sum += a;
-        }
-
-        
     }
     Write("Final result is: {accumulator} \n")
 }
@@ -46,7 +44,7 @@ function input GetInput() {
         if spilted.Length() == 2 and IsValidBinaryOperator(spilted[0])   {
 
             userInput.operator = spilted[0]
-            userInput.operand = spilted[1].ToDecimal().ToString()
+            userInput.operand = spilted[1].ToNumber()
             if userInput.operand == NaN{
                 userInput.operator = ""
                 userInput.operand = 0.0
@@ -140,30 +138,3 @@ function number DoOperation(text operation, number operand, number previousAccum
 
 
 
-
-
-switch (a){
-    int c = 7
-    case 5: case 7:{
-        int b =5
-        break;
-    }
-    case 8:{
-        b = 7
-    }
-    
-}
-
-{
-    int c = 7
-    switch (a){
-        case 5: case 7:{
-            int b =5
-            break;
-        }
-        case 8:{
-            b = 7
-        }
-        
-    }
-}
