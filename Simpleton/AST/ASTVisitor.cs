@@ -59,5 +59,6 @@
         T VisitDotReferencingNode(DotReferencingNode node);
         T VisitFieldNode(Field node);
         T VisitMethodNode(Method node);
+        T VisitSubscriptMemberNode(SubscriptMember node);
     }
 }

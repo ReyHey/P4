@@ -1,0 +1,31 @@
+text:
+    boolean IsSubText(text sub)
+    text DeleteSubTexts(text sub)
+    text DeleteFromTo(number startIndex, number stopIndex)
+    text ToUpper()
+    text ToLower()
+    text ReverseText()
+    number Length()
+    number ToNumber()
+    list<text> Split(text token)
+    text CharAt(number index)
+
+number:
+    text ToText()
+
+boolean:
+    text ToText()
+
+list:
+    void Add(T toAdd)
+    void RemoveLast()
+    void RemoveAt(number index)
+    void Clear()
+    void Sort()
+    number Length()
+
+
+void Write(text t)
+text Read()
+number sqrt(number value)
+number cbrt(number value)

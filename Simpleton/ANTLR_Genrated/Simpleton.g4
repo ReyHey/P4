@@ -23,7 +23,7 @@ LIST: 'list';
 
 // a[4+5].ToString()
 
-expr: IDENTIFIER ('[' expr ']')? member*                                                #Identifier
+expr: id                                                                                #IdentifierCall
     | constant                                                                          #ConstantLiteral
     | func_call                                                                         #FuncCall
     | NaN='NaN'                                                                         #NaNExpr
@@ -37,8 +37,16 @@ expr: IDENTIFIER ('[' expr ']')? member*                                        
     | left=expr op=('and'| 'or') right=expr                                             #InfixExpr         
     ;
 
-member: ('.' (IDENTIFIER | func_call | subscript));
 subscript: IDENTIFIER '[' expr ']';
+func_call: IDENTIFIER '(' actual_parameter_list? ')';
+actual_parameter_list: expr (',' expr)*;
+
+
+id: id '.' ids | ids;
+
+ids: IDENTIFIER | func_call | subscript;
+
+
 
 constant: NUMBER     
         | TEXT
@@ -55,8 +63,8 @@ struct_decl: 'struct' IDENTIFIER NEWLINE?'{'NEWLINE struct_member+ '}' NEWLINE;
 struct_member: type IDENTIFIER NEWLINE;
 
 
-enum_decl: 'enum' IDENTIFIER NEWLINE?'{'NEWLINE enum_member+ '}' NEWLINE;
-enum_member: IDENTIFIER ('=' NUMBER)? NEWLINE;
+enum_decl: 'enum' IDENTIFIER NEWLINE?'{'NEWLINE? enum_member(',' enum_member)* '}' NEWLINE;
+enum_member: IDENTIFIER ('=' NUMBER)? NEWLINE?;
 
 
 function_decl               : 'function' returnType=return_type name=IDENTIFIER '(' (formal_parameter (',' formal_parameter)*)? ')' block;
@@ -95,18 +103,17 @@ else_stmt: 'else' block;
 
 while_stmt: 'while' expr block;
 
-foreach_stmt: 'foreach' type element=IDENTIFIER 'in' IDENTIFIER('.'IDENTIFIER)* block;
+foreach_stmt: 'foreach' type element=IDENTIFIER 'in' id block;
 
 block: NEWLINE? '{' NEWLINE (stmt)* '}' NEWLINE?;
 
 
-assign_stmt : IDENTIFIER('.' (IDENTIFIER | subscript))* '=' expr NEWLINE;
+assign_stmt : id '=' expr NEWLINE;
 
-ternary_stmt: IDENTIFIER('.'IDENTIFIER)* '='  ifExpr=expr 'if' cond=expr 'else' elseExpr=expr NEWLINE;
-compound_assign_stmt : IDENTIFIER('.'IDENTIFIER)* compoundOP=('+='|'-='|'*='|'/=') expr NEWLINE;
+ternary_stmt: id '='  ifExpr=expr 'if' cond=expr 'else' elseExpr=expr NEWLINE;
+compound_assign_stmt : id compoundOP=('+='|'-='|'*='|'/=') expr NEWLINE;
 
-func_call: IDENTIFIER '(' actual_parameter_list? ')';
-actual_parameter_list: expr (',' expr)*;
+
 
 //random_decl: 'random' IDENTIFIER '=' 'random' func_call_type; 
 

@@ -9,13 +9,13 @@ namespace Simpleton
 {
     class Program
     {
-        static bool terminal = false;
-        static bool enablePrettyPrint = true;
-        static bool enableASTPrinter = false;
+        public static bool terminal = false;
+        public static bool enablePrettyPrint = false;
+        public static bool enableASTPrinter = false;
 
         static void Main(string[] args)
         {
-            ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "Codesample/Calculator.sm");
+            ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "Codesample/AverageValueOfAList.sm");
             ITokenSource lexer = new SimpletonLexer(stream);
             ITokenStream tokens = new CommonTokenStream(lexer);
             SimpletonParser parser = new SimpletonParser(tokens);
@@ -35,6 +35,8 @@ namespace Simpleton
                 string prettyPrint = new PrettyPrint().VisitProgramNode((ProgramNode)AST);
                 Console.WriteLine(prettyPrint);
             }
+
+            new ScopeCheckerVisitor(AST).VisitProgramNode(AST);
         }
     }
 }

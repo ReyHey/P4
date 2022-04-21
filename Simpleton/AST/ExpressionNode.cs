@@ -161,6 +161,7 @@ namespace Simpleton.AST
 
     public abstract class CallNode : ExpressionNode, ASTNode
     {
+
     }
 
     public class VariableCallNode : CallNode
@@ -180,6 +181,10 @@ namespace Simpleton.AST
 
     public class SubscriptCallNode : VariableCallNode
     {
+        public SubscriptCallNode(string identifier, ExpressionNode index) : base(identifier)
+        {
+            this.index = index;
+        }
         public ExpressionNode index { get; set; }
         public override T Accept<T>(ASTVisitor<T> v)
         {
@@ -189,6 +194,10 @@ namespace Simpleton.AST
 
     public class FunctionCallNode : VariableCallNode
     {
+        public FunctionCallNode(string identifier, List<ExpressionNode> actualParameters) : base(identifier)
+        {
+            this.actualParameters = actualParameters;
+        }
         public List<ExpressionNode> actualParameters { get; set; } = new List<ExpressionNode>();
         public override T Accept<T>(ASTVisitor<T> v)
         {
@@ -204,7 +213,7 @@ namespace Simpleton.AST
             set => member.type = value;
         }
         public CallNode parent { get; set; }
-        public CallNode member { get; set; }
+        public Member member { get; set; }
         public override T Accept<T>(ASTVisitor<T> v)
         {
             return v.VisitDotReferencingNode(this);
@@ -214,11 +223,12 @@ namespace Simpleton.AST
 
     public abstract class Member : ASTNode
     {
-        public Member(string identifer)
+        public Member(string identifier, CallNode parent)
         {
             this.identifier = identifier;
+            this.parent = parent;
         }
-        public CallNode parent { get; set; }
+        public CallNode parent { get; }
         public Type type { get; set; }
         public LineInfo Line { get; set; }
         public string identifier { get; set; }
@@ -227,7 +237,7 @@ namespace Simpleton.AST
 
     public class Field : Member
     {
-        public Field(string identifer) : base(identifer)
+        public Field(string identifier, CallNode parent) : base(identifier, parent)
         {
 
         }
@@ -237,11 +247,25 @@ namespace Simpleton.AST
         }
     }
 
+    public class SubscriptMember : Member
+    {
+        public SubscriptMember(string identifier, ExpressionNode index, CallNode parent) : base(identifier, parent)
+        {
+            this.index = index;
+        }
+        public ExpressionNode index { get; set; }
+        public override T Accept<T>(ASTVisitor<T> v)
+        {
+            return v.VisitSubscriptMemberNode(this);
+        }
+    }
+
+
     public class Method : Member
     {
-        public Method(string identifer) : base(identifer)
+        public Method(string identifier, List<ExpressionNode> actualParameters, CallNode parent) : base(identifier, parent)
         {
-
+            this.actualParameters = actualParameters;
         }
         public List<ExpressionNode> actualParameters { get; set; } = new List<ExpressionNode>();
         public override T Accept<T>(ASTVisitor<T> v)

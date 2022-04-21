@@ -4,6 +4,11 @@ namespace Simpleton.AST
 {
     class PrintNodeVisitor : ASTVisitor<PrintNode>
     {
+        public PrintNode VariableCallNode(VariableCallNode node)
+        {
+            return new PrintNode("VariableCall" + " " + node.identifier, node.Line);
+        }
+
         public PrintNode Visit(ASTNode node)
         {
             return node.Accept(this);
@@ -89,7 +94,7 @@ namespace Simpleton.AST
         public PrintNode VisitDIVISIONEQNode(DIVISIONEQNode node)
         {
             PrintNode p = new PrintNode("DIVISIONEQNode", node.Line);
-            p.AddChild(Visit(node.identifier));
+            p.AddChild(Visit(node.variable));
             p.AddChild(Visit(node.expression));
             return p;
         }
@@ -99,6 +104,14 @@ namespace Simpleton.AST
             PrintNode p = new PrintNode("/", node.Line);
             p.AddChild(Visit(node.Left));
             p.AddChild(Visit(node.Right));
+            return p;
+        }
+
+        public PrintNode VisitDotReferencingNode(DotReferencingNode node)
+        {
+            PrintNode p = new PrintNode("DotReferencing", node.Line);
+            p.AddChild(Visit(node.parent));
+            p.AddChild(Visit(node.member));
             return p;
         }
 
@@ -128,9 +141,15 @@ namespace Simpleton.AST
             return p;
         }
 
+        public PrintNode VisitFieldNode(Field node)
+        {
+            return new PrintNode("Field " + node.identifier, node.Line);
+        }
+
         public PrintNode VisitForeachNode(ForeachNode node)
         {
-            PrintNode p = new PrintNode("Foreach", node.element, node.Line);
+            PrintNode p = new PrintNode("Foreach", node.Line);
+            p.AddChild(Visit(node.element));
             p.AddChild(Visit(node.list));
             p.AddChild(Visit(node.block));
             return p;
@@ -181,18 +200,6 @@ namespace Simpleton.AST
             return p;
         }
 
-        public PrintNode VisitIdentifierCall(IdentifierCall node)
-        {
-            PrintNode p = new PrintNode("IdentifierCall", node.identifier, node.Line);
-            if (node.index != null)
-                p.AddChild(Visit(node.index));
-            if (node.members != null)
-                foreach (var m in node.members)
-                {
-                    p.AddChild(Visit(m));
-                }
-            return p;
-        }
 
         public PrintNode VisitIfNode(IfNode node)
         {
@@ -247,24 +254,25 @@ namespace Simpleton.AST
             return p;
         }
 
-        public PrintNode VisitMember(Member node)
+
+
+        public PrintNode VisitMethodNode(Method node)
         {
+            PrintNode p = new PrintNode("Method", node.identifier, node.Line);
+            if (node.actualParameters != null)
+                foreach (var a in node.actualParameters)
+                {
+                    p.AddChild(Visit(a));
+                }
 
-            if (node.identifier != null)
-                return new PrintNode("Member", node.identifier, node.Line);
-            else
-            {
-                PrintNode p = new PrintNode("Member", node.Line);
-                p.AddChild(Visit(node.functionCall));
-                return p;
-            }
 
+            return p;
         }
 
         public PrintNode VisitMINUSEQNode(MINUSEQNode node)
         {
             PrintNode p = new PrintNode("MINUSEQNode", node.Line);
-            p.AddChild(Visit(node.identifier));
+            p.AddChild(Visit(node.variable));
             p.AddChild(Visit(node.expression));
             return p;
         }
@@ -280,7 +288,7 @@ namespace Simpleton.AST
         public PrintNode VisitMULTIEQNode(MULTIEQNode node)
         {
             PrintNode p = new PrintNode("MULTIEQNode", node.Line);
-            p.AddChild(Visit(node.identifier));
+            p.AddChild(Visit(node.variable));
             p.AddChild(Visit(node.expression));
             return p;
         }
@@ -337,7 +345,7 @@ namespace Simpleton.AST
         public PrintNode VisitPLUSEQNode(PLUSEQNode node)
         {
             PrintNode p = new PrintNode("+=", node.Line);
-            p.AddChild(Visit(node.identifier));
+            p.AddChild(Visit(node.variable));
             p.AddChild(Visit(node.expression));
             return p;
         }
@@ -382,6 +390,20 @@ namespace Simpleton.AST
             return p;
         }
 
+        public PrintNode VisitSubscriptCallNode(SubscriptCallNode node)
+        {
+            PrintNode p = new PrintNode("SubscriptCall " + node.identifier, node.Line);
+            p.AddChild(Visit(node.index));
+            return p;
+        }
+
+        public PrintNode VisitSubscriptMemberNode(SubscriptMember node)
+        {
+            PrintNode p = new PrintNode("SubscriptMember " + node.identifier, node.Line);
+            p.AddChild(Visit(node.index));
+            return p;
+        }
+
         public PrintNode VisitSubtractionNode(SubtractionNode node)
         {
             PrintNode p = new PrintNode("-", node.Line);
@@ -410,7 +432,7 @@ namespace Simpleton.AST
         public PrintNode VisitTernaryNode(TernaryNode node)
         {
             PrintNode p = new PrintNode("Ternary", node.Line);
-            p.AddChild(Visit(node.identifier));
+            p.AddChild(Visit(node.variable));
             p.AddChild(Visit(node.condition));
             p.AddChild(Visit(node.ifClause));
             p.AddChild(Visit(node.elseClause));
