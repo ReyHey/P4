@@ -9,7 +9,7 @@ namespace Simpleton
 {
     class Program
     {
-        public static bool terminal = false;
+        public static bool terminal = true;
         public static bool enablePrettyPrint = false;
         public static bool enableASTPrinter = false;
 
@@ -38,8 +38,10 @@ namespace Simpleton
 
             new ScopeCheckerVisitor(AST).VisitProgramNode(AST);
             new Typechecker().VisitProgramNode(AST);
+
+            CodeGenerator cg = new CodeGenerator();
+            cg.Write("HERE WE WRITE STUFF THERE DOES NOT WORK");
+            cg.Close();
         }
-
-
     }
 }

@@ -12,7 +12,7 @@ function void Main(){
             result = vector1[i]*vector2[i]
         }
 
-        Write("The dot product of the vectors is " + result.ToString())
+        Write("The dot product of the vectors is " + result.ToText())
     }
     else{
         Write("The two wrote vectors are not equal size, and therefor the dot product could not be calculate.")

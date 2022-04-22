@@ -260,7 +260,7 @@ namespace Simpleton
         }
         public string VisitListDeclNode(ListDeclNode node)
         {
-            return $"List<{node.type}> {node.name} {(node.initialization != null ? Visit(node.initialization) : "")}";
+            return $"{node.type} {node.name} {(node.initialization != null ? Visit(node.initialization) : "")}";
         }
         public string VisitInitialization(Initialization node)
         {
