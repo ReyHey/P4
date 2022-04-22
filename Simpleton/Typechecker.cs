@@ -232,6 +232,8 @@ namespace Simpleton
         public Type VisitFunctionDeclNode(FunctionDeclNode node)
         {
             Visit(node.block);
+
+
             return null;
         }
 

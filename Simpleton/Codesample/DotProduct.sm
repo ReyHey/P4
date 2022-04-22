@@ -24,7 +24,7 @@ function void Main(){
 function list<number> GetVector(text str){
     boolean isValidInput = true
     list<number> vector
-    
+
     while isValidInput {
         Write("Write the " + str + " vector: ")
         text vectorString = Read()

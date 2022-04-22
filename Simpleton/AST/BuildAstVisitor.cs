@@ -212,7 +212,7 @@ namespace Simpleton.AST
 
             parameter.name = (string)Visit(context.IDENTIFIER());
             parameter.type = (Type)Visit(context.type());
-
+            parameter.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
             return parameter;
         }
 
@@ -272,11 +272,15 @@ namespace Simpleton.AST
             }
             else if (context.jump.Text == "break")
             {
-                return new Break();
+                Break @break = new Break();
+                @break.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
+                return @break;
             }
             else if (context.jump.Text == "continue")
             {
-                return new Continue();
+                Continue @continue = new Continue();
+                @continue.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
+                return @continue;
             }
             return null;
         }
@@ -506,6 +510,7 @@ namespace Simpleton.AST
                         }
 
                 }
+                caseSwitch.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
                 cases.Add(caseSwitch);
             }
 
@@ -633,7 +638,9 @@ namespace Simpleton.AST
 
         public object VisitNaNExpr([NotNull] NaNExprContext context)
         {
-            return new NaNExpressionNode();
+            NaNExpressionNode node = new NaNExpressionNode();
+            node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
+            return node;
         }
 
         public object VisitParensExpr([NotNull] ParensExprContext context)
@@ -745,7 +752,9 @@ namespace Simpleton.AST
 
         public object VisitSubscript([NotNull] SubscriptContext context)
         {
-            return new SubscriptCallNode((string)Visit(context.IDENTIFIER()), (ExpressionNode)(Visit(context.expr())));
+            SubscriptCallNode node = new SubscriptCallNode((string)Visit(context.IDENTIFIER()), (ExpressionNode)(Visit(context.expr())));
+            node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
+            return node;
         }
 
         public object VisitId([NotNull] IdContext context)
@@ -753,6 +762,7 @@ namespace Simpleton.AST
             if (context.id() != null)
             {
                 DotReferencingNode referencingNode = new DotReferencingNode();
+                referencingNode.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
                 referencingNode.parent = (CallNode)Visit(context.id());
                 CallNode member = (CallNode)Visit(context.ids());
                 if (member is FunctionCallNode)
@@ -781,7 +791,11 @@ namespace Simpleton.AST
         public object VisitIds([NotNull] IdsContext context)
         {
             if (context.IDENTIFIER() != null)
-                return new VariableCallNode((string)Visit(context.IDENTIFIER()));
+            {
+                VariableCallNode node = new VariableCallNode((string)Visit(context.IDENTIFIER()));
+                node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
+                return node;
+            }
             else if (context.func_call() != null)
                 return Visit(context.func_call());
             else
