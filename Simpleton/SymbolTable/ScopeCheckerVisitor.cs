@@ -311,6 +311,7 @@ namespace Simpleton
             }
             Visit(node.block);
 
+
             return null;
         }
 
@@ -528,7 +529,7 @@ namespace Simpleton
             }
             catch (GetException e)
             {
-                Console.WriteLine(e.Message + " " + node.Line.column);
+                Console.WriteLine(e.Message + " " + node.Line.line + " " + (node.Line.column + 1));
                 System.Environment.Exit(-1);
             }
 

@@ -36,7 +36,11 @@ namespace Simpleton
             if (Lnode.Equals(Rnode))
             {
                 if (Lnode.Equals(Type.TextType()) || Lnode.Equals(Type.NumberType()))
+                {
+                    node.type = Lnode;
                     return Lnode;
+                }
+
                 else
                     throw new InvalidTypeException();
             }
@@ -53,7 +57,10 @@ namespace Simpleton
             if (Lnode.Equals(Rnode))
             {
                 if (Lnode.Equals(Type.BooleanType()))
+                {
+                    node.type = Lnode;
                     return Lnode;
+                }
                 else
                     throw new InvalidTypeException();
             }
@@ -146,7 +153,10 @@ namespace Simpleton
             if (Lnode.Equals(Rnode))
             {
                 if (Lnode.Equals(Type.NumberType()))
+                {
+                    node.type = Lnode;
                     return Lnode;
+                }
                 else
                     throw new InvalidTypeException();
             }
@@ -189,7 +199,11 @@ namespace Simpleton
             if (Lnode.Equals(Rnode) || Lnode.Equals(Type.NaNTyped()) || Rnode.Equals(Type.NaNTyped()))
             {
                 if (Lnode.Equals(Type.NumberType()) || Lnode.Equals(Type.TextType()) || Lnode.Equals(Type.BooleanType()))
-                    return Type.BooleanType();
+                {
+                    node.type = Type.BooleanType();
+                    return node.type;
+                }
+
                 else
                     throw new InvalidTypeException();
             }
@@ -232,6 +246,8 @@ namespace Simpleton
         public Type VisitFunctionDeclNode(FunctionDeclNode node)
         {
             Visit(node.block);
+
+
             return null;
         }
 
@@ -243,7 +259,11 @@ namespace Simpleton
             if (Lnode.Equals(Rnode))
             {
                 if (Lnode.Equals(Type.NumberType()))
-                    return Type.BooleanType();
+                {
+                    node.type = Type.BooleanType(); ;
+                    return node.type;
+                }
+
                 else
                     throw new InvalidTypeException();
             }
@@ -259,7 +279,11 @@ namespace Simpleton
             if (Lnode.Equals(Rnode))
             {
                 if (Lnode.Equals(Type.NumberType()))
-                    return Type.BooleanType();
+                {
+                    node.type = Type.BooleanType();
+                    return node.type;
+                }
+
                 else
                     throw new InvalidTypeException();
             }
@@ -308,7 +332,11 @@ namespace Simpleton
             if (Lnode.Equals(Rnode))
             {
                 if (Lnode.Equals(Type.NumberType()))
-                    return Type.BooleanType();
+                {
+                    node.type = Type.BooleanType(); ;
+                    return node.type;
+                }
+
                 else
                     throw new InvalidTypeException();
             }
@@ -324,7 +352,10 @@ namespace Simpleton
             if (Lnode.Equals(Rnode))
             {
                 if (Lnode.Equals(Type.NumberType()))
-                    return Type.BooleanType();
+                {
+                    node.type = Type.BooleanType();
+                    return node.type;
+                }
                 else
                     throw new InvalidTypeException();
             }
@@ -369,7 +400,10 @@ namespace Simpleton
             if (Lnode.Equals(Rnode))
             {
                 if (Lnode.Equals(Type.NumberType()))
+                {
+                    node.type = Lnode;
                     return Lnode;
+                }
                 else
                     throw new InvalidTypeException();
             }
@@ -396,7 +430,10 @@ namespace Simpleton
             if (Lnode.Equals(Rnode))
             {
                 if (Lnode.Equals(Type.NumberType()))
+                {
+                    node.type = Lnode;
                     return Lnode;
+                }
                 else
                     throw new InvalidTypeException();
             }
@@ -414,7 +451,10 @@ namespace Simpleton
             Type exprType = Visit(node.expr);
 
             if (exprType.Equals(Type.NumberType()))
+            {
+                node.type = exprType;
                 return exprType;
+            }
             else
                 throw new InvalidTypeException();
         }
@@ -427,7 +467,11 @@ namespace Simpleton
             if (Lnode.Equals(Rnode) || Lnode.Equals(Type.NaNTyped()) || Rnode.Equals(Type.NaNTyped()))
             {
                 if (Lnode.Equals(Type.NumberType()) || Lnode.Equals(Type.TextType()) || Lnode.Equals(Type.BooleanType()))
-                    return Type.BooleanType();
+                {
+                    node.type = Type.BooleanType();
+                    return node.type;
+                }
+
                 else
                     throw new InvalidTypeException();
             }
@@ -440,7 +484,10 @@ namespace Simpleton
             Type exprType = Visit(node.expr);
 
             if (exprType.Equals(Type.BooleanType()))
+            {
+                node.type = exprType;
                 return exprType;
+            }
             else
                 throw new InvalidTypeException();
         }
@@ -458,7 +505,10 @@ namespace Simpleton
             if (Lnode.Equals(Rnode))
             {
                 if (Lnode.Equals(Type.BooleanType()))
+                {
+                    node.type = Lnode;
                     return Lnode;
+                }
                 else
                     throw new InvalidTypeException();
             }
@@ -484,8 +534,11 @@ namespace Simpleton
 
             if (Lnode.Equals(Rnode))
             {
-                if (Lnode.Equals(Type.BooleanType()))
+                if (Lnode.Equals(Type.NumberType()))
+                {
+                    node.type = Lnode;
                     return Lnode;
+                }
                 else
                     throw new InvalidTypeException();
             }
@@ -547,7 +600,10 @@ namespace Simpleton
             if (Lnode.Equals(Rnode))
             {
                 if (Lnode.Equals(Type.NumberType()))
+                {
+                    node.type = Lnode;
                     return Lnode;
+                }
                 else
                     throw new InvalidTypeException();
             }
@@ -595,7 +651,6 @@ namespace Simpleton
 
         public Type VisitVariableDeclNode(VariableDeclNode node)
         {
-            Type declaredType = node.type;
             if (node.initialization != null)
             {
                 if (Visit(node.initialization).Equals(node.type))
