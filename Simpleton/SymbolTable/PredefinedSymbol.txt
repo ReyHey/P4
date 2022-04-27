@@ -9,6 +9,7 @@ text:
     number ToNumber()
     list<text> Split(text token)
     text CharAt(number index)
+    text Replace(text original, text replacer)
 
 number:
     text ToText()
@@ -18,7 +19,6 @@ boolean:
 
 list:
     void Add(T toAdd)
-    void RemoveLast()
     void RemoveAt(number index)
     void Clear()
     void Sort()
@@ -27,5 +27,6 @@ list:
 
 void Write(text t)
 text Read()
-number sqrt(number value)
-number cbrt(number value)
+number Sqrt(number value)
+number Cbrt(number value)
+void Terminate(text message)

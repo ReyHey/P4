@@ -9,7 +9,8 @@ function void Main(){
         number result = 0
         number i = 0
         while i < vector1.Length() {
-            result = vector1[i]*vector2[i]
+            result += vector1[i]*vector2[i]
+            i += 1
         }
 
         Write("The dot product of the vectors is " + result.ToText())
@@ -17,8 +18,6 @@ function void Main(){
     else{
         Write("The two wrote vectors are not equal size, and therefor the dot product could not be calculate.")
     }
-
-    
 }
 
 function list<number> GetVector(text str){
@@ -28,8 +27,8 @@ function list<number> GetVector(text str){
     while isValidInput {
         Write("Write the " + str + " vector: ")
         text vectorString = Read()
-        vectorString.DeleteSubTexts("[")
-        vectorString.DeleteSubTexts("]")
+        vectorString = vectorString.DeleteSubTexts("[")
+        vectorString = vectorString.DeleteSubTexts("]")
 
         list<text> spilted = vectorString.Split(",")
        
@@ -38,10 +37,10 @@ function list<number> GetVector(text str){
             value = e.ToNumber()
             if value != NaN {
                 vector.Add(value)
-                isValidInput = true
+                isValidInput = false
             }
             else{
-                isValidInput = false
+                isValidInput = true
                 Write("Wrong input. Write a valid vector\n")
             }
         }
