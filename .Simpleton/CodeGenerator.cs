@@ -58,6 +58,6 @@ class CODE
 
         private static bool _terminal = true;
         private FileStream _file;
-        private string _fileName = (_terminal ? "" : "../../../") + "../Output/Program.cs";
+        private string _fileName = (_terminal ? "" : "../../../") + "../.Output/Program.cs";
     }
 }
