@@ -41,8 +41,10 @@ namespace Simpleton
 
             CodeGenerator cg = new CodeGenerator();
             CodeGenerationVisitor cgv = new CodeGenerationVisitor();
-            cg.Write(cgv.VisitProgramNode(AST) + "}");
+            new CSharpCompiler(cgv.VisitProgramNode(AST) + "}", "Output/a.out");
+            //cg.Write(cgv.VisitProgramNode(AST) + "}");
             cg.Close();
+
         }
     }
 }
