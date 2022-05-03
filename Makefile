@@ -1,3 +1,3 @@
-Simp:
-	cd Simpleton && dotnet run
+simp:
+	cd Simpleton && dotnet run $(P)
 	cd Output && dotnet run

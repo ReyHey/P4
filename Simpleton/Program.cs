@@ -15,35 +15,37 @@ namespace Simpleton
 
         static void Main(string[] args)
         {
-            ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "Codesample/AverageValueOfAList.sm");
-            ITokenSource lexer = new SimpletonLexer(stream);
-            ITokenStream tokens = new CommonTokenStream(lexer);
-            SimpletonParser parser = new SimpletonParser(tokens);
-            parser.RemoveErrorListeners();
-            parser.AddErrorListener(DescriptiveErrorListener.Instance);
-            SimpletonParser.ProgramContext CST = parser.program();
-            ProgramNode AST = (ProgramNode)new BuildAstVisitor().VisitProgram(CST);
-
-            if (enableASTPrinter)
+            if (args.Length == 1)
             {
-                PrintNode tree = new PrintNodeVisitor().VisitProgramNode((ProgramNode)AST);
-                tree.Print("", true);
+                ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "../" + args[0]);
+                ITokenSource lexer = new SimpletonLexer(stream);
+                ITokenStream tokens = new CommonTokenStream(lexer);
+                SimpletonParser parser = new SimpletonParser(tokens);
+                parser.RemoveErrorListeners();
+                parser.AddErrorListener(DescriptiveErrorListener.Instance);
+                SimpletonParser.ProgramContext CST = parser.program();
+                ProgramNode AST = (ProgramNode)new BuildAstVisitor().VisitProgram(CST);
+
+                if (enableASTPrinter)
+                {
+                    PrintNode tree = new PrintNodeVisitor().VisitProgramNode((ProgramNode)AST);
+                    tree.Print("", true);
+                }
+
+                if (enablePrettyPrint)
+                {
+                    string prettyPrint = new PrettyPrint().VisitProgramNode((ProgramNode)AST);
+                    Console.WriteLine(prettyPrint);
+                }
+
+                new ScopeCheckerVisitor(AST).VisitProgramNode(AST);
+                new Typechecker().VisitProgramNode(AST);
+                
+                CodeGenerator cg = new CodeGenerator();
+                CodeGenerationVisitor cgv = new CodeGenerationVisitor();
+                cg.Write(cgv.VisitProgramNode(AST) + "}");
+                cg.Close();
             }
-
-            if (enablePrettyPrint)
-            {
-                string prettyPrint = new PrettyPrint().VisitProgramNode((ProgramNode)AST);
-                Console.WriteLine(prettyPrint);
-            }
-
-            new ScopeCheckerVisitor(AST).VisitProgramNode(AST);
-            new Typechecker().VisitProgramNode(AST);
-
-            CodeGenerator cg = new CodeGenerator();
-            CodeGenerationVisitor cgv = new CodeGenerationVisitor();
-            cg.Write(cgv.VisitProgramNode(AST) + "}");
-            cg.Close();
-
         }
     }
 }
