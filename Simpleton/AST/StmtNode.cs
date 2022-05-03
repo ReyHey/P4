@@ -129,6 +129,7 @@ namespace Simpleton.AST
     public class VariableDeclNode : Variable
     {
         public ExpressionNode initialization { get; set; }
+        public bool shouldBeInit = true;
         public override T Accept<T>(ASTVisitor<T> v)
         {
             return v.VisitVariableDeclNode(this);

@@ -198,6 +198,7 @@ namespace Simpleton.AST
             node.element = new VariableDeclNode();
             node.element.name = context.element.Text;
             node.element.type = (Type)Visit(context.type());
+            node.element.shouldBeInit = false;
 
             node.list = (CallNode)Visit(context.id());
 

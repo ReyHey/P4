@@ -2,11 +2,11 @@ function void Main(){
     list<number> integerList = {0,5,2,6,3,19,473,38}
 
     number average = GetAverage(integerList)
-    Write("The Average value of the list is " + average.ToText())
+    Write("The Average value of the list is " + average.ToText() + "\n")
 
     Write("List after call")
     foreach number element in integerList {
-        Write(element.ToText())
+        Write(element.ToText() + "\n")
     }
 }
 

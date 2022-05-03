@@ -260,7 +260,15 @@ namespace Simpleton
         }
         public string VisitVariableDeclNode(VariableDeclNode node)
         {
-            return $"{ConvertToCSType(node.type)} {node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "")}";
+            string t = ConvertToCSType(node.type);
+            if (t == "decimal?" && node.shouldBeInit) 
+            {
+                return $"{t} {node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "= 0")}";
+            }
+            else
+            {
+                return $"{t} {node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "")}";
+            }
         }
         public string VisitListDeclNode(ListDeclNode node)
         {
