@@ -14,6 +14,8 @@ namespace Simpleton
 
         List<Symbol> TempSymbols = new List<Symbol>();
 
+        Stack<Loop> loopStack = new Stack<Loop>();
+
         public ScopeCheckerVisitor(ASTNode AST)
         {
             PredefinedSymbolTable();
@@ -214,6 +216,13 @@ namespace Simpleton
 
         public object VisitBreak(Break node)
         {
+            Loop loop;
+            if (!loopStack.TryPeek(out loop))
+            {
+                Console.WriteLine($"Line {node.Line.line}: break can not be used in the given context, since it is not placed in a while or foreach loop");
+                Environment.Exit(1);
+            }
+            node.loop = loop;
             return null;
         }
 
@@ -249,6 +258,13 @@ namespace Simpleton
 
         public object VisitContinue(Continue node)
         {
+            Loop loop;
+            if (!loopStack.TryPeek(out loop))
+            {
+                Console.WriteLine($"Line {node.Line.line}: continue can not be used in the given context, since it is not placed in a while or foreach loop");
+                Environment.Exit(1);
+            }
+            node.loop = loop;
             return null;
         }
 
@@ -275,9 +291,11 @@ namespace Simpleton
 
         public object VisitForeachNode(ForeachNode node)
         {
+            loopStack.Push(node);
             TempSymbols.Add(new Symbol(node.element.name, node.element));
             Visit(node.list);
             Visit(node.block);
+            loopStack.Pop();
             return null;
         }
 
@@ -488,8 +506,10 @@ namespace Simpleton
 
         public object VisitWhileNode(WhileNode node)
         {
+            loopStack.Push(node);
             Visit(node.condition);
             Visit(node.block);
+            loopStack.Pop();
             return null;
         }
 

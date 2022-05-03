@@ -15,7 +15,7 @@ function number GetAverage(list<number> l){
     foreach number element in l {
         sum += element
     }
-
+    
     number i
     while i < l.Length() {
         l[i] = -1
