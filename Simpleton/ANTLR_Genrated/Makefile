@@ -3,7 +3,7 @@ GRUN = java org.antlr.v4.gui.TestRig
 # --------------------------------------------------
 
 Simpleton:
-	ANTLR Simpleton.g4 -Dlanguage=CSharp -visitor
+	java -jar antlr-4.9.3-complete.jar Simpleton.g4 -Dlanguage=CSharp -visitor
 
 SimpletonTest:
 	ANTLR Simpleton.g4

@@ -1,21 +1,5 @@
 ﻿namespace Simpleton.AST
 {
-
-
-    //public class Identifier : ASTNode
-    //{
-    //    public Identifier(string spelling)
-    //    {
-    //        this.spelling = spelling;
-    //    }
-    //    public string spelling { get; set; }
-
-    //    public T Accept<T>(ASTVisitor<T> v)
-    //    {
-    //        return v.VisitIdentifier(this);
-    //    }
-    //}
-
     public abstract class ConstantNode : ExpressionNode, ASTNode
     {
         public ConstantNode(string value)

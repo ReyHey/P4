@@ -9,13 +9,13 @@ namespace Simpleton
 {
     class Program
     {
-        public static bool terminal = false;
+        public static bool terminal = true;
         public static bool enablePrettyPrint = false;
         public static bool enableASTPrinter = false;
 
         static void Main(string[] args)
         {
-            ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "Codesample/DotProduct.sm");
+            ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "Codesample/AverageValueOfAList.sm");
             ITokenSource lexer = new SimpletonLexer(stream);
             ITokenStream tokens = new CommonTokenStream(lexer);
             SimpletonParser parser = new SimpletonParser(tokens);

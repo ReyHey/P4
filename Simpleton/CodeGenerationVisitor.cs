@@ -147,7 +147,7 @@ namespace Simpleton
         }
         public string VisitNegativeExpressionNode(NegativeExpressionNode node)
         {
-            return "-" + Visit(node.expr);
+            return $"(-{Visit(node.expr)})";
         }
         public string VisitNaNExpressionNode(NaNExpressionNode node)
         {
@@ -159,13 +159,17 @@ namespace Simpleton
             if (node.actualParameters != null)
                 for (int i = 0; i < node.actualParameters.Count; i++)
                 {
+                    if (node.actualParameters[i].type.listType) 
+                    {
+                        s += $"new List<{GetCSPrimType(node.actualParameters[i].type.typeName)}>({Visit(node.actualParameters[i])})";
+                    }
+                    else {
+                        s += Visit(node.actualParameters[i]);
+                    }
+                    
                     if (i < node.actualParameters.Count - 1)
                     {
-                        s += Visit(node.actualParameters[i]) + ", ";
-                    }
-                    else
-                    {
-                        s += Visit(node.actualParameters[i]);
+                        s += ", ";
                     }
                 }
             s += ")";

@@ -3,70 +3,6 @@ using Simpleton.AST;
 
 namespace Simpleton.SymTable
 {
-    //public class SymbolTable
-    //{
-    //    private Dictionary<string, Symbol> st = new Dictionary<string, Symbol>();
-    //    private SymbolTable parentTable;
-
-
-    //    public SymbolTable()
-    //    {
-    //        this.parentTable = null;
-    //    }
-
-
-    //    public SymbolTable(SymbolTable parentTable)
-    //    {
-    //        this.parentTable = parentTable;
-    //    }
-
-    //    public Symbol getSymbol(string name)
-    //    {
-    //        try
-    //        {
-    //            if (!st.ContainsKey(name))
-    //            {
-    //                throw new GetException(name);
-    //            }
-    //            return st[name];
-    //        }
-    //        catch (GetException get)
-    //        {
-    //            throw get;
-    //        }
-    //    }
-
-    //    public void putSymbol(string type, string name, string value, ASTNode node)
-    //    {
-    //        try
-    //        {
-    //            for (SymbolTable table = this; table != null; table = table.parentTable)
-    //            {
-    //                if (table.st.ContainsKey(name))
-    //                {
-    //                    throw new PutException(name);
-    //                }
-    //            }
-
-    //            st.Add(name, new Symbol(type, name, value, node));
-    //        }
-    //        catch (PutException put)
-    //        {
-    //            throw put;
-    //        }
-    //    }
-
-    //    public Dictionary<string, Symbol> retrieveAllSymbols()
-    //    {
-    //        return st;
-    //    }
-
-
-    //}
-
-
-
-
     public class SymbolTable
     {
         Stack<Dictionary<string, Symbol>> symbolTables = new Stack<Dictionary<string, Symbol>>();
@@ -96,26 +32,6 @@ namespace Simpleton.SymTable
             }
             throw new GetException(name);
         }
-
-
-        //public Symbol getSymbol(string name)
-        //{
-        //    try
-        //    {
-        //        foreach (Dictionary<string, Symbol> table in symbolTables)
-        //        {
-        //            if (table.ContainsKey(name))
-        //                return table[name];
-        //        }
-        //        throw new GetException(name);
-
-        //    }
-        //    catch (GetException get)
-        //    {
-        //        throw get;
-        //    }
-
-        //}
 
         public void PutSymbol(string name, Symbol symbol)
         {

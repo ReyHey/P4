@@ -32,7 +32,7 @@ namespace Simpleton.AST
         }
     }
 
-    public class FormalParameter : ASTNode
+    public class FormalParameter : Variable, ASTNode
     {
         public FormalParameter()
         {
@@ -45,9 +45,7 @@ namespace Simpleton.AST
             this.name = name;
         }
 
-        public Type type { get; set; }
-        public string name { get; set; }
-        public T Accept<T>(ASTVisitor<T> v)
+        public override T Accept<T>(ASTVisitor<T> v)
         {
             return v.VisitFormalParameter(this);
         }

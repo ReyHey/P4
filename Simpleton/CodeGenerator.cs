@@ -53,7 +53,7 @@ class CODE
             this._file.Close();
         }
 
-        private static bool _terminal = false;
+        private static bool _terminal = true;
         private FileStream _file;
         private string _fileName = (_terminal ? "" : "../../../") + "Output/Test.cs";
     }

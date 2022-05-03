@@ -2,6 +2,7 @@ grammar Simpleton;
 program: declaration* EOF;                                                
 //includes: 'include' 'string' NEWLINE;
 
+
 declaration: function_decl
                | struct_decl
                | enum_decl
@@ -28,7 +29,7 @@ expr: id                                                                        
     | func_call                                                                         #FuncCall
     | NaN='NaN'                                                                         #NaNExpr
     | '(' expr ')'                                                                      #ParensExpr
-    | op='-' expr                                                                       #UnaryExpr
+    | '(' op='-' expr ')'                                                                       #UnaryExpr
     | left=expr op='^' right=expr                                                       #InfixExpr
     | left=expr op=('/'|'mod'|'*') right=expr                                           #InfixExpr
     | left=expr op=('+'|'-') right=expr                                                 #InfixExpr
@@ -119,8 +120,10 @@ compound_assign_stmt : id compoundOP=('+='|'-='|'*='|'/=') expr NEWLINE;
 
 
 WS : (' ' | '\t')+ -> channel(HIDDEN);
-NEWLINE : ([\r\n])+ (WS ([\r\n])+)*;
-
+NEWLINE : COMMENT? ([\r\n])+ (WS? COMMENT? ([\r\n])+)*;
+COMMENT : (MULTI_COMMENT | LINE_COMMENT);
+MULTI_COMMENT : '/*' .*? '*/' -> channel(HIDDEN);
+LINE_COMMENT : '//' ~[\r\n]* -> channel(HIDDEN);
 
 NUMBER: ('0' | '-'? [1-9][0-9]*) ('.' [0-9]*)?;
 TEXT: ('"' ~'"'* '"') | ('\'' ~'\''* '\'');
@@ -128,41 +131,3 @@ BOOlEAN: 'true' | 'false';
 NAN: 'NaN';
 
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// expression            ::= expression logical_symbol deep 
-//                         | deep;
-// deep                  ::= NOT deeper 
-//                         | deeper;
-// deeper                ::= arithmetic_expression eval_symbol arithmetic_expression
-//                         | arithmetic_expression;
-// arithmetic_expression ::= arithmetic_expression PLUS term 
-//                         | arithmetic_expression MINUS term 
-//                         | term;
-// term                  ::= term TIMES factor 
-//                         | term DIVISION factor 
-//                         | term MOD factor 
-//                         | factor;
-// factor                ::= factor POW arithmetic_expression 
-//                         | base;
-// base                  ::= UMINUS value
-//                         | value;
-// value                 ::= LPAREN expression RPAREN 
-//                         | NAN           
-//                         | constant
-//                         | IDENTIFIER
-//                         | IDENTIFIER func_call      
-//                         | IDENTIFIER LSQUARE index RSQUARE;         

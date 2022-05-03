@@ -5,7 +5,7 @@ function void Main(){
     vector1 = GetVector("first")
     vector2 = GetVector("second")
 
-    if vector1.Length() == vector2.Length() {
+    if vector1.Length() == vector2.Length() { 
         number result = 0
         number i = 0
         while i < vector1.Length() {
