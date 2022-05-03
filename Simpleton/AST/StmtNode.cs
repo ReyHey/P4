@@ -88,31 +88,33 @@ namespace Simpleton.AST
 
     }
 
-    public class ForeachNode : StmtNode
+
+    public abstract class Loop : StmtNode
+    {
+        public LineInfo Line { get; set; }
+        public abstract T Accept<T>(ASTVisitor<T> v);
+    }
+
+    public class ForeachNode : Loop, StmtNode
     {
         public VariableDeclNode element { get; set; }
-        //public Type type { get; set; }
-        //public string element { get; set; }
         public CallNode list { get; set; }
         public Block block { get; set; }
-        public T Accept<T>(ASTVisitor<T> v)
+        public override T Accept<T>(ASTVisitor<T> v)
         {
             return v.VisitForeachNode(this);
         }
-        public LineInfo Line { get; set; }
 
     }
 
-    public class WhileNode : StmtNode
+    public class WhileNode : Loop, StmtNode
     {
         public ExpressionNode condition { get; set; }
         public Block block { get; set; }
-        public T Accept<T>(ASTVisitor<T> v)
+        public override T Accept<T>(ASTVisitor<T> v)
         {
             return v.VisitWhileNode(this);
         }
-        public LineInfo Line { get; set; }
-
     }
 
     public abstract class Variable : StmtNode
@@ -165,6 +167,7 @@ namespace Simpleton.AST
 
     public class Break : JumpStmtNode
     {
+        public Loop loop { get; set; }
         public override T Accept<T>(ASTVisitor<T> v)
         {
             return v.VisitBreak(this);
@@ -173,6 +176,7 @@ namespace Simpleton.AST
 
     public class Continue : JumpStmtNode
     {
+        public Loop loop { get; set; }
         public override T Accept<T>(ASTVisitor<T> v)
         {
             return v.VisitContinue(this);
