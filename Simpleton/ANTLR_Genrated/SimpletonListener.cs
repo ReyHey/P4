@@ -155,6 +155,26 @@ public interface ISimpletonListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitUnaryExpr([NotNull] SimpletonParser.UnaryExprContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SimpletonParser.id"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterId([NotNull] SimpletonParser.IdContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SimpletonParser.id"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitId([NotNull] SimpletonParser.IdContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SimpletonParser.ids"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIds([NotNull] SimpletonParser.IdsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SimpletonParser.ids"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIds([NotNull] SimpletonParser.IdsContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SimpletonParser.subscript"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -184,26 +204,6 @@ public interface ISimpletonListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitActual_parameter_list([NotNull] SimpletonParser.Actual_parameter_listContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="SimpletonParser.id"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterId([NotNull] SimpletonParser.IdContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="SimpletonParser.id"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitId([NotNull] SimpletonParser.IdContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="SimpletonParser.ids"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterIds([NotNull] SimpletonParser.IdsContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="SimpletonParser.ids"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitIds([NotNull] SimpletonParser.IdsContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SimpletonParser.constant"/>.
 	/// </summary>
