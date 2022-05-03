@@ -91,7 +91,8 @@ namespace Simpleton
 
         public Type VisitBooleanLiteral(BooleanLiteral node)
         {
-            return Type.BooleanType();
+            node.type = Type.BooleanType();
+            return node.type;
         }
 
         public Type VisitBreak(Break node)
@@ -111,18 +112,17 @@ namespace Simpleton
         public Type VisitConditionBlock(ConditionBlock node)
         {
             if (Visit(node.condition).Equals(Type.BooleanType()))
-                return null;
+                return Type.WellTyped();
             else
                 throw new InvalidTypeException();
         }
 
         public Type VisitConstantDeclNode(ConstantDeclNode node)
         {
-            Type declaredType = node.type;
             if (node.initialization != null)
             {
                 if (Visit(node.initialization).Equals(node.type))
-                    return null;
+                    return Type.WellTyped();
                 else
                     throw new InvalidTypeException();
             }
@@ -131,7 +131,7 @@ namespace Simpleton
 
         public Type VisitContinue(Continue node)
         {
-            return null;
+            return Type.WellTyped();
         }
 
         public Type VisitDIVISIONEQNode(DIVISIONEQNode node)
@@ -166,6 +166,8 @@ namespace Simpleton
 
         public Type VisitDotReferencingNode(DotReferencingNode node)
         {
+            Visit(node.parent);
+            node.type = Visit(node.member);
             return node.type;
         }
 
@@ -240,6 +242,10 @@ namespace Simpleton
 
         public Type VisitFunctionCallNode(FunctionCallNode node)
         {
+            for (int i = 0; i < node.actualParameters.Count; i++)
+            {
+                Visit(node.actualParameters[i]);
+            }
             return node.type;
         }
 
@@ -443,7 +449,8 @@ namespace Simpleton
 
         public Type VisitNaNExpressionNode(NaNExpressionNode node)
         {
-            return Type.NaNTyped();
+            node.type = Type.NaNTyped();
+            return node.type;
         }
 
         public Type VisitNegativeExpressionNode(NegativeExpressionNode node)
@@ -494,7 +501,8 @@ namespace Simpleton
 
         public Type VisitNumberLiteral(NumberLiteral node)
         {
-            return Type.NumberType();
+            node.type = Type.NumberType();
+            return node.type;
         }
 
         public Type VisitORNode(ORNode node)
@@ -646,7 +654,8 @@ namespace Simpleton
 
         public Type VisitTextLiteral(TextLiteral node)
         {
-            return Type.TextType();
+            node.type = Type.TextType();
+            return node.type;
         }
 
         public Type VisitVariableDeclNode(VariableDeclNode node)

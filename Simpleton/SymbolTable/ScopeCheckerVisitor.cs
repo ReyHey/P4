@@ -290,6 +290,10 @@ namespace Simpleton
         {
             try
             {
+                for (int i = 0; i < node.actualParameters.Count; i++)
+                {
+                    Visit(node.actualParameters[i]);
+                }
                 Symbol symbol = symbolTable.getSymbol(node.identifier);
                 FunctionDeclNode functionDecl = (FunctionDeclNode)symbol.node;
                 node.type = functionDecl.returnType;
@@ -310,12 +314,8 @@ namespace Simpleton
                 TempSymbols.Add((Symbol)Visit(parameter));
             }
             Visit(node.block);
-
-
             return null;
         }
-
-
 
         public object VisitIfNode(IfNode node)
         {

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
 using System.IO;
@@ -8,12 +8,13 @@ namespace Simpleton
 {
     class CodeGenerator
     {
-        public CodeGenerator() {
-            if (File.Exists(this._fileName))    
-            {    
-                File.Delete(this._fileName);    
+        public CodeGenerator()
+        {
+            if (File.Exists((Program.terminal ? "" : "../../../") + this._fileName))
+            {
+                File.Delete((Program.terminal ? "" : "../../../") + this._fileName);
             }
-            this._file = File.Create(this._fileName);
+            this._file = File.Create((Program.terminal ? "" : "../../../") + this._fileName);
             this.Write(@"using System.Collections.Generic;
 using System;
 using ExtensionMethods;
@@ -44,12 +45,14 @@ class CODE
 ");
         }
 
-        public void Write(string code) {
+        public void Write(string code)
+        {
             byte[] bytes = Encoding.ASCII.GetBytes(code);
             this._file.Write(bytes, 0, bytes.Length);
         }
 
-        public void Close() {
+        public void Close()
+        {
             this._file.Close();
         }
 
