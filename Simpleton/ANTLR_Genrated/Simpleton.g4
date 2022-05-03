@@ -2,7 +2,6 @@ grammar Simpleton;
 program: declaration* EOF;                                                
 //includes: 'include' 'string' NEWLINE;
 
-
 declaration: function_decl
                | struct_decl
                | enum_decl
@@ -13,23 +12,12 @@ type: primitiv_type | LIST '<' primitiv_type '>' | LIST '<' IDENTIFIER '>';
 
 LIST: 'list';
 
-// primitiv_type: NUMBER_TYPE | TEXT_TYPE | BOOlEAN_TYPE;
-// type: primitiv_type | LIST '<' primitiv_type '>' | LIST '<' IDENTIFIER '>';
-
-// LIST: 'list';
-
-// NUMBER_TYPE: 'number';
-// TEXT_TYPE: 'text';
-// BOOlEAN_TYPE: 'boolean';
-
-// a[4+5].ToString()
-
 expr: id                                                                                #IdentifierCall
     | constant                                                                          #ConstantLiteral
     | func_call                                                                         #FuncCall
     | NaN='NaN'                                                                         #NaNExpr
     | '(' expr ')'                                                                      #ParensExpr
-    | '(' op='-' expr ')'                                                                       #UnaryExpr
+    | '(' op='-' expr ')'                                                               #UnaryExpr
     | left=expr op='^' right=expr                                                       #InfixExpr
     | left=expr op=('/'|'mod'|'*') right=expr                                           #InfixExpr
     | left=expr op=('+'|'-') right=expr                                                 #InfixExpr
@@ -38,15 +26,13 @@ expr: id                                                                        
     | left=expr op=('and'| 'or') right=expr                                             #InfixExpr         
     ;
 
-subscript: IDENTIFIER '[' expr ']';
-func_call: IDENTIFIER '(' actual_parameter_list? ')';
-actual_parameter_list: expr (',' expr)*;
-
-
 id: id '.' ids | ids;
 
 ids: IDENTIFIER | func_call | subscript;
 
+subscript: IDENTIFIER '[' expr ']';
+func_call: IDENTIFIER '(' actual_parameter_list? ')';
+actual_parameter_list: expr (',' expr)*;
 
 
 constant: NUMBER     
@@ -81,7 +67,6 @@ stmt: if_else_stmt
     | variable_decl 
     | list_decl
     | const_variable_decl 
-//    | random_decl 
     | jump_stmt 
     | expr NEWLINE
     | assign_stmt
@@ -114,9 +99,6 @@ assign_stmt : id '=' expr NEWLINE;
 ternary_stmt: id '='  ifExpr=expr 'if' cond=expr 'else' elseExpr=expr NEWLINE;
 compound_assign_stmt : id compoundOP=('+='|'-='|'*='|'/=') expr NEWLINE;
 
-
-
-//random_decl: 'random' IDENTIFIER '=' 'random' func_call_type; 
 
 
 WS : (' ' | '\t')+ -> channel(HIDDEN);

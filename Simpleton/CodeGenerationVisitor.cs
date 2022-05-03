@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Simpleton.AST;
 
 namespace Simpleton
@@ -110,7 +110,7 @@ namespace Simpleton
         }
         public string VisitEQEQNode(EQEQNode node)
         {
-            return Visit(node.Left) + " == " + Visit(node.Right);;
+            return Visit(node.Left) + " == " + Visit(node.Right);
         }
         public string VisitNOTEQNode(NOTEQNode node)
         {
@@ -159,14 +159,15 @@ namespace Simpleton
             if (node.actualParameters != null)
                 for (int i = 0; i < node.actualParameters.Count; i++)
                 {
-                    if (node.actualParameters[i].type.listType) 
+                    if (node.actualParameters[i].type.listType)
                     {
                         s += $"new List<{GetCSPrimType(node.actualParameters[i].type.typeName)}>({Visit(node.actualParameters[i])})";
                     }
-                    else {
+                    else
+                    {
                         s += Visit(node.actualParameters[i]);
                     }
-                    
+
                     if (i < node.actualParameters.Count - 1)
                     {
                         s += ", ";
@@ -288,7 +289,7 @@ namespace Simpleton
             {
                 t += $"new {ConvertToCSType(node.type)}()";
             }
-            
+
             return t;
         }
         public string VisitInitialization(Initialization node)
@@ -445,7 +446,7 @@ namespace Simpleton
         public string GetCSPrimType(string type)
         {
             string t = "";
-            
+
             switch (type)
             {
                 case "number":

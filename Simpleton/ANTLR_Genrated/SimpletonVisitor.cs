@@ -105,6 +105,18 @@ public interface ISimpletonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitUnaryExpr([NotNull] SimpletonParser.UnaryExprContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="SimpletonParser.id"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitId([NotNull] SimpletonParser.IdContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SimpletonParser.ids"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIds([NotNull] SimpletonParser.IdsContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="SimpletonParser.subscript"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -122,18 +134,6 @@ public interface ISimpletonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitActual_parameter_list([NotNull] SimpletonParser.Actual_parameter_listContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="SimpletonParser.id"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitId([NotNull] SimpletonParser.IdContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="SimpletonParser.ids"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitIds([NotNull] SimpletonParser.IdsContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SimpletonParser.constant"/>.
 	/// </summary>
