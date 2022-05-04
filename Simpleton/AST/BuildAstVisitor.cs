@@ -32,7 +32,7 @@ namespace Simpleton.AST
             AssignStmtNode node = new AssignStmtNode();
 
             node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
-            node.variable = (CallNode)(Visit(context.id()));
+            node.variable = (CallNode)(Visit(context.id_assign()));
             node.expression = (ExpressionNode)Visit(context.expr());
             return (AssignStmtNode)node;
         }
@@ -90,7 +90,7 @@ namespace Simpleton.AST
                 default:
                     throw new NotSupportedException();
             }
-            node.variable = (CallNode)Visit(context.id());
+            node.variable = (CallNode)Visit(context.id_assign());
             node.expression = (ExpressionNode)Visit(context.expr());
             node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
             return node;
@@ -123,14 +123,13 @@ namespace Simpleton.AST
 
         public Object VisitConst_variable_decl([NotNull] SimpletonParser.Const_variable_declContext context)
         {
-            VariableDeclNode varNode = (VariableDeclNode)Visit(context.variable_decl());
-
-            ConstantDeclNode node = new ConstantDeclNode();
-
-            node.name = varNode.name;
-            node.initialization = varNode.initialization;
-            node.type = varNode.type;
-            node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
+            VariableDeclNode node = (VariableDeclNode)Visit(context.variable_decl());
+            if (node.initialization == null)
+            {
+                Console.WriteLine($"line {node.Line.line}: The constant variable must be initialized");
+                Environment.Exit(1);
+            }
+            node.constant = true;
             return node;
         }
 
@@ -562,7 +561,7 @@ namespace Simpleton.AST
         {
             TernaryNode node = new TernaryNode();
 
-            node.variable = (CallNode)Visit(context.id());
+            node.variable = (CallNode)Visit(context.id_assign());
 
             node.condition = (ExpressionNode)Visit(context.cond);
             node.ifClause = (ExpressionNode)Visit(context.ifExpr);
@@ -798,6 +797,44 @@ namespace Simpleton.AST
             }
             else if (context.func_call() != null)
                 return Visit(context.func_call());
+            else
+                return Visit(context.subscript());
+        }
+
+        public object VisitId_assign([NotNull] Id_assignContext context)
+        {
+            if (context.id_assign() != null)
+            {
+                DotReferencingNode referencingNode = new DotReferencingNode();
+                referencingNode.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
+                referencingNode.parent = (CallNode)Visit(context.id_assign());
+                CallNode member = (CallNode)Visit(context.ids_assign());
+                if (member is SubscriptCallNode)
+                {
+                    SubscriptCallNode subscript = (SubscriptCallNode)member;
+                    referencingNode.member = new SubscriptMember(subscript.identifier, subscript.index, referencingNode.parent);
+                }
+                else
+                {
+                    VariableCallNode field = (VariableCallNode)member;
+                    referencingNode.member = new Field(field.identifier, referencingNode.parent);
+                }
+                return referencingNode;
+            }
+            else
+            {
+                return Visit(context.ids_assign());
+            }
+        }
+
+        public object VisitIds_assign([NotNull] Ids_assignContext context)
+        {
+            if (context.IDENTIFIER() != null)
+            {
+                VariableCallNode node = new VariableCallNode((string)Visit(context.IDENTIFIER()));
+                node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
+                return node;
+            }
             else
                 return Visit(context.subscript());
         }

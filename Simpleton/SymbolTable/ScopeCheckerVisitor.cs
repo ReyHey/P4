@@ -8,7 +8,7 @@ using Type = Simpleton.AST.Type;
 
 namespace Simpleton
 {
-    class ScopeCheckerVisitor : ASTVisitor<object>
+    public class ScopeCheckerVisitor : ASTVisitor<object>
     {
         SymbolTable symbolTable = new SymbolTable();
 
@@ -187,8 +187,29 @@ namespace Simpleton
         public object VisitAssignStmtNode(AssignStmtNode node)
         {
             Visit(node.variable);
+            CheckLeftSideIsNotConstant(node.variable);
             Visit(node.expression);
+
             return null;
+        }
+
+        void CheckLeftSideIsNotConstant(CallNode node)
+        {
+            if (node is VariableCallNode)
+            {
+                Symbol symbol = symbolTable.getSymbol(((VariableCallNode)node).identifier);
+
+                if (symbol.node is VariableDeclNode)
+                {
+                    VariableDeclNode bindingOccurrence = (VariableDeclNode)symbol.node;
+                    if (bindingOccurrence.constant)
+                    {
+                        Console.WriteLine($"Line {((VariableCallNode)node).Line.line}: INVAILD ASSIGNMENT - The variable \"{((VariableCallNode)node).identifier}\" is defined as constant on line {bindingOccurrence.Line.line}, and therefore no values can be assigned to the variable.");
+                        System.Environment.Exit(-1);
+                    }
+                }
+
+            }
         }
 
         public object VisitBlock(Block node)
@@ -249,12 +270,6 @@ namespace Simpleton
             return null;
         }
 
-        public object VisitConstantDeclNode(ConstantDeclNode node)
-        {
-
-            Visit(node.initialization);
-            return null;
-        }
 
         public object VisitContinue(Continue node)
         {
@@ -270,7 +285,9 @@ namespace Simpleton
 
         public object VisitDIVISIONEQNode(DIVISIONEQNode node)
         {
+
             Visit(node.variable);
+
             Visit(node.expression);
             return null;
         }
@@ -375,14 +392,18 @@ namespace Simpleton
 
         public object VisitMINUSEQNode(MINUSEQNode node)
         {
+
             Visit(node.variable);
+
             Visit(node.expression);
             return null;
         }
 
         public object VisitMULTIEQNode(MULTIEQNode node)
         {
+
             Visit(node.variable);
+
             Visit(node.expression);
             return null;
         }
@@ -417,7 +438,9 @@ namespace Simpleton
 
         public object VisitPLUSEQNode(PLUSEQNode node)
         {
+
             Visit(node.variable);
+
             Visit(node.expression);
             return null;
         }
@@ -520,13 +543,8 @@ namespace Simpleton
             {
                 Symbol symbol = symbolTable.getSymbol(node.identifier);
 
-                if (symbol.node is ConstantDeclNode)
-                {
-                    ConstantDeclNode bindingOccurrence = (ConstantDeclNode)symbol.node;
-                    node.type = bindingOccurrence.type;
-                }
 
-                else if (symbol.node is VariableDeclNode)
+                if (symbol.node is VariableDeclNode)
                 {
                     VariableDeclNode bindingOccurrence = (VariableDeclNode)symbol.node;
                     node.type = bindingOccurrence.type;
@@ -691,7 +709,5 @@ namespace Simpleton
             }
             return null;
         }
-
-
     }
 }

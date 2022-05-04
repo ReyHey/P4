@@ -296,4 +296,16 @@ public interface ISimpletonVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitCompound_assign_stmt([NotNull] SimpletonParser.Compound_assign_stmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SimpletonParser.id_assign"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitId_assign([NotNull] SimpletonParser.Id_assignContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SimpletonParser.ids_assign"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIds_assign([NotNull] SimpletonParser.Ids_assignContext context);
 }

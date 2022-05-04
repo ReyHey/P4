@@ -30,11 +30,6 @@ namespace Simpleton
             return null;
         }
 
-        public object VisitConstantDeclNode(ConstantDeclNode node)
-        {
-            symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
-            return null;
-        }
 
         public object VisitStructNode(StructNode node)
         {

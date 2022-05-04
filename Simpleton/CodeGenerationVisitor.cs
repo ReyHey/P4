@@ -79,10 +79,6 @@ namespace Simpleton
             else
                 return node.name;
         }
-        public string VisitConstantDeclNode(ConstantDeclNode node)
-        {
-            return "const" + Visit((VariableDeclNode)node);
-        }
 
         public string VisitAdditionNode(AdditionNode node)
         {
@@ -261,7 +257,24 @@ namespace Simpleton
         }
         public string VisitVariableDeclNode(VariableDeclNode node)
         {
-            return $"{ConvertToCSType(node.type)} {node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "")}";
+            string constant = node.constant ? "const" : "";
+            string t = ConvertToCSType(node.type);
+            if (node.constant)
+            {
+                return $"const {t.Substring(0, t.Length - 1)} {node.name} = {Visit(node.initialization)};";
+            }
+            else if (t == "decimal?" && node.shouldBeInit)
+            {
+                return $"{t} {node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "= 0")}" + ";";
+            }
+            else if (t == "string")
+            {
+                return $"{t} {node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "= \" \"")}" + ";";
+            }
+            else
+            {
+                return $"{t} {node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "")}";
+            }
         }
         public string VisitListDeclNode(ListDeclNode node)
         {

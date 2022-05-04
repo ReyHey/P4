@@ -117,18 +117,6 @@ namespace Simpleton
                 throw new InvalidTypeException();
         }
 
-        public Type VisitConstantDeclNode(ConstantDeclNode node)
-        {
-            if (node.initialization != null)
-            {
-                if (Visit(node.initialization).Equals(node.type))
-                    return Type.WellTyped();
-                else
-                    throw new InvalidTypeException();
-            }
-            return null;
-        }
-
         public Type VisitContinue(Continue node)
         {
             return Type.WellTyped();

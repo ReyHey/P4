@@ -1,3 +1,5 @@
+constant number a = 5
+
 function void Main(){
     list<number> integerList = {0,5,2,6,3,19,473,38}
 
@@ -12,6 +14,7 @@ function void Main(){
 
 function number GetAverage(list<number> l){
     number sum
+    a = 7
     foreach number element in l {
         sum += element
     }

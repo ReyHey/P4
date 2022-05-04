@@ -117,7 +117,7 @@ namespace Simpleton.AST
         }
     }
 
-    public abstract class Variable : StmtNode
+    public abstract class Variable : Declaration, StmtNode
     {
         public Type type { get; set; }
         public string name { get; set; }
@@ -131,6 +131,10 @@ namespace Simpleton.AST
     public class VariableDeclNode : Variable
     {
         public ExpressionNode initialization { get; set; }
+
+        public bool shouldBeInit { get; set; } = true;
+        public bool constant { get; set; } = false;
+
         public override T Accept<T>(ASTVisitor<T> v)
         {
             return v.VisitVariableDeclNode(this);

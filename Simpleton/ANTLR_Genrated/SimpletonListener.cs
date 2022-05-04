@@ -474,4 +474,24 @@ public interface ISimpletonListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitCompound_assign_stmt([NotNull] SimpletonParser.Compound_assign_stmtContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SimpletonParser.id_assign"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterId_assign([NotNull] SimpletonParser.Id_assignContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SimpletonParser.id_assign"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitId_assign([NotNull] SimpletonParser.Id_assignContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SimpletonParser.ids_assign"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIds_assign([NotNull] SimpletonParser.Ids_assignContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SimpletonParser.ids_assign"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIds_assign([NotNull] SimpletonParser.Ids_assignContext context);
 }
