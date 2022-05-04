@@ -11,7 +11,7 @@ function void Main(){
             Triangle()
             break
         default:
-            Write("invalid geometry")
+            Write(5)
             break
     }
 }
@@ -22,7 +22,7 @@ function void Circle(){
     number r = read_terminal.ToNumber()
     if r != NaN {
         number area = 3.14*r^2
-        Write("The area of the circle with radius " + r.ToString() + " is " + area.ToString())
+        Write("The area of the circle with radius " + r.ToText() + " is " + area.ToText())
     }
     else{
         Write("The area of the circle could not be calculate since a invalid radius")
@@ -46,7 +46,7 @@ function void Rectangle(){
         }
         else{
             number area = l*b
-            Write("The area of the rectangle with sides length " + l.ToString() + " and " + b.ToString() + " is " + area.ToString())
+            Write("The area of the rectangle with sides length " + l.ToText() + " and " + b.ToText() + " is " + area.ToText())
         }
     }
 }
@@ -67,7 +67,7 @@ function void Triangle(){
         }
         else{
             number area = (1/2)*h*b
-            Write("The area of the triangle with the heigth " + h.ToString() + " and the base" + b.ToString() + " is " + area.ToString())
+            Write("The area of the triangle with the heigth " + h.ToText() + " and the base" + b.ToText() + " is " + area.ToText())
         }
     }
 }

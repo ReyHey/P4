@@ -108,7 +108,7 @@ COMMENT : (MULTI_COMMENT | LINE_COMMENT);
 MULTI_COMMENT : '/*' .*? '*/' -> channel(HIDDEN);
 LINE_COMMENT : '//' ~[\r\n]* -> channel(HIDDEN);
 
-NUMBER: ('0' | '-'? [1-9][0-9]*) ('.' [0-9]*)?;
+NUMBER: ('0' | [1-9][0-9]*) ('.' [0-9]*)?;
 TEXT: ('"' ~'"'* '"') | ('\'' ~'\''* '\'');
 BOOlEAN: 'true' | 'false';
 NAN: 'NaN';

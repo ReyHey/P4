@@ -61,7 +61,7 @@
         public static Type UserDefinedType(string type) => new Type(type, false, true);
         public static Type ListWithUserDefinedType(string type) => new Type(type, true, true);
         public static Type WellTyped() => new Type("well-typed", false, false);
-        public static Type NaNTyped() => new Type("NaN", false, false);
+        public static Type NaNTyped() => new Type("NaN-", false, false);
 
         public string typeName { get; set; }
         public bool listType { get; set; }

@@ -46,7 +46,7 @@ namespace Simpleton
 
         public string VisitStructNode(StructNode node)
         {
-            string s = "struct " + node.name + "{\n";
+            string s = "public struct " + node.name + "{\n";
             indent++;
             foreach (var member in node.structMembers)
             {
@@ -57,7 +57,7 @@ namespace Simpleton
         }
         public string VisitStructMemberNode(StructMemberNode node)
         {
-            return "public" + ConvertToCSType(node.type) + " " + node.name + ";";
+            return "public " + ConvertToCSType(node.type) + " " + node.name + ";";
         }
 
         public string VisitEnumNode(EnumNode node)
@@ -98,7 +98,7 @@ namespace Simpleton
         }
         public string VisitPowNode(PowNode node)
         {
-            return "PowCustom(" + Visit(node.Left) + ", " + Visit(node.Right) + ")";
+            return "Pow(" + Visit(node.Left) + ", " + Visit(node.Right) + ")";
         }
         public string VisitModNode(ModNode node)
         {
@@ -211,13 +211,15 @@ namespace Simpleton
             }
             indent--;
 
+
+
             return "\n" + PrintIndent + "{\n" + s + PrintIndent + "}\n";
         }
 
 
         public string VisitSwitchNode(SwitchNode node)
         {
-            string s = $"switch {Visit(node.condition)} {{\n";
+            string s = $"switch ({Visit(node.condition)}) {{\n";
             indent++;
             foreach (Case switchcase in node.cases)
             {
@@ -265,7 +267,7 @@ namespace Simpleton
             }
             else if (t == "decimal?" && node.shouldBeInit)
             {
-                return $"{t} {node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "= 0")}" + ";";
+                return $"{t} {node.name} = {(node.initialization != null ? Visit(node.initialization) : "0M")} ;";
             }
             else if (t == "string")
             {
@@ -353,7 +355,7 @@ namespace Simpleton
         }
         public string VisitNumberLiteral(NumberLiteral node)
         {
-            return node.value;
+            return node.value + "M";
         }
         public string VisitTextLiteral(TextLiteral node)
         {

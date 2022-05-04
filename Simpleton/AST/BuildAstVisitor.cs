@@ -8,14 +8,14 @@ using Antlr4.Runtime;
 
 namespace Simpleton.AST
 {
-    public class BuildAstVisitor : ISimpletonVisitor<Object>
+    public class BuildAstVisitor : ISimpletonVisitor<object>
     {
-        public Object Visit(IParseTree tree)
+        public object Visit(IParseTree tree)
         {
             return tree.Accept(this);
         }
 
-        public Object VisitActual_parameter_list([NotNull] SimpletonParser.Actual_parameter_listContext context)
+        public object VisitActual_parameter_list([NotNull] SimpletonParser.Actual_parameter_listContext context)
         {
             List<ExpressionNode> actualParameters = new List<ExpressionNode>();
 
@@ -27,32 +27,17 @@ namespace Simpleton.AST
             return actualParameters;
         }
 
-        public Object VisitAssign_stmt([NotNull] SimpletonParser.Assign_stmtContext context)
+        public object VisitAssign_stmt([NotNull] SimpletonParser.Assign_stmtContext context)
         {
             AssignStmtNode node = new AssignStmtNode();
 
             node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
             node.variable = (CallNode)(Visit(context.id_assign()));
             node.expression = (ExpressionNode)Visit(context.expr());
-            return (AssignStmtNode)node;
+            return node;
         }
 
-        string IdentifierMerge(ITerminalNode[] identifiers)
-        {
-            string str = "";
-
-            for (int i = 0; i < identifiers.Length; i++)
-            {
-                str += identifiers[i].Symbol.Text;
-
-                if (i < identifiers.Length - 1)
-                    str += ".";
-            }
-
-            return str;
-        }
-
-        public Object VisitBlock([NotNull] SimpletonParser.BlockContext context)
+        public object VisitBlock([NotNull] SimpletonParser.BlockContext context)
         {
             Block block = new Block();
             block.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
@@ -64,12 +49,12 @@ namespace Simpleton.AST
             return (Block)block;
         }
 
-        public Object VisitChildren(IRuleNode node)
+        public object VisitChildren(IRuleNode node)
         {
             throw new NotImplementedException();
         }
 
-        public Object VisitCompound_assign_stmt([NotNull] SimpletonParser.Compound_assign_stmtContext context)
+        public object VisitCompound_assign_stmt([NotNull] SimpletonParser.Compound_assign_stmtContext context)
         {
             CompoundAssignNode node;
 
@@ -96,7 +81,7 @@ namespace Simpleton.AST
             return node;
         }
 
-        public Object VisitConstant([NotNull] SimpletonParser.ConstantContext context)
+        public object VisitConstant([NotNull] SimpletonParser.ConstantContext context)
         {
             var number = context.NUMBER();
             if (number != null)
@@ -121,7 +106,7 @@ namespace Simpleton.AST
         }
 
 
-        public Object VisitConst_variable_decl([NotNull] SimpletonParser.Const_variable_declContext context)
+        public object VisitConst_variable_decl([NotNull] SimpletonParser.Const_variable_declContext context)
         {
             VariableDeclNode node = (VariableDeclNode)Visit(context.variable_decl());
             if (node.initialization == null)
@@ -133,7 +118,7 @@ namespace Simpleton.AST
             return node;
         }
 
-        public Object VisitDeclaration([NotNull] SimpletonParser.DeclarationContext context)
+        public object VisitDeclaration([NotNull] SimpletonParser.DeclarationContext context)
         {
 
             var function_decl = context.function_decl();
@@ -151,17 +136,17 @@ namespace Simpleton.AST
             return null;
         }
 
-        public Object VisitElse_if_stmt([NotNull] SimpletonParser.Else_if_stmtContext context)
+        public object VisitElse_if_stmt([NotNull] SimpletonParser.Else_if_stmtContext context)
         {
             return new ConditionBlock((ExpressionNode)Visit(context.expr()), (Block)Visit(context.block()));
         }
 
-        public Object VisitElse_stmt([NotNull] SimpletonParser.Else_stmtContext context)
+        public object VisitElse_stmt([NotNull] SimpletonParser.Else_stmtContext context)
         {
             return Visit(context.block());
         }
 
-        public Object VisitEnum_decl([NotNull] SimpletonParser.Enum_declContext context)
+        public object VisitEnum_decl([NotNull] SimpletonParser.Enum_declContext context)
         {
             EnumNode node = new EnumNode();
             node.name = (string)Visit(context.IDENTIFIER());
@@ -176,7 +161,7 @@ namespace Simpleton.AST
             return node;
         }
 
-        public Object VisitEnum_member([NotNull] SimpletonParser.Enum_memberContext context)
+        public object VisitEnum_member([NotNull] SimpletonParser.Enum_memberContext context)
         {
             EnumMemberNode node = new EnumMemberNode();
             node.name = (string)Visit(context.IDENTIFIER());
@@ -185,12 +170,12 @@ namespace Simpleton.AST
             return node;
         }
 
-        public Object VisitErrorNode(IErrorNode node)
+        public object VisitErrorNode(IErrorNode node)
         {
             throw new Exception("Error");
         }
 
-        public Object VisitForeach_stmt([NotNull] SimpletonParser.Foreach_stmtContext context)
+        public object VisitForeach_stmt([NotNull] SimpletonParser.Foreach_stmtContext context)
         {
             ForeachNode node = new ForeachNode();
 
@@ -206,7 +191,7 @@ namespace Simpleton.AST
             return node;
         }
 
-        public Object VisitFormal_parameter([NotNull] SimpletonParser.Formal_parameterContext context)
+        public object VisitFormal_parameter([NotNull] SimpletonParser.Formal_parameterContext context)
         {
             FormalParameter parameter = new FormalParameter();
 
@@ -218,7 +203,7 @@ namespace Simpleton.AST
 
         FunctionDeclNode refNode;
 
-        public Object VisitFunction_decl([NotNull] SimpletonParser.Function_declContext context)
+        public object VisitFunction_decl([NotNull] SimpletonParser.Function_declContext context)
         {
             FunctionDeclNode node = new FunctionDeclNode();
 
@@ -248,7 +233,7 @@ namespace Simpleton.AST
             return info;
         }
 
-        public Object VisitIf_else_stmt([NotNull] SimpletonParser.If_else_stmtContext context)
+        public object VisitIf_else_stmt([NotNull] SimpletonParser.If_else_stmtContext context)
         {
             IfNode node = new IfNode();
             node.conditionBlocks.Add(new ConditionBlock((ExpressionNode)Visit(context.expr()), (Block)Visit(context.block())));
@@ -263,7 +248,7 @@ namespace Simpleton.AST
             return node;
         }
 
-        public Object VisitJump_stmt([NotNull] SimpletonParser.Jump_stmtContext context)
+        public object VisitJump_stmt([NotNull] SimpletonParser.Jump_stmtContext context)
         {
             var return_stmt = context.return_stmt();
             if (return_stmt != null)
@@ -285,7 +270,7 @@ namespace Simpleton.AST
             return null;
         }
 
-        public Object VisitList_decl([NotNull] SimpletonParser.List_declContext context)
+        public object VisitList_decl([NotNull] SimpletonParser.List_declContext context)
         {
             ListDeclNode node = new ListDeclNode();
             node.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
@@ -314,7 +299,7 @@ namespace Simpleton.AST
             return node;
         }
 
-        public Object VisitList_initialize([NotNull] SimpletonParser.List_initializeContext context)
+        public object VisitList_initialize([NotNull] SimpletonParser.List_initializeContext context)
         {
             Initialization node = new Initialization();
             node.initialization = null;
@@ -327,12 +312,12 @@ namespace Simpleton.AST
             return node;
         }
 
-        public Object VisitPrimitiv_type([NotNull] SimpletonParser.Primitiv_typeContext context)
+        public object VisitPrimitiv_type([NotNull] SimpletonParser.Primitiv_typeContext context)
         {
             return new Type(context.primitivtType.Text, false, false);
         }
 
-        public Object VisitProgram([NotNull] SimpletonParser.ProgramContext context)
+        public object VisitProgram([NotNull] SimpletonParser.ProgramContext context)
         {
             ProgramNode program = new ProgramNode();
             program.Line = CreateLineInfo(0, 0);
@@ -344,7 +329,7 @@ namespace Simpleton.AST
             return program;
         }
 
-        public Object VisitReturn_stmt([NotNull] SimpletonParser.Return_stmtContext context)
+        public object VisitReturn_stmt([NotNull] SimpletonParser.Return_stmtContext context)
         {
             Return node = new Return();
             var expr = context.expr();
@@ -354,7 +339,7 @@ namespace Simpleton.AST
             return node;
         }
 
-        public Object VisitReturn_type([NotNull] SimpletonParser.Return_typeContext context)
+        public object VisitReturn_type([NotNull] SimpletonParser.Return_typeContext context)
         {
             Type type;
 
@@ -378,7 +363,7 @@ namespace Simpleton.AST
             return new Type((string)Visit(context.IDENTIFIER()), false, true);
         }
 
-        public Object VisitStmt([NotNull] SimpletonParser.StmtContext context)
+        public object VisitStmt([NotNull] SimpletonParser.StmtContext context)
         {
             If_else_stmtContext if_Else_StmtContext = context.if_else_stmt();
             if (if_Else_StmtContext != null)
@@ -456,7 +441,7 @@ namespace Simpleton.AST
 
         }
 
-        public Object VisitStruct_decl([NotNull] SimpletonParser.Struct_declContext context)
+        public object VisitStruct_decl([NotNull] SimpletonParser.Struct_declContext context)
         {
             StructNode node = new StructNode();
 
@@ -478,7 +463,7 @@ namespace Simpleton.AST
             return node;
         }
 
-        public Object VisitStruct_member([NotNull] SimpletonParser.Struct_memberContext context)
+        public object VisitStruct_member([NotNull] SimpletonParser.Struct_memberContext context)
         {
             StructMemberNode node = new StructMemberNode();
             node.name = (string)Visit(context.IDENTIFIER());
@@ -487,7 +472,7 @@ namespace Simpleton.AST
             return node;
         }
 
-        public Object VisitSwitch_case([NotNull] SimpletonParser.Switch_caseContext context)
+        public object VisitSwitch_case([NotNull] SimpletonParser.Switch_caseContext context)
         {
             List<Case> cases = new List<Case>();
 
@@ -521,7 +506,7 @@ namespace Simpleton.AST
 
 
 
-        public Object VisitSwitch_case_default([NotNull] SimpletonParser.Switch_case_defaultContext context)
+        public object VisitSwitch_case_default([NotNull] SimpletonParser.Switch_case_defaultContext context)
         {
             List<StmtNode> block = new List<StmtNode>();
             foreach (StmtContext stmt in context.stmt())
@@ -532,7 +517,7 @@ namespace Simpleton.AST
             return block;
         }
 
-        public Object VisitSwitch_stmt([NotNull] SimpletonParser.Switch_stmtContext context)
+        public object VisitSwitch_stmt([NotNull] SimpletonParser.Switch_stmtContext context)
         {
             SwitchNode node = new SwitchNode();
             node.condition = (ExpressionNode)Visit(context.expr());
@@ -553,12 +538,12 @@ namespace Simpleton.AST
             return node;
         }
 
-        public Object VisitTerminal(ITerminalNode node)
+        public object VisitTerminal(ITerminalNode node)
         {
             return node.Symbol.Text;
         }
 
-        public Object VisitTernary_stmt([NotNull] SimpletonParser.Ternary_stmtContext context)
+        public object VisitTernary_stmt([NotNull] SimpletonParser.Ternary_stmtContext context)
         {
             TernaryNode node = new TernaryNode();
 
@@ -572,7 +557,7 @@ namespace Simpleton.AST
 
         }
 
-        public Object VisitType([NotNull] SimpletonParser.TypeContext context)
+        public object VisitType([NotNull] SimpletonParser.TypeContext context)
         {
             ITerminalNode list = context.LIST();
             Type primitivtType = context.primitiv_type() != null ? (Type)Visit(context.primitiv_type()) : null;
@@ -603,7 +588,7 @@ namespace Simpleton.AST
 
         }
 
-        public Object VisitVariable_decl([NotNull] SimpletonParser.Variable_declContext context)
+        public object VisitVariable_decl([NotNull] SimpletonParser.Variable_declContext context)
         {
             VariableDeclNode node = new VariableDeclNode();
 
@@ -621,7 +606,7 @@ namespace Simpleton.AST
             return node;
         }
 
-        public Object VisitWhile_stmt([NotNull] SimpletonParser.While_stmtContext context)
+        public object VisitWhile_stmt([NotNull] SimpletonParser.While_stmtContext context)
         {
             WhileNode node = new WhileNode();
 
@@ -769,16 +754,19 @@ namespace Simpleton.AST
                 {
                     FunctionCallNode method = (FunctionCallNode)member;
                     referencingNode.member = new Method(method.identifier, method.actualParameters, referencingNode.parent);
+                    referencingNode.member.Line = method.Line;
                 }
                 else if (member is SubscriptCallNode)
                 {
                     SubscriptCallNode subscript = (SubscriptCallNode)member;
                     referencingNode.member = new SubscriptMember(subscript.identifier, subscript.index, referencingNode.parent);
+                    referencingNode.member.Line = subscript.Line;
                 }
                 else
                 {
                     VariableCallNode field = (VariableCallNode)member;
                     referencingNode.member = new Field(field.identifier, referencingNode.parent);
+                    referencingNode.member.Line = field.Line;
                 }
                 return referencingNode;
             }
@@ -814,11 +802,13 @@ namespace Simpleton.AST
                 {
                     SubscriptCallNode subscript = (SubscriptCallNode)member;
                     referencingNode.member = new SubscriptMember(subscript.identifier, subscript.index, referencingNode.parent);
+                    referencingNode.member.Line = subscript.Line;
                 }
                 else
                 {
                     VariableCallNode field = (VariableCallNode)member;
                     referencingNode.member = new Field(field.identifier, referencingNode.parent);
+                    referencingNode.member.Line = field.Line;
                 }
                 return referencingNode;
             }
