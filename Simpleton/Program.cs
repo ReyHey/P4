@@ -15,7 +15,7 @@ namespace Simpleton
 
         static void Main(string[] args)
         {
-            ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "Codesample/AverageValueOfAList.sm");
+            ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "Codesample/Calculator.sm");
             ITokenSource lexer = new SimpletonLexer(stream);
             ITokenStream tokens = new CommonTokenStream(lexer);
             SimpletonParser parser = new SimpletonParser(tokens);

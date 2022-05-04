@@ -8,25 +8,19 @@ struct hej{
     number operand
 }
 
-enum biomes {
-    desert
-    ocean
-    forest
-}
-
 function void Main(){ 
     number accumulator = 0.0
     input userInput
     userInput.operator = ""
     userInput.operand = 0.0
-    biomes.desert
+
     while userInput.operator != "q" {
         Write("Enter operator, and an optional operand:\n")
         userInput = GetInput()
 
         if userInput.operator != "q"{
-            accumulator = DoOperation(userInput.operator.ToString(), userInput.operand, accumulator)
-            Write("Result so far is " + accumulator.ToString + "\n")
+            accumulator = DoOperation(userInput.operator, userInput.operand, accumulator)
+            Write("Result so far is " + accumulator.ToText() + "\n")
         }
     }
     Write("Final result is: {accumulator} \n")
@@ -114,10 +108,10 @@ function number DoOperation(text operation, number operand, number previousAccum
             newAccumulator = newAccumulator^operand
             break
         case "sqrt":
-            newAccumulator = sqrt(newAccumulator)
+            newAccumulator = Sqrt(newAccumulator)
             break
         case "cbrt":
-            newAccumulator = cbrt(newAccumulator)
+            newAccumulator = Cbrt(newAccumulator)
             break  
         case "mod":
             newAccumulator = newAccumulator mod operand

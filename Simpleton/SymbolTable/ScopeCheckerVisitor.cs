@@ -335,7 +335,7 @@ namespace Simpleton
             }
             catch (GetException e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("Line " + node.Line.line + ": The function " + "\"" + e.name + "\"" + " has not been declared.");
                 System.Environment.Exit(-1);
             }
 
@@ -567,7 +567,7 @@ namespace Simpleton
             }
             catch (GetException e)
             {
-                Console.WriteLine(e.Message + " " + node.Line.line + " " + (node.Line.column + 1));
+                Console.WriteLine("Line " + node.Line.line + ": The variable " + "\"" + e.name + "\"" + " has not been declared.");
                 System.Environment.Exit(-1);
             }
 
@@ -591,7 +591,7 @@ namespace Simpleton
             }
             catch (GetException e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("Line " + node.Line.line + ": The variable " + "\"" + e.name + "\"" + " has not been declared.");
                 System.Environment.Exit(-1);
             }
 
@@ -622,7 +622,7 @@ namespace Simpleton
             }
             catch (GetException e)
             {
-                Console.WriteLine("Field \"" + expectedFieldName + "\" is not a member of the struct " + structName);
+                Console.WriteLine("Line " + node.Line.line + ": " + "The field \"" + expectedFieldName + "\" is not a member of the struct " + structName);
                 System.Environment.Exit(-1);
             }
 
@@ -652,39 +652,41 @@ namespace Simpleton
                 {
                     EnumNode enumNode = (EnumNode)typeSymbol.node;
 
-
-                    string actualFieldName;
-                    foreach (EnumMemberNode member in enumNode.EnumMembers)
+                    int i = enumNode.EnumMembers.FindIndex((member) => member.name == expectedFieldName);
+                    if (i != -1)
+                        node.type = new Type("number", false, false);
+                    else
                     {
-                        actualFieldName = member.name;
-                        if (actualFieldName == expectedFieldName)
-                        {
-                            node.type = new Type("number", false, false);
-                            return null;
-                        }
+                        Console.WriteLine("Line " + node.Line.line + ": " + "The field \"" + expectedFieldName + "\" is not a member of the struct " + structName);
+                        System.Environment.Exit(-1);
+                    }
+
+                }
+                else if (typeSymbol.node is StructNode)
+                {
+                    StructNode structNode = (StructNode)typeSymbol.node;
+
+                    int i = structNode.structMembers.FindIndex((member) => member.name == expectedFieldName);
+
+                    if (i != -1)
+                        node.type = structNode.structMembers[i].type;
+                    else
+                    {
+                        Console.WriteLine("Line " + node.Line.line + ": " + "The field \"" + expectedFieldName + "\" is not a member of the struct " + structName);
+                        System.Environment.Exit(-1);
                     }
                 }
                 else
                 {
-                    StructNode structNode = (StructNode)typeSymbol.node;
-
-
-                    string actualFieldName;
-                    foreach (StructMemberNode member in structNode.structMembers)
-                    {
-                        actualFieldName = member.name;
-                        if (actualFieldName == expectedFieldName)
-                        {
-                            node.type = member.type;
-                            return null;
-                        }
-                    }
+                    Console.WriteLine($"Line {node.Line.line}: INVALID DOTREFERENCING - The type of the left side of the dotreferencing is \"{node.parent.type.typeName}\", and that types do not have a field called {expectedFieldName}");
+                    Environment.Exit(1);
                 }
             }
             catch (GetException e)
             {
-                Console.WriteLine("Field \"" + expectedFieldName + "\" is not a member of the struct " + structName);
-                System.Environment.Exit(-1);
+                Console.WriteLine($"Line {node.Line.line}: The name \"{structName}\" is neither declared as struct or enumuration type");
+                Environment.Exit(1);
+
             }
 
             return null;
@@ -704,7 +706,7 @@ namespace Simpleton
             }
             else
             {
-                Console.WriteLine("Method \"" + node.identifier + "\" is not a method of the type " + typeName);
+                Console.WriteLine("Line " + node.Line.line + ": " + "The Method \"" + node.identifier + "\" is not a method of the type " + typeName);
                 System.Environment.Exit(-1);
             }
             return null;
