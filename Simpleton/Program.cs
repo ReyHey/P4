@@ -9,13 +9,23 @@ namespace Simpleton
 {
     class Program
     {
-        public static bool terminal = true;
+        public static bool terminal = false;
         public static bool enablePrettyPrint = false;
         public static bool enableASTPrinter = false;
 
         static void Main(string[] args)
         {
-            if (args.Length == 1)
+        if (args.Length == 1)
+            ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "Codesample/AreaOfGeometrics.sm");
+            ITokenSource lexer = new SimpletonLexer(stream);
+            ITokenStream tokens = new CommonTokenStream(lexer);
+            SimpletonParser parser = new SimpletonParser(tokens);
+            parser.RemoveErrorListeners();
+            parser.AddErrorListener(DescriptiveErrorListener.Instance);
+            SimpletonParser.ProgramContext CST = parser.program();
+            ProgramNode AST = (ProgramNode)new BuildAstVisitor().VisitProgram(CST);
+
+            if (enableASTPrinter)
             {
                 ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "../" + args[0]);
                 ITokenSource lexer = new SimpletonLexer(stream);

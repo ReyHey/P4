@@ -42,6 +42,39 @@ class CODE
 		Console.WriteLine(t);
 		System.Environment.Exit(1);
 	}
+
+    public static decimal Pow(decimal? a, decimal? b)
+    {
+        if (a == null || b == null)
+        {
+            Console.WriteLine(""Could not make power, because of NaN"");
+            System.Environment.Exit(1);
+        }
+        return (decimal) Math.Pow((double) a, (double) b);
+    }
+
+    public static decimal Sqrt(decimal? v)
+    {
+        if (v == null)
+        {
+            Console.WriteLine(""Could not make sqrt, because of NaN"");
+            System.Environment.Exit(1);
+        }
+        return (decimal)Math.Sqrt((double)v);
+    }
+
+    public static decimal Cbrt(decimal? v)
+    {
+        if (v == null)
+        {
+            Console.WriteLine(""Could not make cbrt, because of NaN"");
+            System.Environment.Exit(1);
+        }
+        return (decimal)Math.Cbrt((double)v);
+    }
+
+
+
 ");
         }
 

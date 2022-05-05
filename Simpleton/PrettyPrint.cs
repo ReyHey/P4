@@ -79,10 +79,6 @@ namespace Simpleton
             else
                 return node.name;
         }
-        public string VisitConstantDeclNode(ConstantDeclNode node)
-        {
-            return "constant" + Visit((VariableDeclNode)node);
-        }
 
         public string VisitAdditionNode(AdditionNode node)
         {

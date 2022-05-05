@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Simpleton.AST;
 using Type = Simpleton.AST.Type;
 
@@ -86,7 +87,7 @@ namespace Simpleton
             {
                 Visit(stmt);
             }
-            return null;
+            return Type.WellTyped();
         }
 
         public Type VisitBooleanLiteral(BooleanLiteral node)
@@ -97,11 +98,15 @@ namespace Simpleton
 
         public Type VisitBreak(Break node)
         {
-            return null;
+            return Type.WellTyped();
         }
 
         public Type VisitCase(Case node)
         {
+            foreach (var stmt in node.block)
+            {
+                Visit(stmt);
+            }
             Type caseExpr = Visit(node.CaseExpr);
             if (caseExpr.Equals(Type.NumberType()) || caseExpr.Equals(Type.TextType()))
                 return caseExpr;
@@ -111,22 +116,12 @@ namespace Simpleton
 
         public Type VisitConditionBlock(ConditionBlock node)
         {
-            if (Visit(node.condition).Equals(Type.BooleanType()))
+
+            if (Visit(node.condition).Equals(Type.BooleanType()) &&
+                Visit(node.block).Equals(Type.WellTyped()))
                 return Type.WellTyped();
             else
                 throw new InvalidTypeException();
-        }
-
-        public Type VisitConstantDeclNode(ConstantDeclNode node)
-        {
-            if (node.initialization != null)
-            {
-                if (Visit(node.initialization).Equals(node.type))
-                    return Type.WellTyped();
-                else
-                    throw new InvalidTypeException();
-            }
-            return null;
         }
 
         public Type VisitContinue(Continue node)
@@ -180,7 +175,6 @@ namespace Simpleton
                 else
                     throw new InvalidTypeException();
             }
-
             return Type.NumberType();
         }
 
@@ -224,10 +218,9 @@ namespace Simpleton
 
             Type list = Visit(node.list);
 
-            if (element.typeName.Equals(list.typeName))
+            if (element.typeName.Equals(list.typeName) && Visit(node.block).Equals(Type.WellTyped()))
             {
-                Visit(node.block);
-                return null;
+                return Type.WellTyped();
             }
             else
                 throw new InvalidTypeException();
@@ -242,9 +235,9 @@ namespace Simpleton
 
         public Type VisitFunctionCallNode(FunctionCallNode node)
         {
-            for (int i = 0; i < node.actualParameters.Count; i++)
+            foreach (var parameter in node.actualParameters)
             {
-                Visit(node.actualParameters[i]);
+                Visit(parameter);
             }
             return node.type;
         }
@@ -252,9 +245,7 @@ namespace Simpleton
         public Type VisitFunctionDeclNode(FunctionDeclNode node)
         {
             Visit(node.block);
-
-
-            return null;
+            return Type.WellTyped();
         }
 
         public Type VisitGreaterEQNode(GreaterEQNode node)
@@ -266,7 +257,7 @@ namespace Simpleton
             {
                 if (Lnode.Equals(Type.NumberType()))
                 {
-                    node.type = Type.BooleanType(); ;
+                    node.type = Type.BooleanType();
                     return node.type;
                 }
 
@@ -306,7 +297,7 @@ namespace Simpleton
             if (node.elseBlock != null)
                 Visit(node.elseBlock);
 
-            return null;
+            return Type.WellTyped();
         }
 
         public Type VisitInitialization(Initialization node)
@@ -339,7 +330,7 @@ namespace Simpleton
             {
                 if (Lnode.Equals(Type.NumberType()))
                 {
-                    node.type = Type.BooleanType(); ;
+                    node.type = Type.BooleanType();
                     return node.type;
                 }
 
@@ -384,6 +375,10 @@ namespace Simpleton
 
         public Type VisitMethodNode(Method node)
         {
+            foreach (var parameter in node.actualParameters)
+            {
+                Visit(parameter);
+            }
             return node.type;
         }
 
@@ -592,12 +587,16 @@ namespace Simpleton
 
         public Type VisitSubscriptCallNode(SubscriptCallNode node)
         {
-            return node.type;
+            if (Visit(node.index).Equals(Type.NumberType()))
+                return node.type;
+            throw new InvalidTypeException();
         }
 
         public Type VisitSubscriptMemberNode(SubscriptMember node)
         {
-            return node.type;
+            if (Visit(node.index).Equals(Type.NumberType()))
+                return node.type;
+            throw new InvalidTypeException();
         }
 
         public Type VisitSubtractionNode(SubtractionNode node)
@@ -675,7 +674,7 @@ namespace Simpleton
             Type condtion = Visit(node.condition);
             Type block = Visit(node.block);
 
-            if (condtion.Equals(Type.BooleanType()))
+            if (condtion.Equals(Type.BooleanType()) && block.Equals(Type.WellTyped()))
                 return Type.WellTyped();
             else
                 throw new InvalidTypeException();

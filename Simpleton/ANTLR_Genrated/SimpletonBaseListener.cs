@@ -565,6 +565,30 @@ public partial class SimpletonBaseListener : ISimpletonListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCompound_assign_stmt([NotNull] SimpletonParser.Compound_assign_stmtContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SimpletonParser.id_assign"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterId_assign([NotNull] SimpletonParser.Id_assignContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SimpletonParser.id_assign"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitId_assign([NotNull] SimpletonParser.Id_assignContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SimpletonParser.ids_assign"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIds_assign([NotNull] SimpletonParser.Ids_assignContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SimpletonParser.ids_assign"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIds_assign([NotNull] SimpletonParser.Ids_assignContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>
