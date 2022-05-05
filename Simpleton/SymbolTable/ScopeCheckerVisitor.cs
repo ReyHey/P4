@@ -325,13 +325,22 @@ namespace Simpleton
         {
             try
             {
+                Symbol symbol = symbolTable.getSymbol(node.identifier);
+                FunctionDeclNode functionDecl = (FunctionDeclNode)symbol.node;
+                node.type = functionDecl.returnType;
+
+                if (functionDecl.formalParameters.Count != node.actualParameters.Count)
+                {
+                    Console.WriteLine($"Line {node.Line.line}: The function \"{node.identifier}\" requires {functionDecl.formalParameters.Count} " +
+                                      $"input parameters, but the function call have {node.actualParameters.Count} input parameters");
+                    System.Environment.Exit(-1);
+                }
                 for (int i = 0; i < node.actualParameters.Count; i++)
                 {
                     Visit(node.actualParameters[i]);
                 }
-                Symbol symbol = symbolTable.getSymbol(node.identifier);
-                FunctionDeclNode functionDecl = (FunctionDeclNode)symbol.node;
-                node.type = functionDecl.returnType;
+
+                node.declNode = functionDecl;
             }
             catch (GetException e)
             {

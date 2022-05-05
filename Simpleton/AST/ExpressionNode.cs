@@ -203,6 +203,8 @@ namespace Simpleton.AST
         {
             return v.VisitFunctionCallNode(this);
         }
+
+        public FunctionDeclNode declNode { get; set; }
     }
 
     public class DotReferencingNode : CallNode
