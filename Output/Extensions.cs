@@ -7,17 +7,17 @@ namespace ExtensionMethods
 	public static class Extensions
 	{
 		// Text
-		public static bool IsSubText(this string str, string sub)
+		public static bool ___IsSubText(this string str, string sub)
 		{
 			return str.Contains(sub);
 		}
 
-		public static string DeleteSubTexts(this string str, string sub)
+		public static string ___DeleteSubTexts(this string str, string sub)
 		{
 			return String.Join("", str.Split(sub));
 		}
 
-		public static string DeleteFromTo(this string str, decimal? start, decimal? stop)
+		public static string ___DeleteFromTo(this string str, decimal? start, decimal? stop)
 		{
 			if (start != null && stop != null) 
 			{
@@ -28,29 +28,29 @@ namespace ExtensionMethods
 	        return "";
 		}
 
-		public static string ReverseText(this string str)
+		public static string ___ReverseText(this string str)
 		{
 			char[] temp = str.ToCharArray();
 			Array.Reverse(temp);
 			return new String(temp);
 		}
 
-		public static decimal? Length(this string str)
+		public static decimal? ___Length(this string str)
 		{
 			return (decimal?) str.Length;
 		}
 
-		public static decimal? ToNumber(this string str) 
+		public static decimal? ___ToNumber(this string str) 
 		{
 			return decimal.Parse(str);
 		}
 
-		public static List<string> SplitCustom(this string str, string token) 
+		public static List<string> ___SplitCustom(this string str, string token) 
 		{
 			return str.Split(token).Cast<string>().ToList<string>();
 		}
 
-		public static string CharAt(this string str, decimal? index)
+		public static string ___CharAt(this string str, decimal? index)
 		{
 			if (index != null) 
 			{
@@ -61,7 +61,7 @@ namespace ExtensionMethods
 	        return "";
 		}
 
-		public static string ReplaceCustom(this string str, string original, string replacer)
+		public static string ___ReplaceCustom(this string str, string original, string replacer)
 		{
 			string temp = str;
 			temp.Replace(original, replacer);
@@ -69,7 +69,7 @@ namespace ExtensionMethods
 		}
 
 		// Number
-		public static string ToText(this decimal? num) 
+		public static string ___ToText(this decimal? num) 
 		{
 			if (num != null)
 			{
@@ -80,7 +80,7 @@ namespace ExtensionMethods
 	        return "";
 		}
 
-		public static decimal? Sqrt(decimal? num)
+		public static decimal? ___Sqrt(decimal? num)
 		{
 			if (num != null)
 			{
@@ -91,7 +91,7 @@ namespace ExtensionMethods
 	        return 0;
 		}
 
-		public static decimal? Cbrt(decimal? num)
+		public static decimal? ___Cbrt(decimal? num)
 		{
 			if (num != null) 
 			{
@@ -102,7 +102,7 @@ namespace ExtensionMethods
 	        return 0;
 		}
 
-		public static decimal? PowCustom(decimal? b, decimal? p)
+		public static decimal? ___PowCustom(decimal? b, decimal? p)
 		{
 			if (b != null && p != null)
 			{
@@ -114,13 +114,13 @@ namespace ExtensionMethods
 		}
 
 		// Boolean
-		public static string ToText(this bool b)
+		public static string ___ToText(this bool b)
 		{
 			return b.ToString();
 		}
 
 		// List
-		public static void RemoveAt<T>(this List<T> l, decimal? index)
+		public static void ___RemoveAt<T>(this List<T> l, decimal? index)
 		{
 			if (index != null)
 			{
@@ -130,12 +130,12 @@ namespace ExtensionMethods
 	        System.Environment.Exit(1);
 		}
 
-		public static void Sort<T>(this List<T> l) where T : IComparable
+		public static void ___Sort<T>(this List<T> l) where T : IComparable
 		{
 			l.Sort();
 		}
 
-		public static decimal? Length<T>(this List<T> l)
+		public static decimal? ___Length<T>(this List<T> l)
 		{
 			return (decimal?) l.Count;
 		}

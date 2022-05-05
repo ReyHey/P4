@@ -22,12 +22,12 @@ using ExtensionMethods;
 class CODE
 {
 	// Misc
-	public static void Write(string t)
+	public static void ___Write(string t)
 	{
 		Console.Write(t);
 	}
 
-	public static string Read()
+	public static string ___Read()
     {
         string? t = Console.ReadLine();
         if (t != null)
@@ -37,13 +37,13 @@ class CODE
         return string.Empty;
     }
 
-	public static void Terminate(string t)
+	public static void ___Terminate(string t)
 	{
 		Console.WriteLine(t);
 		System.Environment.Exit(1);
 	}
 
-    public static decimal Pow(decimal? a, decimal? b)
+    public static decimal ___Pow(decimal? a, decimal? b)
     {
         if (a == null || b == null)
         {
@@ -53,7 +53,7 @@ class CODE
         return (decimal) Math.Pow((double) a, (double) b);
     }
 
-    public static decimal Sqrt(decimal? v)
+    public static decimal ___Sqrt(decimal? v)
     {
         if (v == null)
         {
@@ -63,7 +63,7 @@ class CODE
         return (decimal)Math.Sqrt((double)v);
     }
 
-    public static decimal Cbrt(decimal? v)
+    public static decimal ___Cbrt(decimal? v)
     {
         if (v == null)
         {
