@@ -353,6 +353,27 @@ namespace Simpleton
 
         public object VisitFunctionDeclNode(FunctionDeclNode node)
         {
+            try
+            {
+                if (node.returnType.userDefinedType)
+                {
+                    Symbol symbol = symbolTable.getSymbol(node.returnType.typeName);
+                    if (symbol.node is StructNode)
+                        node.returnType.structType = true;
+                    else if (symbol.node is EnumNode)
+                        node.returnType.enumType = true;
+                    else
+                    {
+                        Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.returnType.typeName}\" is not a valid type since it is neither a primitiv type or a user-defined type.");
+                        Environment.Exit(1);
+                    }
+                }
+            }
+            catch (GetException ex)
+            {
+                Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.returnType.typeName}\" is not defined");
+                Environment.Exit(1);
+            }
             foreach (FormalParameter parameter in node.formalParameters)
             {
                 TempSymbols.Add((Symbol)Visit(parameter));
@@ -477,12 +498,39 @@ namespace Simpleton
 
         public object VisitStructMemberNode(StructMemberNode node)
         {
-            throw new Exception();
+            if (node.type.userDefinedType)
+            {
+                try
+                {
+                    if (node.type.userDefinedType)
+                    {
+                        Symbol symbol = symbolTable.getSymbol(node.type.typeName);
+                        if (symbol.node is StructNode)
+                            node.type.structType = true;
+                        else if (symbol.node is EnumNode)
+                            node.type.enumType = true;
+                        else
+                        {
+                            Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.type.typeName}\" is not a valid type since it is neither a primitiv type or a user-defined type.");
+                            Environment.Exit(1);
+                        }
+                    }
+                }
+                catch (GetException ex)
+                {
+                    Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.type.typeName}\" is not defined");
+                    Environment.Exit(1);
+                }
+            }
+            return null;
         }
 
         public object VisitStructNode(StructNode node)
         {
-
+            foreach (var member in node.structMembers)
+            {
+                Visit(member);
+            }
             return null;
         }
 
@@ -509,8 +557,6 @@ namespace Simpleton
             }
             symbolTable.CloseNewlyCreatedScope();
 
-
-
             return null;
         }
 
@@ -530,6 +576,36 @@ namespace Simpleton
 
         public object VisitVariableDeclNode(VariableDeclNode node)
         {
+            if (node.type.userDefinedType)
+            {
+                try
+                {
+                    Symbol symbol = symbolTable.getSymbol(node.type.typeName);
+                    if (symbol.node is StructNode)
+                    {
+                        node.type.structType = true;
+                        if (node.constant)
+                        {
+                            Console.WriteLine($"Line {node.Line.line}: You can not declare a constant variable with a struct type, since the type \"{node.type.typeName}\" is declared as a struct on line {((StructNode)symbol.node).Line.line}");
+                            Environment.Exit(1);
+                        }
+                    }
+                    else if (symbol.node is EnumNode)
+                    {
+                        node.type.enumType = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.type.typeName}\" is not a valid type since it is neither a primitiv type or a user-defined type.");
+                        Environment.Exit(1);
+                    }
+                }
+                catch (GetException ex)
+                {
+                    Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.type.typeName}\" is not defined");
+                    Environment.Exit(1);
+                }
+            }
             symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
             if (node.initialization != null)
                 Visit(node.initialization);
@@ -663,7 +739,10 @@ namespace Simpleton
 
                     int i = enumNode.EnumMembers.FindIndex((member) => member.name == expectedFieldName);
                     if (i != -1)
-                        node.type = new Type("number", false, false);
+                    {
+                        node.type = new Type(enumNode.name, false, true);
+                        node.type.enumType = true;
+                    }
                     else
                     {
                         Console.WriteLine("Line " + node.Line.line + ": " + "The field \"" + expectedFieldName + "\" is not a member of the struct " + structName);

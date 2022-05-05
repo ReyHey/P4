@@ -11,7 +11,7 @@ function void Main(){
             Triangle()
             break
         default:
-            Write(5,4)
+            Write("Somenthing went error\n")
             break
     }
 }

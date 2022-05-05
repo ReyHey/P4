@@ -62,11 +62,17 @@ namespace Simpleton
 
         public string VisitEnumNode(EnumNode node)
         {
-            string s = "enum " + node.name + "{\n";
+            string s = "public enum " + node.name + "{\n";
             indent++;
-            foreach (var member in node.EnumMembers)
+
+            for (int i = 0; i < node.EnumMembers.Count; i++)
             {
-                s += PrintIndent + Visit(member) + "\n";
+                s += PrintIndent + Visit(node.EnumMembers[i]);
+
+                if (i < node.EnumMembers.Count - 1)
+                    s += ",";
+
+                s += "\n";
             }
             indent--;
             return s + "}\n";
@@ -261,9 +267,13 @@ namespace Simpleton
         {
             string constant = node.constant ? "const" : "";
             string t = ConvertToCSType(node.type);
-            if (node.constant)
+            if (t == "decimal?" && node.constant)
             {
                 return $"const {t.Substring(0, t.Length - 1)} {node.name} = {Visit(node.initialization)};";
+            }
+            else if (node.constant)
+            {
+                return $"const {t} {node.name} = {Visit(node.initialization)};";
             }
             else if (t == "decimal?" && node.shouldBeInit)
             {
