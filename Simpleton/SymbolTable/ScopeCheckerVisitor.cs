@@ -369,7 +369,7 @@ namespace Simpleton
                     }
                 }
             }
-            catch (GetException ex)
+            catch (GetException)
             {
                 Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.returnType.typeName}\" is not defined");
                 Environment.Exit(1);
@@ -516,7 +516,7 @@ namespace Simpleton
                         }
                     }
                 }
-                catch (GetException ex)
+                catch (GetException)
                 {
                     Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.type.typeName}\" is not defined");
                     Environment.Exit(1);
@@ -600,7 +600,7 @@ namespace Simpleton
                         Environment.Exit(1);
                     }
                 }
-                catch (GetException ex)
+                catch (GetException)
                 {
                     Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.type.typeName}\" is not defined");
                     Environment.Exit(1);
@@ -705,7 +705,7 @@ namespace Simpleton
                     }
                 }
             }
-            catch (GetException e)
+            catch (GetException)
             {
                 Console.WriteLine("Line " + node.Line.line + ": " + "The field \"" + expectedFieldName + "\" is not a member of the struct " + structName);
                 System.Environment.Exit(-1);
@@ -770,7 +770,7 @@ namespace Simpleton
                     Environment.Exit(1);
                 }
             }
-            catch (GetException e)
+            catch (GetException)
             {
                 Console.WriteLine($"Line {node.Line.line}: The name \"{structName}\" is neither declared as struct or enumuration type");
                 Environment.Exit(1);
