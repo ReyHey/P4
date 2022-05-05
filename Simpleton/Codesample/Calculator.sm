@@ -8,6 +8,11 @@ struct hej{
     number operand
 }
 
+enum days{mon,thu}
+
+constant days a = days.mon
+
+
 function void Main(){ 
     number accumulator = 0.0
     input userInput

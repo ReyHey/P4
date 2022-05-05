@@ -51,6 +51,8 @@
             this.typeName = type;
             this.listType = listType;
             this.userDefinedType = userDefinedType;
+            this.structType = false;
+            this.enumType = false;
         }
 
         public static Type NumberType() => new Type("number", false, false);
@@ -66,6 +68,9 @@
         public string typeName { get; set; }
         public bool listType { get; set; }
         public bool userDefinedType { get; set; }
+        public bool structType { get; set; }
+        public bool enumType { get; set; }
+
 
 
         public override bool Equals(object obj)
@@ -79,7 +84,9 @@
 
             if (typeName == objType.typeName &&
                 listType == objType.listType &&
-                userDefinedType == objType.userDefinedType)
+                userDefinedType == objType.userDefinedType &&
+                structType == objType.structType &&
+                enumType == objType.enumType)
                 return true;
             else
                 return false;
