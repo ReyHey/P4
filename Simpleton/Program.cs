@@ -9,14 +9,14 @@ namespace Simpleton
 {
     class Program
     {
-        public static bool terminal = false;
+        public static bool terminal = true;
         public static bool enablePrettyPrint = false;
         public static bool enableASTPrinter = false;
 
         static void Main(string[] args)
         {
         if (args.Length == 1)
-            ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "Codesample/AreaOfGeometrics.sm");
+            ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "../" + args[0]);
             ITokenSource lexer = new SimpletonLexer(stream);
             ITokenStream tokens = new CommonTokenStream(lexer);
             SimpletonParser parser = new SimpletonParser(tokens);
@@ -27,14 +27,14 @@ namespace Simpleton
 
             if (enableASTPrinter)
             {
-                ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "../" + args[0]);
+                /*ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "../" + args[0]);
                 ITokenSource lexer = new SimpletonLexer(stream);
                 ITokenStream tokens = new CommonTokenStream(lexer);
                 SimpletonParser parser = new SimpletonParser(tokens);
                 parser.RemoveErrorListeners();
                 parser.AddErrorListener(DescriptiveErrorListener.Instance);
                 SimpletonParser.ProgramContext CST = parser.program();
-                ProgramNode AST = (ProgramNode)new BuildAstVisitor().VisitProgram(CST);
+                ProgramNode AST = (ProgramNode)new BuildAstVisitor().VisitProgram(CST);*/
 
                 if (enableASTPrinter)
                 {
@@ -47,15 +47,14 @@ namespace Simpleton
                     string prettyPrint = new PrettyPrint().VisitProgramNode((ProgramNode)AST);
                     Console.WriteLine(prettyPrint);
                 }
-
-                new ScopeCheckerVisitor(AST).VisitProgramNode(AST);
-                new Typechecker().VisitProgramNode(AST);
-                
-                CodeGenerator cg = new CodeGenerator();
-                CodeGenerationVisitor cgv = new CodeGenerationVisitor();
-                cg.Write(cgv.VisitProgramNode(AST) + "}");
-                cg.Close();
             }
+            new ScopeCheckerVisitor(AST).VisitProgramNode(AST);
+            new Typechecker().VisitProgramNode(AST);
+            
+            CodeGenerator cg = new CodeGenerator();
+            CodeGenerationVisitor cgv = new CodeGenerationVisitor();
+            cg.Write(cgv.VisitProgramNode(AST) + "}");
+            cg.Close();
         }
     }
 }

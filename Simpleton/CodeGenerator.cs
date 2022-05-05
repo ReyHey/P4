@@ -10,11 +10,11 @@ namespace Simpleton
     {
         public CodeGenerator()
         {
-            if (File.Exists((Program.terminal ? "" : "../../../") + this._fileName))
+            if (File.Exists(this._fileName))
             {
-                File.Delete((Program.terminal ? "" : "../../../") + this._fileName);
+                File.Delete(this._fileName);
             }
-            this._file = File.Create((Program.terminal ? "" : "../../../") + this._fileName);
+            this._file = File.Create(this._fileName);
             this.Write(@"using System.Collections.Generic;
 using System;
 using ExtensionMethods;
@@ -91,6 +91,6 @@ class CODE
 
         private static bool _terminal = true;
         private FileStream _file;
-        private string _fileName = (_terminal ? "" : "../../../") + "../.Output/Program.cs";
+        private string _fileName = (_terminal ? "" : "../../../") + "../Output/Program.cs";
     }
 }
