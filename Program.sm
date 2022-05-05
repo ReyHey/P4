@@ -1,0 +1,3 @@
+function void Main(){
+    Write("IT WORRRKSS!!!\n")
+}

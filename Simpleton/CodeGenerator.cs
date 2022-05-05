@@ -10,11 +10,11 @@ namespace Simpleton
     {
         public CodeGenerator()
         {
-            if (File.Exists((Program.terminal ? "" : "../../../") + this._fileName))
+            if (File.Exists(this._fileName))
             {
-                File.Delete((Program.terminal ? "" : "../../../") + this._fileName);
+                File.Delete(this._fileName);
             }
-            this._file = File.Create((Program.terminal ? "" : "../../../") + this._fileName);
+            this._file = File.Create(this._fileName);
             this.Write(@"using System.Collections.Generic;
 using System;
 using ExtensionMethods;
@@ -22,12 +22,12 @@ using ExtensionMethods;
 class CODE
 {
 	// Misc
-	public static void Write(string t)
+	public static void ___Write(string t)
 	{
 		Console.Write(t);
 	}
 
-	public static string Read()
+	public static string ___Read()
     {
         string? t = Console.ReadLine();
         if (t != null)
@@ -37,13 +37,13 @@ class CODE
         return string.Empty;
     }
 
-	public static void Terminate(string t)
+	public static void ___Terminate(string t)
 	{
 		Console.WriteLine(t);
 		System.Environment.Exit(1);
 	}
 
-    public static decimal Pow(decimal? a, decimal? b)
+    public static decimal ___Pow(decimal? a, decimal? b)
     {
         if (a == null || b == null)
         {
@@ -53,7 +53,7 @@ class CODE
         return (decimal) Math.Pow((double) a, (double) b);
     }
 
-    public static decimal Sqrt(decimal? v)
+    public static decimal ___Sqrt(decimal? v)
     {
         if (v == null)
         {
@@ -63,7 +63,7 @@ class CODE
         return (decimal)Math.Sqrt((double)v);
     }
 
-    public static decimal Cbrt(decimal? v)
+    public static decimal ___Cbrt(decimal? v)
     {
         if (v == null)
         {
@@ -91,6 +91,6 @@ class CODE
 
         private static bool _terminal = true;
         private FileStream _file;
-        private string _fileName = (_terminal ? "" : "../../../") + "Output/Test.cs";
+        private string _fileName = (_terminal ? "" : "../../../") + "../Output/Program.cs";
     }
 }

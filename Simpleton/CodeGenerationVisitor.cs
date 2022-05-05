@@ -26,7 +26,7 @@ namespace Simpleton
         public string VisitFunctionDeclNode(FunctionDeclNode node)
         {
             string s = PrintIndent + "public static ";
-            s += ConvertToCSType(node.returnType) + " " + node.name + "(";
+            s += ConvertToCSType(node.returnType) + " " + (node.name == "Main" ? "Main" : "___" + node.name) + "(";
 
             for (int i = 0; i < node.formalParameters.Count; i++)
             {
@@ -41,12 +41,12 @@ namespace Simpleton
         }
         public string VisitFormalParameter(FormalParameter node)
         {
-            return ConvertToCSType(node.type) + " " + node.name;
+            return ConvertToCSType(node.type) + " " + "___" +  node.name;
         }
 
         public string VisitStructNode(StructNode node)
         {
-            string s = "public struct " + node.name + "{\n";
+            string s = "public struct " + "___" +  node.name + "{\n";
             indent++;
             foreach (var member in node.structMembers)
             {
@@ -57,12 +57,12 @@ namespace Simpleton
         }
         public string VisitStructMemberNode(StructMemberNode node)
         {
-            return "public " + ConvertToCSType(node.type) + " " + node.name + ";";
+            return "public " + ConvertToCSType(node.type) + " " + "___" + node.name + ";";
         }
 
         public string VisitEnumNode(EnumNode node)
         {
-            string s = "enum " + node.name + "{\n";
+            string s = "public enum " + "___" + node.name + "{\n";
             indent++;
             foreach (var member in node.EnumMembers)
             {
@@ -75,9 +75,9 @@ namespace Simpleton
         public string VisitEnumMemberNode(EnumMemberNode node)
         {
             if (node.value != null)
-                return node.name + "=" + Visit(node.value);
+                return "___" + node.name + "," + "=" + Visit(node.value);
             else
-                return node.name;
+                return "___" + node.name + ",";
         }
 
         public string VisitAdditionNode(AdditionNode node)
@@ -98,7 +98,7 @@ namespace Simpleton
         }
         public string VisitPowNode(PowNode node)
         {
-            return "Pow(" + Visit(node.Left) + ", " + Visit(node.Right) + ")";
+            return "___Pow(" + Visit(node.Left) + ", " + Visit(node.Right) + ")";
         }
         public string VisitModNode(ModNode node)
         {
@@ -151,7 +151,7 @@ namespace Simpleton
         }
         public string VisitFunctionCallNode(FunctionCallNode node)
         {
-            string s = $"{node.identifier}(";
+            string s = $"___{node.identifier}(";
             if (node.actualParameters != null)
                 for (int i = 0; i < node.actualParameters.Count; i++)
                 {
@@ -263,24 +263,24 @@ namespace Simpleton
             string t = ConvertToCSType(node.type);
             if (node.constant)
             {
-                return $"const {t.Substring(0, t.Length - 1)} {node.name} = {Visit(node.initialization)};";
+                return $"const {t.Substring(0, t.Length - 1)} {"___" + node.name} = {Visit(node.initialization)};";
             }
             else if (t == "decimal?" && node.shouldBeInit)
             {
-                return $"{t} {node.name} = {(node.initialization != null ? Visit(node.initialization) : "0M")} ;";
+                return $"{t} {"___" + node.name} = {(node.initialization != null ? Visit(node.initialization) : "0M")} ;";
             }
             else if (t == "string")
             {
-                return $"{t} {node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "= \" \"")}" + ";";
+                return $"{t} {"___" + node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "= \" \"")}" + ";";
             }
             else
             {
-                return $"{t} {node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "")}";
+                return $"{t} {"___" + node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "")}";
             }
         }
         public string VisitListDeclNode(ListDeclNode node)
         {
-            string t = $"{ConvertToCSType(node.type)} {node.name} = ";
+            string t = $"{ConvertToCSType(node.type)} {"___" + node.name} = ";
             if (node.initialization != null)
             {
                 if (node.initialization.initialization != null)
@@ -368,17 +368,17 @@ namespace Simpleton
 
         public string VariableCallNode(VariableCallNode node)
         {
-            return node.identifier;
+            return "___" + node.identifier;
         }
 
         public string VisitSubscriptCallNode(SubscriptCallNode node)
         {
-            return node.identifier + "[" + "(int)" + Visit(node.index) + "]";
+            return "___" + node.identifier + "[" + "(int)" + Visit(node.index) + "]";
         }
 
         public string VisitDotReferencingNode(DotReferencingNode node)
         {
-            return Visit(node.parent) + "." + Visit(node.member);
+            return Visit(node.parent) + "." + "___" + Visit(node.member);
         }
 
         public string VisitFieldNode(Field node)
@@ -419,7 +419,7 @@ namespace Simpleton
 
         public string VisitSubscriptMemberNode(SubscriptMember node)
         {
-            return node.identifier + "[" + Visit(node.index) + "]";
+            return "___" + node.identifier + "[" + Visit(node.index) + "]";
         }
 
         public string ConvertToCSType(Type type)
@@ -431,7 +431,7 @@ namespace Simpleton
                 t = "List<";
                 if (type.userDefinedType)
                 {
-                    t += type.typeName + ">";
+                    t += "___" + type.typeName + ">";
                 }
                 else
                 {
@@ -440,7 +440,7 @@ namespace Simpleton
             }
             else if (type.userDefinedType)
             {
-                t = type.typeName;
+                t = "___" + type.typeName;
             }
             else
             {
