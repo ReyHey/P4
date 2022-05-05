@@ -235,9 +235,10 @@ namespace Simpleton
 
         public Type VisitFunctionCallNode(FunctionCallNode node)
         {
-            foreach (var parameter in node.actualParameters)
+            for (int i = 0; i < node.actualParameters.Count; i++)
             {
-                Visit(parameter);
+                if (!Visit(node.actualParameters[i]).Equals(node.declNode.formalParameters[i].type))
+                    throw new InvalidTypeException();
             }
             return node.type;
         }
