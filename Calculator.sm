@@ -1,0 +1,132 @@
+struct input{
+    text operator 
+    number operand
+}
+
+struct hej{
+    text operator 
+    number operand
+}
+
+enum biomes {desert, ocean, forest}
+
+function void Main(){ 
+    number accumulator = 0.0
+    input userInput
+    userInput.operator = ""
+    userInput.operand = 0.0
+    biomes.desert
+    while userInput.operator != "q" {
+        Write("Enter operator, and an optional operand:\n")
+        userInput = GetInput()
+
+        if userInput.operator != "q"{
+            accumulator = DoOperation(userInput.operator, userInput.operand, accumulator)
+            Write("Result so far is " + accumulator.ToText + "\n")
+        }
+    }
+    Write("Final result is: {accumulator} \n")
+}
+
+function input GetInput() {
+    input userInput
+    userInput.operator = ""
+    userInput.operand = (-5)
+    
+    while userInput.operator == "" {
+        text read = Read()
+        list<text> spilted = read.Split(" ")
+
+        if spilted.Length() == 2 and IsValidBinaryOperator(spilted[0])   {
+
+            userInput.operator = spilted[0]
+            userInput.operand = spilted[1].ToNumber()
+            if userInput.operand == NaN{
+                userInput.operator = ""
+                userInput.operand = 0.0
+                Write("Wrong input. Write a new input\n")
+            }
+        }
+        else if spilted.Length() == 1 {
+            if IsValidUnaryOperator(spilted[0]){
+                userInput.operator = spilted[0]
+            }
+            else{
+                Write("Wrong input. Write a new input\n")
+            }
+        }
+        else{
+            Write("Wrong input. Write a new input\n")
+        }
+        
+    }
+    return userInput
+}
+
+function boolean IsValidBinaryOperator(text operation){
+    boolean result
+    if operation == "+" or operation == "-" or operation == "*" or operation == "/" or operation == "mod" or operation == "^" {
+        result = true
+    }
+    else{
+        result = false
+    }
+    return result
+}
+
+function boolean IsValidUnaryOperator(text operation){
+    boolean result
+    if operation == "sqrt" or operation == "cbrt" or operation == "q" {
+        result = true
+    }
+    else{
+        result = false
+    }
+    return result
+}
+
+function number DoOperation(text operation, number operand, number previousAccumulator)
+{
+    number newAccumulator = previousAccumulator
+    switch operation {
+        case "+":
+            newAccumulator += operand
+            break
+        case "-":
+            newAccumulator -= operand
+            break
+        case "*":
+            newAccumulator *= operand
+            break
+        case "/":
+            if operand != 0{
+                newAccumulator /= operand
+            }
+            else{
+                Write("Can not divide with zero\n")
+            }
+            break
+        case "^":
+            newAccumulator = newAccumulator^operand
+            break
+        case "sqrt":
+            newAccumulator = sqrt(newAccumulator)
+            break
+        case "cbrt":
+            newAccumulator = cbrt(newAccumulator)
+            break  
+        case "mod":
+            newAccumulator = newAccumulator mod operand
+            break
+        default:
+            Write("Somenthing went wrong\n")
+            break
+    }
+
+    return newAccumulator
+}
+
+
+
+
+
