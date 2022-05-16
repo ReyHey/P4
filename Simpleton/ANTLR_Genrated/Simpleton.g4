@@ -94,11 +94,12 @@ foreach_stmt: 'foreach' type element=IDENTIFIER 'in' id block;
 block: NEWLINE? '{' NEWLINE (stmt)* '}' NEWLINE?;
 
 
-assign_stmt : id '=' expr NEWLINE;
+assign_stmt : id_assign '=' expr NEWLINE;
+ternary_stmt: id_assign '='  ifExpr=expr 'if' cond=expr 'else' elseExpr=expr NEWLINE;
+compound_assign_stmt : id_assign compoundOP=('+='|'-='|'*='|'/=') expr NEWLINE;
 
-ternary_stmt: id '='  ifExpr=expr 'if' cond=expr 'else' elseExpr=expr NEWLINE;
-compound_assign_stmt : id compoundOP=('+='|'-='|'*='|'/=') expr NEWLINE;
-
+id_assign : id_assign '.' ids_assign | ids_assign;
+ids_assign: IDENTIFIER | subscript;
 
 
 WS : (' ' | '\t')+ -> channel(HIDDEN);
@@ -107,7 +108,7 @@ COMMENT : (MULTI_COMMENT | LINE_COMMENT);
 MULTI_COMMENT : '/*' .*? '*/' -> channel(HIDDEN);
 LINE_COMMENT : '//' ~[\r\n]* -> channel(HIDDEN);
 
-NUMBER: ('0' | '-'? [1-9][0-9]*) ('.' [0-9]*)?;
+NUMBER: ('0' | [1-9][0-9]*) ('.' [0-9]*)?;
 TEXT: ('"' ~'"'* '"') | ('\'' ~'\''* '\'');
 BOOlEAN: 'true' | 'false';
 NAN: 'NaN';

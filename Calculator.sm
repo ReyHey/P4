@@ -1,30 +1,26 @@
 struct input{
-    text operator1 
+    text operator 
     number operand
 }
 
 struct hej{
-    text operator1 
+    text operator 
     number operand
 }
 
-enum days{mon,thu}
-
-constant days a = days.mon
-
+enum biomes {desert, ocean, forest}
 
 function void Main(){ 
     number accumulator = 0.0
     input userInput
-    userInput.operator1 = ""
+    userInput.operator = ""
     userInput.operand = 0.0
-
-    while userInput.operator1 != "q" {
-        Write("Enter operator1, and an optional operand:\n")
+    while userInput.operator != "q" {
+        Write("Enter operator, and an optional operand:\n")
         userInput = GetInput()
 
-        if userInput.operator1 != "q"{
-            accumulator = DoOperation(userInput.operator1, userInput.operand, accumulator)
+        if userInput.operator != "q"{
+            accumulator = DoOperation(userInput.operator, userInput.operand, accumulator)
             Write("Result so far is " + accumulator.ToText() + "\n")
         }
     }
@@ -33,26 +29,26 @@ function void Main(){
 
 function input GetInput() {
     input userInput
-    userInput.operator1 = ""
+    userInput.operator = ""
     userInput.operand = (-5)
     
-    while userInput.operator1 == "" {
+    while userInput.operator == "" {
         text read = Read()
         list<text> spilted = read.Split(" ")
 
-        if spilted.Length() == 2 and IsValidBinaryoperator1(spilted[0])   {
+        if spilted.Length() == 2 and IsValidBinaryOperator(spilted[0])   {
 
-            userInput.operator1 = spilted[0]
+            userInput.operator = spilted[0]
             userInput.operand = spilted[1].ToNumber()
             if userInput.operand == NaN{
-                userInput.operator1 = ""
+                userInput.operator = ""
                 userInput.operand = 0.0
                 Write("Wrong input. Write a new input\n")
             }
         }
         else if spilted.Length() == 1 {
-            if IsValidUnaryoperator1(spilted[0]){
-                userInput.operator1 = spilted[0]
+            if IsValidUnaryOperator(spilted[0]){
+                userInput.operator = spilted[0]
             }
             else{
                 Write("Wrong input. Write a new input\n")
@@ -66,7 +62,7 @@ function input GetInput() {
     return userInput
 }
 
-function boolean IsValidBinaryoperator1(text operation){
+function boolean IsValidBinaryOperator(text operation){
     boolean result
     if operation == "+" or operation == "-" or operation == "*" or operation == "/" or operation == "mod" or operation == "^" {
         result = true
@@ -77,7 +73,7 @@ function boolean IsValidBinaryoperator1(text operation){
     return result
 }
 
-function boolean IsValidUnaryoperator1(text operation){
+function boolean IsValidUnaryOperator(text operation){
     boolean result
     if operation == "sqrt" or operation == "cbrt" or operation == "q" {
         result = true

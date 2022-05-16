@@ -187,8 +187,29 @@ namespace Simpleton
         public object VisitAssignStmtNode(AssignStmtNode node)
         {
             Visit(node.variable);
+            CheckLeftSideIsNotConstant(node.variable);
             Visit(node.expression);
+
             return null;
+        }
+
+        void CheckLeftSideIsNotConstant(CallNode node)
+        {
+            if (node is VariableCallNode)
+            {
+                Symbol symbol = symbolTable.getSymbol(((VariableCallNode)node).identifier);
+
+                if (symbol.node is VariableDeclNode)
+                {
+                    VariableDeclNode bindingOccurrence = (VariableDeclNode)symbol.node;
+                    if (bindingOccurrence.constant)
+                    {
+                        Console.WriteLine($"Line {((VariableCallNode)node).Line.line}: INVAILD ASSIGNMENT - The variable \"{((VariableCallNode)node).identifier}\" is defined as constant on line {bindingOccurrence.Line.line}, and therefore no values can be assigned to the variable.");
+                        System.Environment.Exit(-1);
+                    }
+                }
+
+            }
         }
 
         public object VisitBlock(Block node)
@@ -249,12 +270,6 @@ namespace Simpleton
             return null;
         }
 
-        public object VisitConstantDeclNode(ConstantDeclNode node)
-        {
-
-            Visit(node.initialization);
-            return null;
-        }
 
         public object VisitContinue(Continue node)
         {
@@ -270,7 +285,9 @@ namespace Simpleton
 
         public object VisitDIVISIONEQNode(DIVISIONEQNode node)
         {
+
             Visit(node.variable);
+
             Visit(node.expression);
             return null;
         }
@@ -308,17 +325,26 @@ namespace Simpleton
         {
             try
             {
+                Symbol symbol = symbolTable.getSymbol(node.identifier);
+                FunctionDeclNode functionDecl = (FunctionDeclNode)symbol.node;
+                node.type = functionDecl.returnType;
+
+                if (functionDecl.formalParameters.Count != node.actualParameters.Count)
+                {
+                    Console.WriteLine($"Line {node.Line.line}: The function \"{node.identifier}\" requires {functionDecl.formalParameters.Count} " +
+                                      $"input parameters, but the function call have {node.actualParameters.Count} input parameters");
+                    System.Environment.Exit(-1);
+                }
                 for (int i = 0; i < node.actualParameters.Count; i++)
                 {
                     Visit(node.actualParameters[i]);
                 }
-                Symbol symbol = symbolTable.getSymbol(node.identifier);
-                FunctionDeclNode functionDecl = (FunctionDeclNode)symbol.node;
-                node.type = functionDecl.returnType;
+
+                node.declNode = functionDecl;
             }
             catch (GetException e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("Line " + node.Line.line + ": The function " + "\"" + e.name + "\"" + " has not been declared.");
                 System.Environment.Exit(-1);
             }
 
@@ -327,6 +353,27 @@ namespace Simpleton
 
         public object VisitFunctionDeclNode(FunctionDeclNode node)
         {
+            try
+            {
+                if (node.returnType.userDefinedType)
+                {
+                    Symbol symbol = symbolTable.getSymbol(node.returnType.typeName);
+                    if (symbol.node is StructNode)
+                        node.returnType.structType = true;
+                    else if (symbol.node is EnumNode)
+                        node.returnType.enumType = true;
+                    else
+                    {
+                        Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.returnType.typeName}\" is not a valid type since it is neither a primitiv type or a user-defined type.");
+                        Environment.Exit(1);
+                    }
+                }
+            }
+            catch (GetException)
+            {
+                Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.returnType.typeName}\" is not defined");
+                Environment.Exit(1);
+            }
             foreach (FormalParameter parameter in node.formalParameters)
             {
                 TempSymbols.Add((Symbol)Visit(parameter));
@@ -375,14 +422,18 @@ namespace Simpleton
 
         public object VisitMINUSEQNode(MINUSEQNode node)
         {
+
             Visit(node.variable);
+
             Visit(node.expression);
             return null;
         }
 
         public object VisitMULTIEQNode(MULTIEQNode node)
         {
+
             Visit(node.variable);
+
             Visit(node.expression);
             return null;
         }
@@ -417,7 +468,9 @@ namespace Simpleton
 
         public object VisitPLUSEQNode(PLUSEQNode node)
         {
+
             Visit(node.variable);
+
             Visit(node.expression);
             return null;
         }
@@ -445,12 +498,39 @@ namespace Simpleton
 
         public object VisitStructMemberNode(StructMemberNode node)
         {
-            throw new Exception();
+            if (node.type.userDefinedType)
+            {
+                try
+                {
+                    if (node.type.userDefinedType)
+                    {
+                        Symbol symbol = symbolTable.getSymbol(node.type.typeName);
+                        if (symbol.node is StructNode)
+                            node.type.structType = true;
+                        else if (symbol.node is EnumNode)
+                            node.type.enumType = true;
+                        else
+                        {
+                            Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.type.typeName}\" is not a valid type since it is neither a primitiv type or a user-defined type.");
+                            Environment.Exit(1);
+                        }
+                    }
+                }
+                catch (GetException)
+                {
+                    Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.type.typeName}\" is not defined");
+                    Environment.Exit(1);
+                }
+            }
+            return null;
         }
 
         public object VisitStructNode(StructNode node)
         {
-
+            foreach (var member in node.structMembers)
+            {
+                Visit(member);
+            }
             return null;
         }
 
@@ -477,8 +557,6 @@ namespace Simpleton
             }
             symbolTable.CloseNewlyCreatedScope();
 
-
-
             return null;
         }
 
@@ -498,6 +576,36 @@ namespace Simpleton
 
         public object VisitVariableDeclNode(VariableDeclNode node)
         {
+            if (node.type.userDefinedType)
+            {
+                try
+                {
+                    Symbol symbol = symbolTable.getSymbol(node.type.typeName);
+                    if (symbol.node is StructNode)
+                    {
+                        node.type.structType = true;
+                        if (node.constant)
+                        {
+                            Console.WriteLine($"Line {node.Line.line}: You can not declare a constant variable with a struct type, since the type \"{node.type.typeName}\" is declared as a struct on line {((StructNode)symbol.node).Line.line}");
+                            Environment.Exit(1);
+                        }
+                    }
+                    else if (symbol.node is EnumNode)
+                    {
+                        node.type.enumType = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.type.typeName}\" is not a valid type since it is neither a primitiv type or a user-defined type.");
+                        Environment.Exit(1);
+                    }
+                }
+                catch (GetException)
+                {
+                    Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.type.typeName}\" is not defined");
+                    Environment.Exit(1);
+                }
+            }
             symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
             if (node.initialization != null)
                 Visit(node.initialization);
@@ -513,20 +621,14 @@ namespace Simpleton
             return null;
         }
 
-
         public object VariableCallNode(VariableCallNode node)
         {
             try
             {
                 Symbol symbol = symbolTable.getSymbol(node.identifier);
 
-                if (symbol.node is ConstantDeclNode)
-                {
-                    ConstantDeclNode bindingOccurrence = (ConstantDeclNode)symbol.node;
-                    node.type = bindingOccurrence.type;
-                }
 
-                else if (symbol.node is VariableDeclNode)
+                if (symbol.node is VariableDeclNode)
                 {
                     VariableDeclNode bindingOccurrence = (VariableDeclNode)symbol.node;
                     node.type = bindingOccurrence.type;
@@ -549,10 +651,9 @@ namespace Simpleton
             }
             catch (GetException e)
             {
-                Console.WriteLine(e.Message + " " + node.Line.line + " " + (node.Line.column + 1));
+                Console.WriteLine("Line " + node.Line.line + ": The variable " + "\"" + e.name + "\"" + " has not been declared.");
                 System.Environment.Exit(-1);
             }
-
 
             return null;
         }
@@ -573,7 +674,7 @@ namespace Simpleton
             }
             catch (GetException e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("Line " + node.Line.line + ": The variable " + "\"" + e.name + "\"" + " has not been declared.");
                 System.Environment.Exit(-1);
             }
 
@@ -602,18 +703,14 @@ namespace Simpleton
                     }
                 }
             }
-            catch (GetException e)
+            catch (GetException)
             {
-                Console.WriteLine("Field \"" + expectedFieldName + "\" is not a member of the struct " + structName);
+                Console.WriteLine("Line " + node.Line.line + ": " + "The field \"" + expectedFieldName + "\" is not a member of the struct " + structName);
                 System.Environment.Exit(-1);
             }
 
             return null;
         }
-
-
-
-
 
         public object VisitDotReferencingNode(DotReferencingNode node)
         {
@@ -634,39 +731,44 @@ namespace Simpleton
                 {
                     EnumNode enumNode = (EnumNode)typeSymbol.node;
 
-
-                    string actualFieldName;
-                    foreach (EnumMemberNode member in enumNode.EnumMembers)
+                    int i = enumNode.EnumMembers.FindIndex((member) => member.name == expectedFieldName);
+                    if (i != -1)
                     {
-                        actualFieldName = member.name;
-                        if (actualFieldName == expectedFieldName)
-                        {
-                            node.type = new Type("number", false, false);
-                            return null;
-                        }
+                        node.type = new Type(enumNode.name, false, true);
+                        node.type.enumType = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Line " + node.Line.line + ": " + "The field \"" + expectedFieldName + "\" is not a member of the struct " + structName);
+                        System.Environment.Exit(-1);
+                    }
+
+                }
+                else if (typeSymbol.node is StructNode)
+                {
+                    StructNode structNode = (StructNode)typeSymbol.node;
+
+                    int i = structNode.structMembers.FindIndex((member) => member.name == expectedFieldName);
+
+                    if (i != -1)
+                        node.type = structNode.structMembers[i].type;
+                    else
+                    {
+                        Console.WriteLine("Line " + node.Line.line + ": " + "The field \"" + expectedFieldName + "\" is not a member of the struct " + structName);
+                        System.Environment.Exit(-1);
                     }
                 }
                 else
                 {
-                    StructNode structNode = (StructNode)typeSymbol.node;
-
-
-                    string actualFieldName;
-                    foreach (StructMemberNode member in structNode.structMembers)
-                    {
-                        actualFieldName = member.name;
-                        if (actualFieldName == expectedFieldName)
-                        {
-                            node.type = member.type;
-                            return null;
-                        }
-                    }
+                    Console.WriteLine($"Line {node.Line.line}: INVALID DOTREFERENCING - The type of the left side of the dotreferencing is \"{node.parent.type.typeName}\", and that types do not have a field called {expectedFieldName}");
+                    Environment.Exit(1);
                 }
             }
-            catch (GetException e)
+            catch (GetException)
             {
-                Console.WriteLine("Field \"" + expectedFieldName + "\" is not a member of the struct " + structName);
-                System.Environment.Exit(-1);
+                Console.WriteLine($"Line {node.Line.line}: The name \"{structName}\" is neither declared as struct or enumuration type");
+                Environment.Exit(1);
+
             }
 
             return null;
@@ -686,12 +788,10 @@ namespace Simpleton
             }
             else
             {
-                Console.WriteLine("Method \"" + node.identifier + "\" is not a method of the type " + typeName);
+                Console.WriteLine("Line " + node.Line.line + ": " + "The Method \"" + node.identifier + "\" is not a method of the type " + typeName);
                 System.Environment.Exit(-1);
             }
             return null;
         }
-
-
     }
 }

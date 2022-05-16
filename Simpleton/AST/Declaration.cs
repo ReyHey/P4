@@ -49,7 +49,6 @@ namespace Simpleton.AST
         {
             return v.VisitFormalParameter(this);
         }
-        public LineInfo Line { get; set; }
     }
 
     public class StructNode : Declaration
@@ -104,13 +103,5 @@ namespace Simpleton.AST
 
     }
 
-    public class ConstantDeclNode : VariableDeclNode, Declaration
-    {
-        public override T Accept<T>(ASTVisitor<T> v)
-        {
-            return v.VisitConstantDeclNode(this);
-        }
-
-    }
 }
 

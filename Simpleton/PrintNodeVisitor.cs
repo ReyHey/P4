@@ -79,12 +79,6 @@ namespace Simpleton.AST
             return p;
         }
 
-        public PrintNode VisitConstantDeclNode(ConstantDeclNode node)
-        {
-            PrintNode p = new PrintNode("ConstantDeclNode", node.name, node.Line);
-            p.AddChild(Visit(node.initialization));
-            return p;
-        }
 
         public PrintNode VisitContinue(Continue node)
         {

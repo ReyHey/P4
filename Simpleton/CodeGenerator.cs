@@ -15,6 +15,7 @@ namespace Simpleton
                 File.Delete(Program.projectPath.GetPath() + this._fileName);
             }
             this._file = File.Create(Program.projectPath.GetPath() + this._fileName);
+
             this.Write(@"using System.Collections.Generic;
 using System;
 using ExtensionMethods;
@@ -22,12 +23,12 @@ using ExtensionMethods;
 class CODE
 {
 	// Misc
-	public static void Write(string t)
+	public static void ___Write(string t)
 	{
 		Console.Write(t);
 	}
 
-	public static string Read()
+	public static string ___Read()
     {
         string? t = Console.ReadLine();
         if (t != null)
@@ -37,11 +38,44 @@ class CODE
         return string.Empty;
     }
 
-	public static void Terminate(string t)
+	public static void ___Terminate(string t)
 	{
 		Console.WriteLine(t);
 		System.Environment.Exit(1);
 	}
+
+    public static decimal ___Pow(decimal? a, decimal? b)
+    {
+        if (a == null || b == null)
+        {
+            Console.WriteLine(""Could not make power, because of NaN"");
+            System.Environment.Exit(1);
+        }
+        return (decimal) Math.Pow((double) a, (double) b);
+    }
+
+    public static decimal ___Sqrt(decimal? v)
+    {
+        if (v == null)
+        {
+            Console.WriteLine(""Could not make sqrt, because of NaN"");
+            System.Environment.Exit(1);
+        }
+        return (decimal)Math.Sqrt((double)v);
+    }
+
+    public static decimal ___Cbrt(decimal? v)
+    {
+        if (v == null)
+        {
+            Console.WriteLine(""Could not make cbrt, because of NaN"");
+            System.Environment.Exit(1);
+        }
+        return (decimal)Math.Cbrt((double)v);
+    }
+
+
+
 ");
         }
 
@@ -58,6 +92,6 @@ class CODE
 
         private static bool _terminal = true;
         private FileStream _file;
-        private string _fileName = (_terminal ? "" : "../../../") + "Output/Test.cs";
+        private string _fileName = (_terminal ? "" : "../../../") + "../Output/Program.cs";
     }
 }

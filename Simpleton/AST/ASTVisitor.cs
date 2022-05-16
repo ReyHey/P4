@@ -10,7 +10,7 @@
         T VisitStructMemberNode(StructMemberNode node);
         T VisitEnumNode(EnumNode node);
         T VisitEnumMemberNode(EnumMemberNode node);
-        T VisitConstantDeclNode(ConstantDeclNode node);
+
         T VisitAdditionNode(AdditionNode node);
         T VisitSubtractionNode(SubtractionNode node);
         T VisitMultiplicationNode(MultiplicationNode node);

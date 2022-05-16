@@ -13,28 +13,31 @@ namespace Simpleton
         public static ProjectPath projectPath = new ProjectPath();
         static void Main(string[] args)
         {
-            ParserHandler parser = new ParserHandler(projectPath.GetPath() + "Codesample/AverageValueOfAList.sm");
-            ProgramNode AST = parser.Parse();
-
-            if (enableASTPrinter)
+            if (args.Length == 1)
             {
-                PrintNode tree = new PrintNodeVisitor().VisitProgramNode((ProgramNode)AST);
-                tree.Print("", true);
+                ParserHandler parser = new ParserHandler(projectPath.GetPath() + "../" + args[0]);
+                ProgramNode AST = parser.Parse();
+
+                if (enableASTPrinter)
+                {
+                    PrintNode tree = new PrintNodeVisitor().VisitProgramNode((ProgramNode)AST);
+                    tree.Print("", true);
+                }
+
+                if (enablePrettyPrint)
+                {
+                    string prettyPrint = new PrettyPrint().VisitProgramNode((ProgramNode)AST);
+                    Console.WriteLine(prettyPrint);
+                }
+
+                new ScopeCheckerVisitor(AST).VisitProgramNode(AST);
+                new Typechecker().VisitProgramNode(AST);
+
+                CodeGenerator cg = new CodeGenerator();
+                CodeGenerationVisitor cgv = new CodeGenerationVisitor();
+                cg.Write(cgv.VisitProgramNode(AST) + "}");
+                cg.Close();
             }
-
-            if (enablePrettyPrint)
-            {
-                string prettyPrint = new PrettyPrint().VisitProgramNode((ProgramNode)AST);
-                Console.WriteLine(prettyPrint);
-            }
-
-            new ScopeCheckerVisitor(AST).VisitProgramNode(AST);
-            new Typechecker().VisitProgramNode(AST);
-
-            //CodeGenerator cg = new CodeGenerator();
-            //CodeGenerationVisitor cgv = new CodeGenerationVisitor();
-            //cg.Write(cgv.VisitProgramNode(AST) + "}");
-            //cg.Close();
         }
     }
 }
