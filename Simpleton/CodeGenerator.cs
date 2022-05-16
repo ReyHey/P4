@@ -10,11 +10,12 @@ namespace Simpleton
     {
         public CodeGenerator()
         {
-            if (File.Exists(this._fileName))
+            if (File.Exists(Program.projectPath.GetPath() + this._fileName))
             {
-                File.Delete(this._fileName);
+                File.Delete(Program.projectPath.GetPath() + this._fileName);
             }
-            this._file = File.Create(this._fileName);
+            this._file = File.Create(Program.projectPath.GetPath() + this._fileName);
+
             this.Write(@"using System.Collections.Generic;
 using System;
 using ExtensionMethods;

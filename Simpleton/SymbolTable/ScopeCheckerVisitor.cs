@@ -26,7 +26,7 @@ namespace Simpleton
         void PredefinedSymbolTable()
         {
 
-            string[] lines = File.ReadAllLines((Program.terminal ? "" : "../../../") + "SymbolTable/PredefinedSymbol.txt");
+            string[] lines = File.ReadAllLines(Program.projectPath.GetPath() + "SymbolTable/PredefinedSymbol.txt");
 
 
             for (int i = 0; i < lines.Length; i++)
@@ -621,7 +621,6 @@ namespace Simpleton
             return null;
         }
 
-
         public object VariableCallNode(VariableCallNode node)
         {
             try
@@ -655,7 +654,6 @@ namespace Simpleton
                 Console.WriteLine("Line " + node.Line.line + ": The variable " + "\"" + e.name + "\"" + " has not been declared.");
                 System.Environment.Exit(-1);
             }
-
 
             return null;
         }
@@ -713,10 +711,6 @@ namespace Simpleton
 
             return null;
         }
-
-
-
-
 
         public object VisitDotReferencingNode(DotReferencingNode node)
         {

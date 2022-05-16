@@ -1,30 +1,22 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using Antlr4.Runtime;
-using Antlr4.Runtime.Tree;
 using Simpleton.AST;
+using System.IO;
 
 namespace Simpleton
 {
     class Program
     {
-        public static bool terminal = true;
         public static bool enablePrettyPrint = false;
         public static bool enableASTPrinter = false;
-
+        public static ProjectPath projectPath = new ProjectPath();
         static void Main(string[] args)
         {
             if (args.Length == 1)
             {
-                ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "../" + args[0]);
-                ITokenSource lexer = new SimpletonLexer(stream);
-                ITokenStream tokens = new CommonTokenStream(lexer);
-                SimpletonParser parser = new SimpletonParser(tokens);
-                parser.RemoveErrorListeners();
-                parser.AddErrorListener(DescriptiveErrorListener.Instance);
-                SimpletonParser.ProgramContext CST = parser.program();
-                ProgramNode AST = (ProgramNode)new BuildAstVisitor().VisitProgram(CST);
+                ParserHandler parser = new ParserHandler(projectPath.GetPath() + "../" + args[0]);
+                ProgramNode AST = parser.Parse();
 
                 if (enableASTPrinter)
                 {
