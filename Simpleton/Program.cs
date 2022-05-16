@@ -1,28 +1,20 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using Antlr4.Runtime;
-using Antlr4.Runtime.Tree;
 using Simpleton.AST;
+using System.IO;
 
 namespace Simpleton
 {
     class Program
     {
-        public static bool terminal = true;
         public static bool enablePrettyPrint = false;
         public static bool enableASTPrinter = false;
-
+        public static ProjectPath projectPath = new ProjectPath();
         static void Main(string[] args)
         {
-            ICharStream stream = CharStreams.fromPath((terminal ? "" : "../../../") + "Codesample/AverageValueOfAList.sm");
-            ITokenSource lexer = new SimpletonLexer(stream);
-            ITokenStream tokens = new CommonTokenStream(lexer);
-            SimpletonParser parser = new SimpletonParser(tokens);
-            parser.RemoveErrorListeners();
-            parser.AddErrorListener(DescriptiveErrorListener.Instance);
-            SimpletonParser.ProgramContext CST = parser.program();
-            ProgramNode AST = (ProgramNode)new BuildAstVisitor().VisitProgram(CST);
+            ParserHandler parser = new ParserHandler(projectPath.GetPath() + "Codesample/AverageValueOfAList.sm");
+            ProgramNode AST = parser.Parse();
 
             if (enableASTPrinter)
             {
@@ -39,10 +31,10 @@ namespace Simpleton
             new ScopeCheckerVisitor(AST).VisitProgramNode(AST);
             new Typechecker().VisitProgramNode(AST);
 
-            CodeGenerator cg = new CodeGenerator();
-            CodeGenerationVisitor cgv = new CodeGenerationVisitor();
-            cg.Write(cgv.VisitProgramNode(AST) + "}");
-            cg.Close();
+            //CodeGenerator cg = new CodeGenerator();
+            //CodeGenerationVisitor cgv = new CodeGenerationVisitor();
+            //cg.Write(cgv.VisitProgramNode(AST) + "}");
+            //cg.Close();
         }
     }
 }

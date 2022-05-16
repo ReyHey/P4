@@ -8,7 +8,7 @@ using Type = Simpleton.AST.Type;
 
 namespace Simpleton
 {
-    class ScopeCheckerVisitor : ASTVisitor<object>
+    public class ScopeCheckerVisitor : ASTVisitor<object>
     {
         SymbolTable symbolTable = new SymbolTable();
 
@@ -26,7 +26,7 @@ namespace Simpleton
         void PredefinedSymbolTable()
         {
 
-            string[] lines = File.ReadAllLines((Program.terminal ? "" : "../../../") + "SymbolTable/PredefinedSymbol.txt");
+            string[] lines = File.ReadAllLines(Program.projectPath.GetPath() + "SymbolTable/PredefinedSymbol.txt");
 
 
             for (int i = 0; i < lines.Length; i++)
