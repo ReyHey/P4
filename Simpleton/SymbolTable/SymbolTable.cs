@@ -35,37 +35,11 @@ namespace Simpleton.SymTable
 
         public void PutSymbol(string name, Symbol symbol)
         {
-            try
-            {
-                if (symbolTables.Peek().ContainsKey(name))
-                {
-                    throw new PutException(name);
-                }
+            if (symbolTables.Peek().ContainsKey(name))
+                throw new PutException(name);
 
-                symbolTables.Peek().Add(name, symbol);
-            }
-            catch (PutException put)
-            {
-                throw put;
-            }
+            symbolTables.Peek().Add(name, symbol);
         }
-
-        //public void PutSymbol(Type type, string name, ASTNode node, string value = "")
-        //{
-        //    try
-        //    {
-        //        if (symbolTables.Peek().ContainsKey(name))
-        //        {
-        //            throw new PutException(name);
-        //        }
-
-        //        symbolTables.Peek().Add(name, new Symbol(type, name, node));
-        //    }
-        //    catch (PutException put)
-        //    {
-        //        throw put;
-        //    }
-        //}
 
         public void Print()
         {
