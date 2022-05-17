@@ -1,18 +1,16 @@
-constant number bigNumber = 9999999999
+struct s {
+	boolean a
+	boolean b
+}
 
 function void Main()
 {
-	Write(GetMax(20, bigNumber).ToText() + "\n")
-}
-
-function number GetMax(number a, number b)
-{
-	if a > b
-	{
-		return a
-	}
-	else
-	{
-		return b
-	}
+	number c = 0
+	text d
+	boolean e
+	s a
+	//a.a = "abc"
+	//a.b = 2
+	Write(a.a.ToText() + "\n")
+	Write(a.b.ToText() + "\n")
 }

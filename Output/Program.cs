@@ -58,25 +58,19 @@ class CODE
 
 
 
-const decimal ___bigNumber = 9999999999M;
+public struct ___s{
+        public bool ___a;
+        public bool ___b;
+}
+
     public static void Main()
     {
-        ___Write(___GetMax(20M, ___bigNumber).___ToText() + "\n");
-    }
-
-    public static decimal? ___GetMax(decimal? ___a, decimal? ___b)
-    {
-        if (___a > ___b)
-        {
-            return ___a;
-;
-        }
-        else 
-        {
-            return ___b;
-;
-        }
-;
+        decimal? ___c = 0M;
+        string ___d = "";
+        bool ___e ;
+        ___s ___a ;
+        ___Write(___a.___a.___ToText() + "\n");
+        ___Write(___a.___b.___ToText() + "\n");
     }
 
 }

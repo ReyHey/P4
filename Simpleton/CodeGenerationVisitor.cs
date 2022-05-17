@@ -277,11 +277,11 @@ namespace Simpleton
             }
             else if (t == "decimal?" && node.shouldBeInit)
             {
-                return $"{t} {"___" + node.name} = {(node.initialization != null ? Visit(node.initialization) : "0M")} ;";
+                return $"{t} {"___" + node.name} = {(node.initialization != null ? Visit(node.initialization) : "0M")}";
             }
             else if (t == "string")
             {
-                return $"{t} {"___" + node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "= \" \"")}" + ";";
+                return $"{t} {"___" + node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "= \"\"")}";
             }
             else
             {
