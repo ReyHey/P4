@@ -22,7 +22,6 @@ namespace Simpleton.SymTable
             symbolTables.Pop();
         }
 
-
         public Symbol getSymbol(string name)
         {
             foreach (Dictionary<string, Symbol> table in symbolTables)
@@ -35,49 +34,10 @@ namespace Simpleton.SymTable
 
         public void PutSymbol(string name, Symbol symbol)
         {
-            try
-            {
-                if (symbolTables.Peek().ContainsKey(name))
-                {
-                    throw new PutException(name);
-                }
+            if (symbolTables.Peek().ContainsKey(name))
+                throw new PutException(name);
 
-                symbolTables.Peek().Add(name, symbol);
-            }
-            catch (PutException put)
-            {
-                throw put;
-            }
-        }
-
-        //public void PutSymbol(Type type, string name, ASTNode node, string value = "")
-        //{
-        //    try
-        //    {
-        //        if (symbolTables.Peek().ContainsKey(name))
-        //        {
-        //            throw new PutException(name);
-        //        }
-
-        //        symbolTables.Peek().Add(name, new Symbol(type, name, node));
-        //    }
-        //    catch (PutException put)
-        //    {
-        //        throw put;
-        //    }
-        //}
-
-        public void Print()
-        {
-
-            foreach (Dictionary<string, Symbol> table in symbolTables)
-            {
-                foreach (string item in table.Keys)
-                {
-                    System.Console.WriteLine(table[item].ToString());
-                }
-                System.Console.WriteLine("");
-            }
+            symbolTables.Peek().Add(name, symbol);
         }
     }
 
