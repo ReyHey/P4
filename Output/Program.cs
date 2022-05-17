@@ -59,18 +59,32 @@ class CODE
 
 
 public struct ___s{
-        public bool ___a;
-        public bool ___b;
+public ___s() {}
+public ___s(___s old)
+{
+        ___a = old.___a;
+        ___b = old.___b;
+        ___c = old.___c;
+        ___d = old.___d;
+}
+        public decimal? ___a = 0M;
+        public string ___b = "";
+        public bool ___c = false;
+        public List<decimal?> ___d = new List<decimal?>();
 }
 
     public static void Main()
     {
-        decimal? ___c = 0M;
-        string ___d = "";
-        bool ___e ;
-        ___s ___a ;
-        ___Write(___a.___a.___ToText() + "\n");
-        ___Write(___a.___b.___ToText() + "\n");
+        ___s ___myS = new ___s();
+        ___Write("Before call\n");
+        ___Write(___myS.___a.___ToText() + "\n");
+        ___Write(___myS.___b + "\n");
+        ___Write(___myS.___c.___ToText() + "\n");
+        ___myS.___d.___Add(5M);
+        ___Write("After call\n");
+        ___Write(___myS.___a.___ToText() + "\n");
+        ___Write(___myS.___b + "\n");
+        ___Write(___myS.___c.___ToText() + "\n");
     }
 
 }

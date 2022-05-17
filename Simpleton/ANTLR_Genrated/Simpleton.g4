@@ -8,7 +8,8 @@ declaration: function_decl
                | const_variable_decl;
 
 primitiv_type: primitivtType=('number' | 'text' | 'boolean');
-type: primitiv_type | LIST '<' primitiv_type '>' | LIST '<' IDENTIFIER '>';
+type: primitiv_type | LIST '<' primitiv_type '>' | LIST '<' IDENTIFIER '>' | IDENTIFIER;
+
 
 LIST: 'list';
 

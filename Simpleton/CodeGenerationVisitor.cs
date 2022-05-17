@@ -48,6 +48,21 @@ namespace Simpleton
         {
             string s = "public struct " + "___" +  node.name + "{\n";
             indent++;
+            s += $"public ___{node.name}() {{}}\n";
+            s += $"public ___{node.name}(___{node.name} old)\n";
+            s += "{\n";
+            foreach (var member in node.structMembers)
+            {
+                if (member.type.listType)
+                {
+                    s += $"{PrintIndent}___{member.name} = old.___{member.name}.Select(a => a.Copy()).ToList();\n";
+                }
+                else
+                {
+                    s += $"{PrintIndent}___{member.name} = old.___{member.name};\n";
+                }
+            }
+            s += "}\n";
             foreach (var member in node.structMembers)
             {
                 s += PrintIndent + Visit(member) + "\n";
@@ -57,7 +72,24 @@ namespace Simpleton
         }
         public string VisitStructMemberNode(StructMemberNode node)
         {
-            return "public " + ConvertToCSType(node.type) + " " + "___" + node.name + ";";
+            string t = ConvertToCSType(node.type);
+            if (t == "decimal?")
+            {
+                return $"public {t} ___{node.name} = 0M;";
+            }
+            else if (t == "string")
+            {
+                return $"public {t} ___{node.name} = \"\";";
+            }
+            else if (t == "bool")
+            {
+                return $"public {t} ___{node.name} = false;";
+            }
+            // Userdefined types and list
+            else
+            {
+                return $"public {t} ___{node.name} = new {t}();";
+            }
         }
 
         public string VisitEnumNode(EnumNode node)
@@ -283,9 +315,17 @@ namespace Simpleton
             {
                 return $"{t} {"___" + node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "= \"\"")}";
             }
-            else
+            else if (t == "bool")
             {
                 return $"{t} {"___" + node.name} {(node.initialization != null ? " = " + Visit(node.initialization) : "")}";
+            }
+            else if (node.type.enumType)
+            {
+                return $"{t} {"___" + node.name}";
+            }
+            else
+            {
+                return $"{t} {"___" + node.name} = new {t}()";
             }
         }
         public string VisitListDeclNode(ListDeclNode node)

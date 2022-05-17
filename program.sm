@@ -5,9 +5,6 @@ struct s {
 
 function void Main()
 {
-	number c = 0
-	text d
-	boolean e
 	s a
 	//a.a = "abc"
 	//a.b = 2

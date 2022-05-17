@@ -139,5 +139,10 @@ namespace ExtensionMethods
 		{
 			return (decimal?) l.Count;
 		}
+
+		public static void ___Add<T>(this List<T> l, T a)
+		{
+			l.Add(a);
+		}
 	}
 }
