@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo simping \<3...
+cd Simpleton && dotnet run $1
+cd ../Output && dotnet run

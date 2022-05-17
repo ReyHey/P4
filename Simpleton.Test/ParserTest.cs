@@ -155,7 +155,7 @@ namespace Simpleton.Test {
         [Fact]
         public void TypeTestFail() {
             SimpletonParser parser = TestParser(@"function void Main(){
-    string s
+    text s
     s = TypeTest(false)
 }
 

@@ -81,9 +81,9 @@ namespace Simpleton
         public string VisitEnumMemberNode(EnumMemberNode node)
         {
             if (node.value != null)
-                return "___" + node.name + "," + "=" + Visit(node.value);
+                return "___" + node.name + "=" + Visit(node.value);
             else
-                return "___" + node.name + ",";
+                return "___" + node.name;
         }
 
         public string VisitAdditionNode(AdditionNode node)

@@ -58,9 +58,25 @@ class CODE
 
 
 
+const decimal ___bigNumber = 9999999999M;
     public static void Main()
     {
-        ___Write("IT WORRRKSS!!!\n");
+        ___Write(___GetMax(20M, ___bigNumber).___ToText() + "\n");
+    }
+
+    public static decimal? ___GetMax(decimal? ___a, decimal? ___b)
+    {
+        if (___a > ___b)
+        {
+            return ___a;
+;
+        }
+        else 
+        {
+            return ___b;
+;
+        }
+;
     }
 
 }

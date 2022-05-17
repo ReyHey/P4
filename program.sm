@@ -1,0 +1,18 @@
+constant number bigNumber = 9999999999
+
+function void Main()
+{
+	Write(GetMax(20, bigNumber).ToText() + "\n")
+}
+
+function number GetMax(number a, number b)
+{
+	if a > b
+	{
+		return a
+	}
+	else
+	{
+		return b
+	}
+}

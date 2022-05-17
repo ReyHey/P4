@@ -24,7 +24,7 @@ function void Main(){
             Write("Result so far is " + accumulator.ToText() + "\n")
         }
     }
-    Write("Final result is: {accumulator} \n")
+    Write("Final result is: " + accumulator.ToText() + "\n")
 }
 
 function input GetInput() {
