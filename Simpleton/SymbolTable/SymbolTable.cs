@@ -22,7 +22,6 @@ namespace Simpleton.SymTable
             symbolTables.Pop();
         }
 
-
         public Symbol getSymbol(string name)
         {
             foreach (Dictionary<string, Symbol> table in symbolTables)
@@ -39,19 +38,6 @@ namespace Simpleton.SymTable
                 throw new PutException(name);
 
             symbolTables.Peek().Add(name, symbol);
-        }
-
-        public void Print()
-        {
-
-            foreach (Dictionary<string, Symbol> table in symbolTables)
-            {
-                foreach (string item in table.Keys)
-                {
-                    System.Console.WriteLine(table[item].ToString());
-                }
-                System.Console.WriteLine("");
-            }
         }
     }
 
