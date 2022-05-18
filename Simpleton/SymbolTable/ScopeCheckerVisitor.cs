@@ -621,7 +621,7 @@ namespace Simpleton
             return null;
         }
 
-        public object VariableCallNode(VariableCallNode node)
+        public object VisitVariableCallNode(VariableCallNode node)
         {
             try
             {

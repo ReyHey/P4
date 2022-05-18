@@ -4,7 +4,7 @@ namespace Simpleton.AST
 {
     class PrintNodeVisitor : ASTVisitor<PrintNode>
     {
-        public PrintNode VariableCallNode(VariableCallNode node)
+        public PrintNode VisitVariableCallNode(VariableCallNode node)
         {
             return new PrintNode("VariableCall" + " " + node.identifier, node.Line);
         }

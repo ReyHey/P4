@@ -54,7 +54,7 @@
         T VisitTextLiteral(TextLiteral node);
         T VisitBooleanLiteral(BooleanLiteral node);
 
-        T VariableCallNode(VariableCallNode node);
+        T VisitVariableCallNode(VariableCallNode node);
         T VisitSubscriptCallNode(SubscriptCallNode node);
         T VisitDotReferencingNode(DotReferencingNode node);
         T VisitFieldNode(Field node);

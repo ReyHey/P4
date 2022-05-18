@@ -175,7 +175,7 @@ namespace Simpleton.AST
 
         public override T Accept<T>(ASTVisitor<T> v)
         {
-            return v.VariableCallNode(this);
+            return v.VisitVariableCallNode(this);
         }
     }
 

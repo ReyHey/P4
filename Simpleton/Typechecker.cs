@@ -19,7 +19,7 @@ namespace Simpleton
 
     public class Typechecker : ASTVisitor<Type>
     {
-        public Type VariableCallNode(VariableCallNode node)
+        public Type VisitVariableCallNode(VariableCallNode node)
         {
             return node.type;
         }
@@ -41,13 +41,11 @@ namespace Simpleton
                     node.type = Lnode;
                     return Lnode;
                 }
-
                 else
                     throw new InvalidTypeException();
             }
             else
                 throw new InvalidTypeException();
-
         }
 
         public Type VisitANDNode(ANDNode node)

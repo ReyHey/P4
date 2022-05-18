@@ -376,7 +376,7 @@ namespace Simpleton
             return node.value;
         }
 
-        public string VariableCallNode(VariableCallNode node)
+        public string VisitVariableCallNode(VariableCallNode node)
         {
             return "___" + node.identifier;
         }

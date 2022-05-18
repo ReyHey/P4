@@ -11,7 +11,7 @@ namespace Simpleton
         }
         SymbolTable symbolTable { get; }
 
-        public object VariableCallNode(VariableCallNode node)
+        public object VisitVariableCallNode(VariableCallNode node)
         {
             return null;
         }
