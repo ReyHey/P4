@@ -1,13 +1,4 @@
-struct s {
-	boolean a
-	boolean b
-}
-
 function void Main()
 {
-	s a
-	//a.a = "abc"
-	//a.b = 2
-	Write(a.a.ToText() + "\n")
-	Write(a.b.ToText() + "\n")
+	Write("This is simpelton. The simple beginner friendly programming language.\n")
 }

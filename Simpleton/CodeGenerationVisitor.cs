@@ -55,7 +55,7 @@ namespace Simpleton
             {
                 if (member.type.listType)
                 {
-                    s += $"{PrintIndent}___{member.name} = old.___{member.name}.Select(a => a.Copy()).ToList();\n";
+                    s += $"{PrintIndent}___{member.name} = old.___{member.name}.ToList();\n";
                 }
                 else
                 {
@@ -197,6 +197,10 @@ namespace Simpleton
                     {
                         s += $"new List<{GetCSPrimType(node.actualParameters[i].type.typeName)}>({Visit(node.actualParameters[i])})";
                     }
+                    else if (node.actualParameters[i].type.structType)
+                    {
+                        s += $"new ___{node.actualParameters[i].type.typeName}({Visit(node.actualParameters[i])})";
+                    }
                     else
                     {
                         s += Visit(node.actualParameters[i]);
@@ -323,9 +327,13 @@ namespace Simpleton
             {
                 return $"{t} {"___" + node.name}";
             }
-            else
+            else if (node.type.structType)
             {
                 return $"{t} {"___" + node.name} = new {t}()";
+            }
+            else
+            {
+                return $"{t} {"___" + node.name} {(node.initialization != null ? "=" + Visit(node.initialization) : "")}";
             }
         }
         public string VisitListDeclNode(ListDeclNode node)
@@ -469,7 +477,7 @@ namespace Simpleton
 
         public string VisitSubscriptMemberNode(SubscriptMember node)
         {
-            return "___" + node.identifier + "[" + Visit(node.index) + "]";
+            return node.identifier + "[" + "(int)" + Visit(node.index) + "]";
         }
 
         public string ConvertToCSType(Type type)

@@ -2,4 +2,9 @@
 
 echo simping \<3...
 cd Simpleton && dotnet run $1
-cd ../Output && dotnet run
+cd ../Output #&& dotnet run
+FILE=Program.cs
+if [ -f "$FILE" ]; then
+    dotnet run
+    rm Program.cs
+fi

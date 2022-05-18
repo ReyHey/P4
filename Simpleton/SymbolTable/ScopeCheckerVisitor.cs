@@ -318,6 +318,19 @@ namespace Simpleton
 
         public object VisitFormalParameter(FormalParameter node)
         {
+            if (node.type.userDefinedType)
+            {
+                Symbol symbol = symbolTable.getSymbol(node.type.typeName);
+                if (symbol.node is StructNode)
+                    node.type.structType = true;
+                else if (symbol.node is EnumNode)
+                    node.type.enumType = true;
+                else
+                {
+                    Console.WriteLine($"Line {node.Line.line}: The declered type \"{node.type.typeName}\" is not a valid type since it is neither a primitiv type or a user-defined type.");
+                    Environment.Exit(1);
+                }
+            }
             return new Symbol(node.name, node);
         }
 
@@ -697,7 +710,10 @@ namespace Simpleton
                     actualFieldName = member.name;
                     if (actualFieldName == expectedFieldName)
                     {
-                        node.type = member.type;
+                        if (member.type.userDefinedType)
+                            node.type = new Type(member.type.typeName, false, true);
+                        else
+                            node.type = new Type(member.type.typeName, false, false);
                         Visit(node.index);
                         return null;
                     }

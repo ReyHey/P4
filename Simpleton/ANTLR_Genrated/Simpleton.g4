@@ -47,7 +47,7 @@ const_variable_decl: 'constant' variable_decl;
 list_decl: LIST '<' (primitiv_type | innerType=IDENTIFIER) '>' vName=IDENTIFIER ('=' (list_initialize | expr))? NEWLINE;
 list_initialize: '{' (expr (',' expr)*)? '}';
 
-struct_decl: 'struct' IDENTIFIER NEWLINE?'{'NEWLINE struct_member+ '}' NEWLINE;
+struct_decl: 'struct' IDENTIFIER NEWLINE?'{'NEWLINE struct_member+ '}' NEWLINE?;
 struct_member: type IDENTIFIER NEWLINE;
 
 

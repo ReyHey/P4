@@ -80,39 +80,6 @@ namespace ExtensionMethods
 	        return "";
 		}
 
-		public static decimal? ___Sqrt(decimal? num)
-		{
-			if (num != null)
-			{
-				return (decimal?) Math.Sqrt((double) num);
-			}
-			Console.WriteLine($"Could not execute method 'Sqrt' on num, because num parameter was null");
-	        System.Environment.Exit(1);
-	        return 0;
-		}
-
-		public static decimal? ___Cbrt(decimal? num)
-		{
-			if (num != null) 
-			{
-				return (decimal?) Math.Cbrt((double) num);
-			}
-			Console.WriteLine($"Could not execute method 'Cbrt' on num, because num parameter was null");
-	        System.Environment.Exit(1);
-	        return 0;
-		}
-
-		public static decimal? ___PowCustom(decimal? b, decimal? p)
-		{
-			if (b != null && p != null)
-			{
-				return (decimal?) Math.Pow((double) b, (double) p);
-			}
-			Console.WriteLine($"Could not execute 'Pow' since either its base or power parameter was null");
-	        System.Environment.Exit(1);
-	        return 0;
-		}
-
 		// Boolean
 		public static string ___ToText(this bool b)
 		{
