@@ -12,18 +12,18 @@ type: primitiv_type | LIST '<' primitiv_type '>' | LIST '<' IDENTIFIER '>';
 
 LIST: 'list';
 
-expr: id                                                                                #IdentifierCall
-    | constant                                                                          #ConstantLiteral
-    | func_call                                                                         #FuncCall
-    | NaN='NaN'                                                                         #NaNExpr
-    | '(' expr ')'                                                                      #ParensExpr
-    | '(' op='-' expr ')'                                                               #UnaryExpr
-    | left=expr op='^' right=expr                                                       #InfixExpr
-    | left=expr op=('/'|'mod'|'*') right=expr                                           #InfixExpr
-    | left=expr op=('+'|'-') right=expr                                                 #InfixExpr
-    | left=expr op=('==' | '!='| '>' | '<' | '>=' | '<=') right=expr                    #InfixExpr
-    | op='!' expr                                                                       #UnaryExpr
-    | left=expr op=('and'| 'or') right=expr                                             #InfixExpr         
+expr: id                                                              #IdentifierCall
+    | constant                                                        #ConstantLiteral
+    | func_call                                                       #FuncCall
+    | NaN='NaN'                                                       #NaNExpr
+    | '(' expr ')'                                                    #ParensExpr
+    | '(' op='-' expr ')'                                             #UnaryExpr
+    | left=expr op='^' right=expr                                     #InfixExpr
+    | left=expr op=('/'|'mod'|'*') right=expr                         #InfixExpr
+    | left=expr op=('+'|'-') right=expr                               #InfixExpr
+    | left=expr op=('==' | '!='| '>' | '<' | '>=' | '<=') right=expr  #InfixExpr
+    | op='!' expr                                                     #UnaryExpr
+    | left=expr op=('and'| 'or') right=expr                           #InfixExpr         
     ;
 
 id: id '.' ids | ids;
@@ -54,9 +54,9 @@ enum_decl: 'enum' IDENTIFIER NEWLINE?'{'NEWLINE? enum_member(',' enum_member)* '
 enum_member: IDENTIFIER ('=' NUMBER)? NEWLINE?;
 
 
-function_decl               : 'function' returnType=return_type name=IDENTIFIER '(' (formal_parameter (',' formal_parameter)*)? ')' block;
-return_type                 : type | VOID | IDENTIFIER;
-formal_parameter            : type IDENTIFIER;
+function_decl    : 'function' returnType=return_type name=IDENTIFIER '(' (formal_parameter (',' formal_parameter)*)? ')' block;
+return_type      : type | VOID | IDENTIFIER;
+formal_parameter : type IDENTIFIER;
 
 VOID: 'void';
 
