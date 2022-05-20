@@ -80,8 +80,8 @@ jump_stmt   : (return_stmt | jump=('break' | 'continue')) NEWLINE;
 return_stmt : 'return' expr?;
 
 switch_stmt: 'switch' expr NEWLINE? '{' NEWLINE switch_case* switch_case_default? '}' NEWLINE;
-switch_case: ('case' expr ':')+ NEWLINE stmt* 'break' NEWLINE;
-switch_case_default: 'default:' NEWLINE stmt* 'break' NEWLINE;
+switch_case: 'case' expr ':' NEWLINE stmt*;
+switch_case_default: 'default:' NEWLINE stmt*;
 
 if_else_stmt: 'if' expr block else_if_stmt* else_stmt?;
 else_if_stmt: 'else if' expr block ;

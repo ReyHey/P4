@@ -474,33 +474,17 @@ namespace Simpleton.AST
 
         public object VisitSwitch_case([NotNull] SimpletonParser.Switch_caseContext context)
         {
-            List<Case> cases = new List<Case>();
-
-            ExprContext[] exprContexts = context.expr();
-
-            for (int i = 0; i < exprContexts.Length; i++)
-            {
-                Case caseSwitch = new Case();
-                caseSwitch.CaseExpr = (ExpressionNode)Visit(exprContexts[i]);
-                if (i < exprContexts.Length - 1)
+            ExprContext exprContexts = context.expr();
+            Case caseSwitch = new Case();
+            caseSwitch.CaseExpr = (ExpressionNode)Visit(exprContexts);
+            if (context.stmt() != null)
+                foreach (StmtContext stmt in context.stmt())
                 {
-                    caseSwitch.block = null;
+                    caseSwitch.block.Add((StmtNode)Visit(stmt));
                 }
-                else
-                {
-                    if (context.stmt() != null)
-                        foreach (StmtContext stmt in context.stmt())
-                        {
-                            caseSwitch.block.Add((StmtNode)Visit(stmt));
-                        }
+            caseSwitch.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
 
-                }
-                caseSwitch.Line = CreateLineInfo(context.Start.Line, context.Start.Column);
-                cases.Add(caseSwitch);
-            }
-
-
-            return cases;
+            return caseSwitch;
         }
 
 
@@ -525,7 +509,7 @@ namespace Simpleton.AST
             Switch_caseContext[] cases = context.switch_case();
             foreach (Switch_caseContext switchCase in cases)
             {
-                node.cases.AddRange((List<Case>)Visit(switchCase));
+                node.cases.Add((Case)Visit(switchCase));
             }
 
             var defaultCase = context.switch_case_default();
