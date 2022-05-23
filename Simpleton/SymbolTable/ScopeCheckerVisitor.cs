@@ -589,6 +589,10 @@ namespace Simpleton
 
         public object VisitVariableDeclNode(VariableDeclNode node)
         {
+            if (node.constant)
+            {
+                return null;
+            }
             if (node.type.userDefinedType)
             {
                 try

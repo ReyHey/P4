@@ -41,7 +41,7 @@ constant: NUMBER
         | BOOlEAN;
 
 
-variable_decl: (primitiv_type | userDefinedType=IDENTIFIER) vName=IDENTIFIER ('=' expr)? NEWLINE;
+variable_decl: (primitiv_type | userDefinedType=IDENTIFIER) vName=IDENTIFIER ('=' expr)? (NEWLINE | EOF);
 const_variable_decl: 'constant' variable_decl;
 
 list_decl: LIST '<' (primitiv_type | innerType=IDENTIFIER) '>' vName=IDENTIFIER ('=' (list_initialize | expr))? NEWLINE;
@@ -51,8 +51,8 @@ struct_decl: 'struct' IDENTIFIER NEWLINE?'{'NEWLINE struct_member+ '}' NEWLINE?;
 struct_member: type IDENTIFIER NEWLINE;
 
 
-enum_decl: 'enum' IDENTIFIER NEWLINE?'{'NEWLINE? enum_member(',' enum_member)* '}' NEWLINE;
-enum_member: IDENTIFIER ('=' NUMBER)? NEWLINE?;
+enum_decl: 'enum' IDENTIFIER NEWLINE?'{'NEWLINE? enum_member(',' NEWLINE? enum_member)* NEWLINE?'}' NEWLINE;
+enum_member: IDENTIFIER ('=' NUMBER)?;
 
 
 function_decl               : 'function' returnType=return_type name=IDENTIFIER '(' (formal_parameter (',' formal_parameter)*)? ')' block;
