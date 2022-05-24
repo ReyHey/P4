@@ -8,10 +8,9 @@ struct hej{
     number operand
 }
 
-enum days{mon,thu}
+enum days{monday, thueday, wednesday}
 
-constant days a = days.mon
-
+constant days a = days.monday
 
 function void Main(){ 
     number accumulator = 0.0

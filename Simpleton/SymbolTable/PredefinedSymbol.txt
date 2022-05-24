@@ -26,6 +26,7 @@ list:
 
 
 void Write(text t)
+void WriteLine(text t)
 text Read()
 number Sqrt(number value)
 number Cbrt(number value)

@@ -20,6 +20,8 @@ namespace Simpleton
 using System;
 using ExtensionMethods;
 
+#pragma warning disable
+
 class CODE
 {
 	// Misc
@@ -27,6 +29,11 @@ class CODE
 	{
 		Console.Write(t);
 	}
+
+    public static void ___WriteLine(string t)
+    {
+        Console.WriteLine(t);
+    }
 
 	public static string ___Read()
     {

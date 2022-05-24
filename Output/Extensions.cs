@@ -42,7 +42,14 @@ namespace ExtensionMethods
 
 		public static decimal? ___ToNumber(this string str) 
 		{
-			return decimal.Parse(str);
+			try
+			{
+				return decimal.Parse(str);
+			}
+			catch (System.FormatException)
+			{
+				return null;
+			}		
 		}
 
 		public static List<string> ___SplitCustom(this string str, string token) 

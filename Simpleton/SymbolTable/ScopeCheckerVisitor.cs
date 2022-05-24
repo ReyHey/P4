@@ -589,10 +589,6 @@ namespace Simpleton
 
         public object VisitVariableDeclNode(VariableDeclNode node)
         {
-            if (node.constant)
-            {
-                return null;
-            }
             if (node.type.userDefinedType)
             {
                 try
@@ -623,7 +619,10 @@ namespace Simpleton
                     Environment.Exit(1);
                 }
             }
-            symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
+            if (!node.constant)
+            {
+                symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
+            }
             if (node.initialization != null)
                 Visit(node.initialization);
             return null;
