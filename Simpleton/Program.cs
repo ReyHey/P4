@@ -3,10 +3,11 @@ using System.Diagnostics;
 using System.Linq;
 using Simpleton.AST;
 using System.IO;
-
+#pragma warning disable warning-list
 namespace Simpleton
 {
-    #pragma warning disable warning-list
+    
+
     class Program
     {
         public static bool enablePrettyPrint = false;

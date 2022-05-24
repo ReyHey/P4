@@ -1,6 +1,5 @@
 grammar Simpleton;	
 program: declaration* EOF;                                                
-//includes: 'include' 'string' NEWLINE;
 
 declaration: function_decl
                | struct_decl

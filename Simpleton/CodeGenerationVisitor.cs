@@ -85,7 +85,6 @@ namespace Simpleton
             {
                 return $"public {t} ___{node.name} = false;";
             }
-            // Userdefined types and list
             else
             {
                 return $"public {t} ___{node.name} = new {t}();";
