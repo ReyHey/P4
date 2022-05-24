@@ -1,9 +1,11 @@
-﻿using System;
+﻿#pragma warning disable
+
+using System;
 using System.Diagnostics;
 using System.Linq;
 using Simpleton.AST;
 using System.IO;
-#pragma warning disable warning-list
+
 namespace Simpleton
 {
     class Program
