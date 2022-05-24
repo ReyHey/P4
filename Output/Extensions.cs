@@ -93,8 +93,11 @@ namespace ExtensionMethods
 			{
 				l.RemoveAt((int) index);
 			}
-			Console.WriteLine($"Could not execute 'RemoveAt' on list, because index parameter was null");
-	        System.Environment.Exit(1);
+			else
+			{
+				Console.WriteLine($"Could not execute 'RemoveAt' on list, because index parameter was null");
+	       	 System.Environment.Exit(1);
+			}
 		}
 
 		public static void ___Sort<T>(this List<T> l) where T : IComparable
