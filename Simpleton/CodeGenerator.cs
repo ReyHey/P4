@@ -24,7 +24,6 @@ using ExtensionMethods;
 
 class CODE
 {
-	// Misc
 	public static void ___Write(string t)
 	{
 		Console.Write(t);
