@@ -6,6 +6,7 @@ using System.IO;
 
 namespace Simpleton
 {
+    #pragma warning disable warning-list
     class Program
     {
         public static bool enablePrettyPrint = false;

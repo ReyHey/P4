@@ -1,16 +1,38 @@
-struct s {
-	boolean a
-	boolean b
+struct student
+{
+    number age
+    text study
+    list<course> courses
 }
 
 function void Main()
 {
-	number c = 0
-	text d
-	boolean e
-	s a
-	//a.a = "abc"
-	//a.b = 2
-	Write(a.a.ToText() + "\n")
-	Write(a.b.ToText() + "\n")
+    student s1
+    s1.age = 21
+    s1.study = "Computer science"
+
+    course linearAlgebra
+    linearAlgebra.name = courseNames.linearAlgebra
+    linearAlgebra.students_in_course = 77
+
+    if linearAlgebra.students_in_course < max_students_in_course
+    {
+        linearAlgebra.students_in_course += 1
+        s1.courses.Add(linearAlgebra)
+    }
 }
+
+struct course
+{
+    courseNames name
+    number students_in_course
+}
+
+enum courseNames
+{
+    linearAlgebra,
+    programmingParadigms,
+    oop
+}
+
+constant number max_students_in_course = 100

@@ -44,12 +44,16 @@ class CODE
 		System.Environment.Exit(1);
 	}
 
-    public static decimal ___Pow(decimal? a, decimal? b)
+    public static decimal? ___Pow(decimal? a, decimal? b)
     {
         if (a == null || b == null)
         {
             Console.WriteLine(""Could not make power, because of NaN"");
             System.Environment.Exit(1);
+        }
+        if (a == 0 && b == 0)
+        {
+            return null;
         }
         return (decimal) Math.Pow((double) a, (double) b);
     }

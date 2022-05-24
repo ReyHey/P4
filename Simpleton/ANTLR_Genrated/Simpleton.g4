@@ -8,7 +8,8 @@ declaration: function_decl
                | const_variable_decl;
 
 primitiv_type: primitivtType=('number' | 'text' | 'boolean');
-type: primitiv_type | LIST '<' primitiv_type '>' | LIST '<' IDENTIFIER '>';
+type: primitiv_type | LIST '<' primitiv_type '>' | LIST '<' IDENTIFIER '>' | IDENTIFIER;
+
 
 LIST: 'list';
 
@@ -40,18 +41,18 @@ constant: NUMBER
         | BOOlEAN;
 
 
-variable_decl: (primitiv_type | userDefinedType=IDENTIFIER) vName=IDENTIFIER ('=' expr)? NEWLINE;
+variable_decl: (primitiv_type | userDefinedType=IDENTIFIER) vName=IDENTIFIER ('=' expr)? (NEWLINE | EOF);
 const_variable_decl: 'constant' variable_decl;
 
 list_decl: LIST '<' (primitiv_type | innerType=IDENTIFIER) '>' vName=IDENTIFIER ('=' (list_initialize | expr))? NEWLINE;
 list_initialize: '{' (expr (',' expr)*)? '}';
 
-struct_decl: 'struct' IDENTIFIER NEWLINE?'{'NEWLINE struct_member+ '}' NEWLINE;
+struct_decl: 'struct' IDENTIFIER NEWLINE?'{'NEWLINE struct_member+ '}' NEWLINE?;
 struct_member: type IDENTIFIER NEWLINE;
 
 
-enum_decl: 'enum' IDENTIFIER NEWLINE?'{'NEWLINE? enum_member(',' enum_member)* '}' NEWLINE;
-enum_member: IDENTIFIER ('=' NUMBER)? NEWLINE?;
+enum_decl: 'enum' IDENTIFIER NEWLINE?'{'NEWLINE? enum_member(',' NEWLINE? enum_member)* NEWLINE?'}' NEWLINE;
+enum_member: IDENTIFIER ('=' NUMBER)?;
 
 
 function_decl    : 'function' returnType=return_type name=IDENTIFIER '(' (formal_parameter (',' formal_parameter)*)? ')' block;
@@ -79,8 +80,8 @@ jump_stmt   : (return_stmt | jump=('break' | 'continue')) NEWLINE;
 return_stmt : 'return' expr?;
 
 switch_stmt: 'switch' expr NEWLINE? '{' NEWLINE switch_case* switch_case_default? '}' NEWLINE;
-switch_case: ('case' expr ':')+ NEWLINE stmt* 'break' NEWLINE;
-switch_case_default: 'default:' NEWLINE stmt* 'break' NEWLINE;
+switch_case: 'case' expr ':' NEWLINE stmt*;
+switch_case_default: 'default:' NEWLINE stmt*;
 
 if_else_stmt: 'if' expr block else_if_stmt* else_stmt?;
 else_if_stmt: 'else if' expr block ;

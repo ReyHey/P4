@@ -235,8 +235,12 @@ namespace Simpleton
         {
             for (int i = 0; i < node.actualParameters.Count; i++)
             {
-                if (!Visit(node.actualParameters[i]).Equals(node.declNode.formalParameters[i].type))
+                if (!Visit(node.actualParameters[i]).Equals(node.declNode.formalParameters[i].type)){
+                    Console.WriteLine(Visit(node.actualParameters[i]).ToString());
+                    Console.WriteLine("-------------------------------------");
+                    Console.WriteLine(node.declNode.formalParameters[i].type.ToString());
                     throw new InvalidTypeException();
+                }
             }
             return node.type;
         }

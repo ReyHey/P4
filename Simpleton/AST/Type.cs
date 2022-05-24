@@ -55,6 +55,7 @@
 
         public override string ToString()
         {
+            //return $"Typename: {typeName}, ListType: {listType}, UserDefinedType: {userDefinedType}, StructType: {structType}, EnumType: {enumType}";
             if (listType)
             {
                 return "list<" + typeName + ">";

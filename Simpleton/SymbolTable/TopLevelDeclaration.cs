@@ -288,6 +288,7 @@ namespace Simpleton
 
         public object VisitVariableDeclNode(VariableDeclNode node)
         {
+            symbolTable.PutSymbol(node.name, new Symbol(node.name, node));
             return null;
         }
 
